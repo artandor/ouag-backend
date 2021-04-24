@@ -2,6 +2,8 @@
 /helm/api/charts
 /helm/api/Chart.lock
 
+.idea
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -22,3 +24,7 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
