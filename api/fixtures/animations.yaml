@@ -1,0 +1,7 @@
+App\Entity\Animation:
+    animation_1:
+        name: Fireworks
+        lottieLink: https://lottiefiles.com/3287-fireworks
+    animation_{2..100}:
+        name: <word()>
+        lottieLink: <url()>

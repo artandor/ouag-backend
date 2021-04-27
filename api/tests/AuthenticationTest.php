@@ -14,13 +14,11 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->createUser('test@example.com', '$3CR3T');
-
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
-                'password' => '$3CR3T',
+                'email' => 'user@example.com',
+                'password' => 'seCrEt',
             ],
         ]);
 
@@ -35,7 +33,7 @@ class AuthenticationTest extends ApiTestCase
         $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'test@example.com'
+            'email' => 'user@example.com'
         ]);
     }
 
@@ -43,12 +41,10 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->createUser('test@example.com', '$3CR3T');
-
         $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
+                'email' => 'user@example.com',
                 'password' => '$3CR3TA',
             ],
         ]);
@@ -63,13 +59,11 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->createUser('test@example.com', '$3CR3T');
-
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
-                'password' => '$3CR3T',
+                'email' => 'user@example.com',
+                'password' => 'seCrEt',
             ],
         ]);
 
@@ -163,13 +157,11 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->createUser('test@example.com', '$3CR3T');
-
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
-                'password' => '$3CR3T',
+                'email' => 'user@example.com',
+                'password' => 'seCrEt',
             ],
         ]);
 
@@ -183,13 +175,11 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->createUser('test@example.com', '$3CR3T', ['ROLE_ADMIN']);
-
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
-                'password' => '$3CR3T',
+                'email' => 'admin@example.com',
+                'password' => 'seCrEt',
             ],
         ]);
 
@@ -234,14 +224,11 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $this->createUser('test@example.com', '$3CR3T');
-
-        // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
-                'password' => '$3CR3T',
+                'email' => 'user@example.com',
+                'password' => 'seCrEt',
             ],
         ]);
 
@@ -249,12 +236,11 @@ class AuthenticationTest extends ApiTestCase
         $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'test@example.com'
+            'email' => 'user@example.com'
         ]);
 
-        $user2 = $this->createUser('testUser2@example.com', '$3CR3T2');
+        $user2 = self::createUser('testUser2@example.com', '$3CR3T2');
 
-        // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -305,14 +291,14 @@ class AuthenticationTest extends ApiTestCase
         ]);
     }
 
-    private function createUser(string $username, string $password, array $roles = []): User
+    public static function createUser(string $username, string $password, array $roles = []): User
     {
         $user = new User();
         $user->setEmail($username);
         $user->setPlainPassword($password);
         $user->setRoles($roles);
 
-        $manager = self::$container->get('doctrine')->getManager();
+        $manager = static::$container->get('doctrine')->getManager();
         $manager->persist($user);
         $manager->flush();
         return $user;
@@ -321,7 +307,7 @@ class AuthenticationTest extends ApiTestCase
     public function testCreateUserHelper(): void
     {
         self::createClient();
-        $user = $this->createUser('test@mail.fr', '$ecret');
+        $user = self::createUser('test@mail.fr', '$ecret');
         $this->assertEquals('test@mail.fr', $user->getEmail());
     }
 }

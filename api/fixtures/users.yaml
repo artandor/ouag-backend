@@ -1,0 +1,11 @@
+App\Entity\User:
+    user_1:
+        email: user@example.com
+        plainPassword: seCrEt
+    user_2:
+        email: second.user@example.com
+        plainPassword: Second.!seCrEt
+    user_3:
+        email: admin@example.com
+        plainPassword: seCrEt
+        roles: [ 'ROLE_ADMIN' ]

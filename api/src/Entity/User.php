@@ -61,9 +61,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface
 {
-    #[Groups(['user_write'])]
-    #[Assert\Length(min: 6, max: 255)]
-    protected ?string $plainPassword;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -71,16 +68,23 @@ class User implements UserInterface
      */
     #[Groups(['user_read'])]
     private ?int $id;
+
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     #[Groups(['user_read', 'user_write'])]
     #[Assert\Email]
     private ?string $email;
+
     /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
+
+    #[Groups(['user_write'])]
+    #[Assert\Length(min: 6, max: 255)]
+    protected ?string $plainPassword;
+
     /**
      * @ORM\Column(type="string")
      */
