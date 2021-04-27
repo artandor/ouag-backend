@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         'path' => '/users/me',
         'security' => "is_granted('ROLE_USER')",
         'controller' => GetCurrentUserController::class,
-        'filter' => false,
         'pagination_enabled' => false,
         'openapi_context' => [
             'summary' => 'Obtain data of the currently logged in user.',
@@ -38,19 +37,19 @@ use Symfony\Component\Validator\Constraints as Assert;
                     'content' => [
                         'application/json' => [
                             'schema' => [
-                                '$ref' => '#/components/schemas/User-user_user_read',
+                                '$ref' => '#/components/schemas/User-user_read',
                             ],
                         ],
                         'application/json+ld' => [
                             'schema' => [
-                                '$ref' => '#/components/schemas/User.jsonld-user_user_read',
+                                '$ref' => '#/components/schemas/User.jsonld-user_read',
                             ],
                         ],
                     ]
                 ]
             ]
         ]
-    ]
+    ],
 ],
     itemOperations: [
     'get' => ['security' => "is_granted('ROLE_ADMIN')"],

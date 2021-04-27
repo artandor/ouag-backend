@@ -39,19 +39,6 @@ class AuthenticationTest extends ApiTestCase
         ]);
     }
 
-    private function createUser(string $username, string $password, array $roles = []): User
-    {
-        $user = new User();
-        $user->setEmail($username);
-        $user->setPlainPassword($password);
-        $user->setRoles($roles);
-
-        $manager = self::$container->get('doctrine')->getManager();
-        $manager->persist($user);
-        $manager->flush();
-        return $user;
-    }
-
     public function testLoginWithWrongPassword(): void
     {
         $client = self::createClient();
@@ -78,7 +65,6 @@ class AuthenticationTest extends ApiTestCase
 
         $this->createUser('test@example.com', '$3CR3T');
 
-        // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -130,7 +116,11 @@ class AuthenticationTest extends ApiTestCase
             "@context" => "/contexts/ConstraintViolationList",
             "hydra:description" => "email: This value is already used.",
         ]);
+    }
 
+    public function testCreateUserInvalidEmail(): void
+    {
+        $client = self::createClient();
         $client->request('POST', '/users', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -175,7 +165,6 @@ class AuthenticationTest extends ApiTestCase
 
         $this->createUser('test@example.com', '$3CR3T');
 
-        // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -196,7 +185,6 @@ class AuthenticationTest extends ApiTestCase
 
         $this->createUser('test@example.com', '$3CR3T', ['ROLE_ADMIN']);
 
-        // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -228,7 +216,6 @@ class AuthenticationTest extends ApiTestCase
         $manager->persist($user2);
         $manager->flush();
 
-        // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -265,7 +252,7 @@ class AuthenticationTest extends ApiTestCase
             'email' => 'test@example.com'
         ]);
 
-        $this->createUser('testUser2@example.com', '$3CR3T2');
+        $user2 = $this->createUser('testUser2@example.com', '$3CR3T2');
 
         // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
@@ -280,8 +267,55 @@ class AuthenticationTest extends ApiTestCase
         $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'testUser2@example.com'
+            'id' => $user2->getId(),
+            'email' => 'testUser2@example.com',
         ]);
+    }
+
+    public function testUpdateMyself(): void
+    {
+        $client = self::createClient();
+
+        $this->createUser('test@example.com', '$3CR3T');
+
+        $response = $client->request('POST', '/authentication_token', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'test@example.com',
+                'password' => '$3CR3T',
+            ],
+        ]);
+        $json = $response->toArray();
+        $response = $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
+
+        $id = $response->toArray()['id'];
+        $this->assertNotNull($id);
+
+        $client->request('PUT', '/users/' . $id, [
+            'auth_bearer' => $json['token'],
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'monkeyTest@example.com'
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'id' => $id,
+            'email' => 'monkeyTest@example.com'
+        ]);
+    }
+
+    private function createUser(string $username, string $password, array $roles = []): User
+    {
+        $user = new User();
+        $user->setEmail($username);
+        $user->setPlainPassword($password);
+        $user->setRoles($roles);
+
+        $manager = self::$container->get('doctrine')->getManager();
+        $manager->persist($user);
+        $manager->flush();
+        return $user;
     }
 
     public function testCreateUserHelper(): void
