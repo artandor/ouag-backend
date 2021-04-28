@@ -2,14 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use App\Repository\AnimationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=AnimationRepository::class)
  */
+#[ApiResource(
+    collectionOperations: [
+    'get',
+    'post' => ['security' => "is_granted('ROLE_ADMIN')"],
+],
+    itemOperations: [
+    'get',
+    'put' => ['security' => "is_granted('ROLE_ADMIN')"],
+    'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
+],
+    denormalizationContext: ['groups' => ['animation_write']],
+    normalizationContext: ['groups' => ['animation_read']],
+)]
+#[ApiFilter(BooleanFilter::class, properties: ['enabled'])]
 class Animation
 {
     /**
@@ -17,26 +33,29 @@ class Animation
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    #[Groups(['animation_read', 'animation_write'])]
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lottieLink;
+    #[Groups(['animation_read', 'animation_write'])]
+    private string $lottieLink;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $enabled;
+    #[Groups(['animation_read', 'animation_write'])]
+    private bool $enabled;
 
     public function __construct()
     {
-        if (!$this->enabled) {
+        if (!isset($this->enabled)) {
             $this->enabled = true;
         }
     }
