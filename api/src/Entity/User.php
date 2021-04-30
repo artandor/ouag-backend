@@ -7,6 +7,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\GetCurrentUserController;
 use App\Repository\UserRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -121,11 +123,17 @@ class User implements UserInterface
     private ?bool $active;
 
     /**
+     * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $mediaObjects;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->setActive(true);
+        $this->mediaObjects = new ArrayCollection();
     }
 
 
@@ -282,6 +290,36 @@ class User implements UserInterface
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaObject[]
+     */
+    public function getMediaObjects(): Collection
+    {
+        return $this->mediaObjects;
+    }
+
+    public function addMediaObject(MediaObject $mediaObject): self
+    {
+        if (!$this->mediaObjects->contains($mediaObject)) {
+            $this->mediaObjects[] = $mediaObject;
+            $mediaObject->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaObject(MediaObject $mediaObject): self
+    {
+        if ($this->mediaObjects->removeElement($mediaObject)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaObject->getOwner() === $this) {
+                $mediaObject->setOwner(null);
+            }
+        }
 
         return $this;
     }
