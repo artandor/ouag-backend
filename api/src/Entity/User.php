@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         'path' => '/users/me',
         'security' => "is_granted('ROLE_USER')",
         'controller' => GetCurrentUserController::class,
-        'filter' => false,
         'pagination_enabled' => false,
         'openapi_context' => [
             'summary' => 'Obtain data of the currently logged in user.',
@@ -38,19 +37,19 @@ use Symfony\Component\Validator\Constraints as Assert;
                     'content' => [
                         'application/json' => [
                             'schema' => [
-                                '$ref' => '#/components/schemas/User-user_user_read',
+                                '$ref' => '#/components/schemas/User-user_read',
                             ],
                         ],
                         'application/json+ld' => [
                             'schema' => [
-                                '$ref' => '#/components/schemas/User.jsonld-user_user_read',
+                                '$ref' => '#/components/schemas/User.jsonld-user_read',
                             ],
                         ],
                     ]
                 ]
             ]
         ]
-    ]
+    ],
 ],
     itemOperations: [
     'get' => ['security' => "is_granted('ROLE_ADMIN')"],
@@ -62,9 +61,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface
 {
-    #[Groups(['user_write'])]
-    #[Assert\Length(min: 6, max: 255)]
-    protected ?string $plainPassword;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -72,16 +68,23 @@ class User implements UserInterface
      */
     #[Groups(['user_read'])]
     private ?int $id;
+
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     #[Groups(['user_read', 'user_write'])]
     #[Assert\Email]
     private ?string $email;
+
     /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
+
+    #[Groups(['user_write'])]
+    #[Assert\Length(min: 6, max: 255)]
+    protected ?string $plainPassword;
+
     /**
      * @ORM\Column(type="string")
      */
