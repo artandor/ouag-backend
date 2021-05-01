@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Library;
 use App\Entity\MediaObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ final class CreateMediaObjectAction
     {
     }
 
-    public function __invoke(Request $request): MediaObject
+    public function __invoke(Library $data, Request $request): MediaObject
     {
         if (!$this->security->getUser()) {
             throw new UnauthorizedHttpException('');
@@ -34,6 +35,7 @@ final class CreateMediaObjectAction
         $mediaObject = new MediaObject();
         $mediaObject->setTitle($request->request->get('title'));
         $mediaObject->setComment($request->request->get('comment'));
+        $mediaObject->setLibrary($data);
         $nsfw = $request->request->get('nsfw', 'false');
         if ($nsfw === "true") {
             $mediaObject->setNsfw(true);

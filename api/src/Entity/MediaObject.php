@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\CreateMediaObjectAction;
 use App\Repository\MediaObjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -18,30 +17,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ApiResource(
     collectionOperations: [
     'get',
-    'post' => [
-        'controller' => CreateMediaObjectAction::class,
-        'deserialize' => false,
-        'security' => "is_granted('ROLE_USER')",
-        'validation_groups' => ["Default", "media_object_create"],
-        'normalization_context' => ['groups' => ['media_object_read']],
-        'openapi_context' => [
-            'requestBody' => ['content' => [
-                'multipart/form-data' => [
-                    'schema' => [
-                        '$ref' => '#/components/schemas/MediaObject.jsonld-media_object_create',
-                    ]
-                ]
-            ]]
-        ]
-
-    ]
 ],
     iri: "http://schema.org/MediaObject",
     itemOperations: [
-    'get' => [
-        'security' => "is_granted('ROLE_USER') and object.owner == user",
-    ],
-    'put' => ['denormalizationContext' => ['groups' => ['media_object_update']]]
+    'get' => ['security' => "is_granted('ROLE_USER') and object.owner == user"],
+    'put' => ['denormalizationContext' => ['groups' => ['media_object_update']],
+        'security' => "is_granted('ROLE_USER') and object.owner == user"],
+    'delete' => ['security' => "is_granted('ROLE_USER') and object.owner == user"],
 ],
     denormalizationContext: ['groups' => ['media_object_create']],
     normalizationContext: ['groups' => ['media_object_read']],
@@ -99,7 +81,26 @@ class MediaObject
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="mediaObjects")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['media_object_read'])]
     private User $owner;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $createdAt;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="mediaObjects")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Library $library;
 
     public function getId(): ?int
     {
@@ -181,5 +182,46 @@ class MediaObject
     public function getOwner(): ?User
     {
         return $this->owner;
+    }
+
+    public function setOwner(User $owner): void
+    {
+        $this->owner = $owner;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getLibrary(): ?Library
+    {
+        return $this->library;
+    }
+
+    public function setLibrary(?Library $library): self
+    {
+        $this->library = $library;
+
+        return $this;
     }
 }

@@ -48,3 +48,8 @@ services:
                 credentials:
                     key: '%env(AWS_S3_KEY)%'
                     secret: '%env(AWS_S3_SECRET_KEY)%'
+
+    App\Doctrine\OwnerUserExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+            - { name: api_platform.doctrine.orm.query_extension.item }

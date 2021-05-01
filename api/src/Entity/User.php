@@ -125,7 +125,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="owner", orphanRemoval=true)
      */
-    private $mediaObjects;
+    private Collection $mediaObjects;
 
     /**
      * User constructor.

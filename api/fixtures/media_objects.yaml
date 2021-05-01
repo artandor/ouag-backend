@@ -1,0 +1,25 @@
+App\Entity\MediaObject:
+    media_objects_{1..100}:
+        title: <word()>
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <imageUrl()>
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_<numberBetween(1, 50)>'
+        owner: '@user_1'
+    media_objects_{101..200}:
+        title: <word()>
+        nsfw: <boolean()>
+        content: <sentence()>
+        type: text/plain
+        library: '@libraries_<numberBetween(1, 50)>'
+        owner: '@user_2'
+    media_objects_{201..250}:
+        title: <word()>
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <sentence()>
+        type: text/plain
+        library: '@libraries_51'
+        owner: '@user_1'

@@ -13,28 +13,28 @@ class MediaObjectsTest extends CustomApiTestCase
     {
         $client = self::createClientWithCredentials();
 
-        $response = $client->request('GET', '/animations');
+        $response = $client->request('GET', '/media_objects');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
-            '@context' => '/contexts/Animation',
-            '@id' => '/animations',
+            '@context' => '/contexts/MediaObject',
+            '@id' => '/media_objects',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 100,
+            'hydra:totalItems' => 150,
             'hydra:view' => [
-                '@id' => '/animations?page=1',
+                '@id' => '/media_objects?page=1',
                 '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/animations?page=1',
-                'hydra:next' => '/animations?page=2',
-                'hydra:last' => '/animations?page=4',
+                'hydra:first' => '/media_objects?page=1',
+                'hydra:next' => '/media_objects?page=2',
+                'hydra:last' => '/media_objects?page=5',
             ],
         ]);
         $this->assertCount(30, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(MediaObject::class);
 
         $item = $response->toArray()['hydra:member'][0];
-        $this->assertNotNull($item['name']);
+        $this->assertNotNull($item['title']);
     }
 
 }
