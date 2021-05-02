@@ -87,7 +87,7 @@ class Library
 
     /**
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="libraries")
      * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['library_read'])]
@@ -136,7 +136,6 @@ class Library
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 

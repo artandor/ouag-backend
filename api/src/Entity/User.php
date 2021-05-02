@@ -128,12 +128,18 @@ class User implements UserInterface
     private Collection $mediaObjects;
 
     /**
+     * @ORM\OneToMany(targetEntity=Library::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private Collection $libraries;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->setActive(true);
         $this->mediaObjects = new ArrayCollection();
+        $this->libraries = new ArrayCollection();
     }
 
 
@@ -315,6 +321,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($mediaObject->getOwner() === $this) {
                 $mediaObject->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Library[]
+     */
+    public function getLibraries(): Collection
+    {
+        return $this->libraries;
+    }
+
+    public function addLibrary(Library $library): self
+    {
+        if (!$this->libraries->contains($library)) {
+            $this->libraries[] = $library;
+            $library->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibrary(Library $library): self
+    {
+        if ($this->libraries->removeElement($library)) {
+            // set the owning side to null (unless already changed)
+            if ($library->getOwner() === $this) {
+                $library->setOwner(null);
             }
         }
 

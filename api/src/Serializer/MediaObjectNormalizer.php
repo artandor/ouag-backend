@@ -23,7 +23,7 @@ final class MediaObjectNormalizer implements ContextAwareNormalizerInterface, No
     {
         $context[self::ALREADY_CALLED] = true;
 
-        if ($object->getSize() != null) {
+        if (null != $object->getSize()) {
             $object->setContent($this->storage->resolveUri($object));
         }
 

@@ -4,11 +4,12 @@ namespace App\Tests;
 
 use App\Entity\Library;
 use App\Entity\User;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 class LibraryTest extends CustomApiTestCase
 {
-    use ReloadDatabaseTrait;
+    use RefreshDatabaseTrait;
 
     public function testGetAllLibrariesAsUser1(): void
     {
@@ -22,16 +23,9 @@ class LibraryTest extends CustomApiTestCase
             '@context' => '/contexts/Library',
             '@id' => '/libraries',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 52,
-            'hydra:view' => [
-                '@id' => '/libraries?page=1',
-                '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/libraries?page=1',
-                'hydra:next' => '/libraries?page=2',
-                'hydra:last' => '/libraries?page=2',
-            ],
+            'hydra:totalItems' => 12,
         ]);
-        $this->assertCount(30, $response->toArray()['hydra:member']);
+        $this->assertCount(12, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Library::class);
 
         $item = $response->toArray()['hydra:member'][0];
@@ -53,9 +47,9 @@ class LibraryTest extends CustomApiTestCase
             '@context' => '/contexts/Library',
             '@id' => '/libraries',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 2,
+            'hydra:totalItems' => 3,
         ]);
-        $this->assertCount(2, $response->toArray()['hydra:member']);
+        $this->assertCount(3, $response->toArray()['hydra:member']);
         $this->assertMatchesResourceCollectionJsonSchema(Library::class);
 
         $item = $response->toArray()['hydra:member'][0];
@@ -85,7 +79,7 @@ class LibraryTest extends CustomApiTestCase
         $client = self::createClientWithCredentials();
         $iri = $this->findIriBy(Library::class, ['name' => 'First Lib']);
 
-        $response = $client->request('PUT', $iri, [
+        $client->request('PUT', $iri, [
             'json' => [
                 'name' => 'My super library is updated'
             ]
@@ -124,6 +118,11 @@ class LibraryTest extends CustomApiTestCase
             static::$container->get('doctrine')->getRepository(Library::class)
                 ->findOneBy(['name' => 'First Lib'])
         );
+
+        // Assert that deleting a library produce a message for each media deleted by cascade.
+        /** @var InMemoryTransport $transport */
+        $transport = self::$container->get('messenger.transport.async');
+        $this->assertCount(6, $transport->get());
     }
 
     public function testDeleteLibraryIDontOwn(): void
@@ -142,14 +141,14 @@ class LibraryTest extends CustomApiTestCase
 
         $user1iri = $this->findIriBy(User::class, ['email' => 'user@example.com']);
 
-        $iri = $this->findIriBy(Library::class, ['name' => 'sharedLib']);
+        $iri = $this->findIriBy(Library::class, ['name' => 'Lib of user 2 shared with 1']);
         $client->request('GET', $iri);
         $this->assertResponseIsSuccessful();
         $this->assertMatchesResourceItemJsonSchema(Library::class);
         $this->assertJsonContains([
-            'name' => 'sharedLib',
+            'name' => 'Lib of user 2 shared with 1',
             'sharedWith' => [
-                $user1iri
+                $user1iri,
             ],
         ]);
     }

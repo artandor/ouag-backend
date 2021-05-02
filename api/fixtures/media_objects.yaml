@@ -1,25 +1,77 @@
 App\Entity\MediaObject:
-    media_objects_{1..100}:
-        title: <word()>
+    media_objects_owned:
+        title: owned media
         nsfw: <boolean()>
         comment: <sentence()>
-        content: <imageUrl()>
+        content: <randomNumber(9)>.png
         type: <mimeType()>
         size: <numberBetween(1000, 1000000)>
-        library: '@libraries_<numberBetween(1, 50)>'
+        library: '@libraries_1'
         owner: '@user_1'
-    media_objects_{101..200}:
+    media_objects_not_owned:
+        title: not owned media
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <randomNumber(9)>.png
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_13'
+        owner: '@user_2'
+    media_objects_shared:
+        title: sharedMedia
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <randomNumber(9)>.png
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_12'
+        owner: '@user_2'
+    media_objects_{0..5}:
+        title: <word()>
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <randomNumber(9)>.png
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_1'
+        owner: '@user_1'
+    media_objects_{6..10}:
         title: <word()>
         nsfw: <boolean()>
         content: <sentence()>
         type: text/plain
-        library: '@libraries_<numberBetween(1, 50)>'
+        library: '@libraries_1'
+        owner: '@user_1'
+    media_objects_{10..50}:
+        title: <word()>
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <randomNumber(8)>.png
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_<numberBetween(2, 11)>'
+        owner: '@user_1'
+    media_objects_{51..100}:
+        title: <word()>
+        nsfw: <boolean()>
+        content: <sentence()>
+        type: text/plain
+        library: '@libraries_<numberBetween(2, 11)>'
         owner: '@user_2'
-    media_objects_{201..250}:
+    media_objects_{101..150}:
         title: <word()>
         nsfw: <boolean()>
         comment: <sentence()>
         content: <sentence()>
         type: text/plain
-        library: '@libraries_51'
+        library: '@libraries_12'
         owner: '@user_1'
+    media_objects_{151..200}:
+        title: <word()>
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <randomNumber(9)>.png
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_13'
+        owner: '@user_2'

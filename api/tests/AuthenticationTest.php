@@ -4,11 +4,11 @@ namespace App\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 
 class AuthenticationTest extends ApiTestCase
 {
-    use ReloadDatabaseTrait;
+    use RecreateDatabaseTrait;
 
     public function testLogin(): void
     {

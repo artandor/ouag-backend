@@ -3,11 +3,12 @@
 namespace App\Tests;
 
 use App\Entity\MediaObject;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 class MediaObjectsTest extends CustomApiTestCase
 {
-    use ReloadDatabaseTrait;
+    use RefreshDatabaseTrait;
 
     public function testGetAllMediaObjects(): void
     {
@@ -21,13 +22,13 @@ class MediaObjectsTest extends CustomApiTestCase
             '@context' => '/contexts/MediaObject',
             '@id' => '/media_objects',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 150,
+            'hydra:totalItems' => 101,
             'hydra:view' => [
                 '@id' => '/media_objects?page=1',
                 '@type' => 'hydra:PartialCollectionView',
                 'hydra:first' => '/media_objects?page=1',
                 'hydra:next' => '/media_objects?page=2',
-                'hydra:last' => '/media_objects?page=5',
+                'hydra:last' => '/media_objects?page=4',
             ],
         ]);
         $this->assertCount(30, $response->toArray()['hydra:member']);
@@ -35,6 +36,48 @@ class MediaObjectsTest extends CustomApiTestCase
 
         $item = $response->toArray()['hydra:member'][0];
         $this->assertNotNull($item['title']);
+    }
+
+    public function testGetMediaObjectIOwn(): void
+    {
+        $client = self::createClientWithCredentials();
+        $iri = $this->findIriBy(MediaObject::class, ['title' => 'owned media']);
+        $client->request('GET', $iri);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceItemJsonSchema(MediaObject::class);
+        $this->assertJsonContains([
+            'title' => 'owned media',
+        ]);
+    }
+
+    public function testGetMediaObjectIDontOwn(): void
+    {
+        $client = self::createClientWithCredentials();
+        $iri = $this->findIriBy(MediaObject::class, ['title' => 'not owned media']);
+        $client->request('GET', $iri);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testGetMediaObjectShared(): void
+    {
+        $client = self::createClientWithCredentials();
+        $iri = $this->findIriBy(MediaObject::class, ['title' => 'sharedMedia']);
+        $client->request('GET', $iri);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceItemJsonSchema(MediaObject::class);
+        $this->assertJsonContains([
+            'title' => 'sharedMedia',
+        ]);
+    }
+
+    public function testDeleteMediaObject(): void
+    {
+        /** @var InMemoryTransport $transport */
+        /*$transport = self::$container->get('messenger.transport.async');
+        $this->assertCount(1, $transport->get());*/
     }
 
 }
