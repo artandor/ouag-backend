@@ -3,14 +3,13 @@
 namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Library;
 use App\Entity\MediaObject;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
-final class OwnerUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class OwnerUserExtension implements QueryCollectionExtensionInterface
 {
     public function __construct(private Security $security)
     {
@@ -33,10 +32,5 @@ final class OwnerUserExtension implements QueryCollectionExtensionInterface, Que
         if (Library::class === $resourceClass) {
             $queryBuilder->orWhere(sprintf(':current_user MEMBER OF %s.sharedWith', $rootAlias));
         }
-    }
-
-    public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, string $operationName = null, array $context = []): void
-    {
-        $this->addWhere($queryBuilder, $resourceClass);
     }
 }

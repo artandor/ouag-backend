@@ -20,10 +20,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 ],
     iri: "http://schema.org/MediaObject",
     itemOperations: [
-    'get' => ['security' => "is_granted('ROLE_USER') and object.owner == user"],
+    'get' => ['security' => "is_granted('ROLE_USER') and (object.getOwner() == user
+    or object.getLibrary().getSharedWith().contains(user))"],
     'put' => ['denormalizationContext' => ['groups' => ['media_object_update']],
-        'security' => "is_granted('ROLE_USER') and object.owner == user"],
-    'delete' => ['security' => "is_granted('ROLE_USER') and object.owner == user"],
+        'security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
+    'delete' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
 ],
     denormalizationContext: ['groups' => ['media_object_create']],
     normalizationContext: ['groups' => ['media_object_read']],
@@ -32,44 +33,51 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class MediaObject
 {
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private int $id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
+    private ?string $title;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
+    private bool $nsfw;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
+    private ?string $comment;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(['media_object_read'])]
+    private string $type;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(['media_object_read', 'media_object_create'])]
+    #[ApiProperty(openapiContext: ['description' => 'Use this property to add a string (link, text, ...) as a media'])]
+    private ?string $content;
+
+    /**
      * @Vich\UploadableField(mapping="media_object", fileNameProperty="content")
      */
     #[ApiProperty(openapiContext: ['description' => 'Use this property to add a file (gif, video, photo) as a media',
         'type' => 'string', 'format' => 'binary'])]
     #[Groups(['media_object_create'])]
     public $file;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
-    private ?string $title;
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
-    private bool $nsfw;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
-    private ?string $comment;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    #[Groups(['media_object_read'])]
-    private string $type;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    #[Groups(['media_object_read', 'media_object_create'])]
-    #[ApiProperty(openapiContext: ['description' => 'Use this property to add a string (link, text, ...) as a media'])]
-    private string $content;
+
     /**
      * @ORM\Column(type="bigint", nullable=true)
      */
@@ -100,6 +108,7 @@ class MediaObject
      * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="mediaObjects")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['media_object_read'])]
     private Library $library;
 
     public function getId(): ?int

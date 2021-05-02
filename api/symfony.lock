@@ -337,6 +337,9 @@
             "config/packages/stof_doctrine_extensions.yaml"
         ]
     },
+    "symfony/amqp-messenger": {
+        "version": "v5.2.7"
+    },
     "symfony/asset": {
         "version": "v5.2.4"
     },
@@ -388,6 +391,9 @@
     "symfony/doctrine-bridge": {
         "version": "v5.2.6"
     },
+    "symfony/doctrine-messenger": {
+        "version": "v5.2.7"
+    },
     "symfony/dom-crawler": {
         "version": "v5.2.4"
     },
@@ -425,7 +431,7 @@
         ]
     },
     "symfony/form": {
-        "version": "v5.2.6"
+        "version": "v5.2.7"
     },
     "symfony/framework-bundle": {
         "version": "5.2",
@@ -460,7 +466,7 @@
         "version": "v5.2.6"
     },
     "symfony/intl": {
-        "version": "v5.2.4"
+        "version": "v5.2.7"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
@@ -486,8 +492,20 @@
             "config/packages/mercure.yaml"
         ]
     },
+    "symfony/messenger": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "e9a414b113ceadbf4e52abe37bf8f1b443f06ccb"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
+    },
     "symfony/mime": {
-        "version": "v5.2.6"
+        "version": "v5.2.7"
     },
     "symfony/monolog-bridge": {
         "version": "v5.2.5"
@@ -554,6 +572,9 @@
     },
     "symfony/property-info": {
         "version": "v5.2.4"
+    },
+    "symfony/redis-messenger": {
+        "version": "v5.2.7"
     },
     "symfony/routing": {
         "version": "5.1",

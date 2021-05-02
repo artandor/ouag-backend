@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\CreateMediaObjectAction;
+use App\Dto\MediaObjectInput;
 use App\Repository\LibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,9 +22,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'post',
 ],
     itemOperations: [
-    'get',
-    'put' => ['security' => "is_granted('ROLE_USER') and object.owner == user"],
-    'delete' => ['security' => "is_granted('ROLE_USER') and object.owner == user"],
+    'get' => ['security' => "is_granted('ROLE_USER') and (object.getOwner() == user
+        or object.getSharedWith().contains(user))"],
+    'put' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
+    'delete' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
     'postMedia' => [
         'method' => 'POST',
         'controller' => CreateMediaObjectAction::class,
@@ -88,7 +90,7 @@ class Library
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['library_read_detail'])]
+    #[Groups(['library_read'])]
     private User $owner;
 
     /**

@@ -294,9 +294,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|MediaObject[]
-     */
     public function getMediaObjects(): Collection
     {
         return $this->mediaObjects;
