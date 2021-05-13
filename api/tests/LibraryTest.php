@@ -74,6 +74,19 @@ class LibraryTest extends CustomApiTestCase
         $this->assertMatchesResourceItemJsonSchema(Library::class);
     }
 
+    public function testCreateLibraryThatAlreadyExists(): void
+    {
+        $client = self::createClientWithCredentials();
+
+        $client->request('POST', '/libraries', [
+            'json' => [
+                'name' => 'First Lib'
+            ]
+        ]);
+
+        $this->assertResponseStatusCodeSame(422);
+    }
+
     public function testUpdateLibrary(): void
     {
         $client = self::createClientWithCredentials();

@@ -6,7 +6,7 @@ use App\Entity\MediaObject;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
-class MediaObjectsTest extends CustomApiTestCase
+class MediaObjectTest extends CustomApiTestCase
 {
     use RefreshDatabaseTrait;
 

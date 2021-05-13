@@ -1,11 +1,14 @@
 App\Entity\User:
     user_1:
+        displayName: awtandow
         email: user@example.com
         plainPassword: seCrEt
     user_2:
+        displayName: <userName()>
         email: second.user@example.com
         plainPassword: Second.!seCrEt
     user_3:
+        displayName: <userName()>
         email: admin@example.com
         plainPassword: seCrEt
         roles: [ 'ROLE_ADMIN' ]

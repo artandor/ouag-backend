@@ -34,8 +34,7 @@ services:
         decorates: 'api_platform.openapi.factory'
         autoconfigure: false
 
-    App\Listener\HashPasswordListener:
-        class: App\Listener\HashPasswordListener
+    App\EventSubscriber\HashPasswordSubscriber:
         tags:
             - { name: doctrine.event_subscriber }
 

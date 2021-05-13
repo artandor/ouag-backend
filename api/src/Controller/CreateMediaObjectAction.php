@@ -21,7 +21,7 @@ final class CreateMediaObjectAction
     public function __invoke(Library $data, Request $request): MediaObject
     {
         if (!$this->security->getUser()) {
-            throw new UnauthorizedHttpException('');
+            throw new UnauthorizedHttpException('', 'You need to be logged in.');
         }
         /** @var UploadedFile $file */
         $file = $request->files->get('file');

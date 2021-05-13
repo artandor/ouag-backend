@@ -10,14 +10,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
-use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * Source : https://github.com/dustin10/VichUploaderBundle/blob/master/docs/events/howto/remove_files_asynchronously.md
  */
 class RemoveFileEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private MessageBusInterface $messageBus, private StorageInterface $storage)
+    public function __construct(private MessageBusInterface $messageBus)
     {
     }
 

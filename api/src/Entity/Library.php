@@ -5,17 +5,18 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\CreateMediaObjectAction;
-use App\Dto\MediaObjectInput;
 use App\Repository\LibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=LibraryRepository::class)
  */
+#[UniqueEntity(fields: ['owner', 'name'], message: 'This library already exists on your account.', errorPath: 'name',)]
 #[ApiResource(
     collectionOperations: [
     'get',
@@ -86,7 +87,7 @@ class Library
     private \DateTimeInterface $createdAt;
 
     /**
-     * @Gedmo\Blameable(on="create")
+     * Injected by Listener/LibraryInjectOwnerSubscriber.php
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="libraries")
      * @ORM\JoinColumn(nullable=false)
      */

@@ -11,6 +11,30 @@ class LibraryMediaTest extends CustomApiTestCase
 {
     use RefreshDatabaseTrait;
 
+    public function testCreateAMediaImageInALibraryIOwn(): void
+    {
+        $file = new UploadedFile('fixtures/files/image.png', 'image.png');
+        $client = self::createClientWithCredentials();
+
+        $iri = $this->findIriBy(Library::class, ['name' => 'First Lib']);
+        $client->request('POST', $iri . '/media_objects', [
+            'headers' => ['Content-Type' => 'multipart/form-data'],
+            'extra' => [
+                'parameters' => [
+                    'title' => 'Mon fichier uploaded'
+                ],
+                'files' => [
+                    'file' => $file
+                ]
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceItemJsonSchema(MediaObject::class);
+        $this->assertJsonContains([
+            'title' => 'Mon fichier uploaded',
+        ]);
+    }
+
     public function testGetAllMediasOfALibraryIOwn(): void
     {
         $client = self::createClientWithCredentials();
@@ -76,29 +100,7 @@ class LibraryMediaTest extends CustomApiTestCase
         $this->assertCount(0, $response->toArray()['hydra:member']);
     }
 
-    public function testCreateAMediaImageInALibraryIOwn(): void
-    {
-        $file = new UploadedFile('fixtures/files/image.png', 'image.png');
-        $client = self::createClientWithCredentials();
 
-        $iri = $this->findIriBy(Library::class, ['name' => 'First Lib']);
-        $client->request('POST', $iri . '/media_objects', [
-            'headers' => ['Content-Type' => 'multipart/form-data'],
-            'extra' => [
-                'parameters' => [
-                    'title' => 'Mon fichier uploaded'
-                ],
-                'files' => [
-                    'file' => $file
-                ]
-            ]
-        ]);
-        $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(MediaObject::class);
-        $this->assertJsonContains([
-            'title' => 'Mon fichier uploaded',
-        ]);
-    }
 
     public function testCreateAMediaInALibraryShared(): void
     {

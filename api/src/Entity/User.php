@@ -61,6 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['user_read']],
 )]
 #[UniqueEntity('email')]
+#[UniqueEntity('displayName')]
 class User implements UserInterface
 {
     /**
@@ -77,6 +78,13 @@ class User implements UserInterface
     #[Groups(['user_read', 'user_write'])]
     #[Assert\Email]
     private ?string $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(['user_read', 'user_write'])]
+    #[Assert\NotBlank]
+    private ?string $displayName;
 
     /**
      * @ORM\Column(type="json")
@@ -353,6 +361,18 @@ class User implements UserInterface
                 $library->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(string $displayName): self
+    {
+        $this->displayName = $displayName;
 
         return $this;
     }

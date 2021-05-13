@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Listener;
+namespace App\EventSubscriber;
 
 
 use App\Entity\User;
@@ -9,7 +9,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class HashPasswordListener implements EventSubscriber
+class HashPasswordSubscriber implements EventSubscriber
 {
 
     private UserPasswordEncoderInterface $passwordEncoder;
