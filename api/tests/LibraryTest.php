@@ -122,7 +122,7 @@ class LibraryTest extends CustomApiTestCase
         // Assert that deleting a library produce a message for each media deleted by cascade.
         /** @var InMemoryTransport $transport */
         $transport = self::$container->get('messenger.transport.async');
-        $this->assertCount(6, $transport->get());
+        $this->assertCount(7, $transport->get());
     }
 
     public function testDeleteLibraryIDontOwn(): void

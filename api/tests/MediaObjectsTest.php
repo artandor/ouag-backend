@@ -22,7 +22,7 @@ class MediaObjectsTest extends CustomApiTestCase
             '@context' => '/contexts/MediaObject',
             '@id' => '/media_objects',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 101,
+            'hydra:totalItems' => 102,
             'hydra:view' => [
                 '@id' => '/media_objects?page=1',
                 '@type' => 'hydra:PartialCollectionView',
@@ -75,9 +75,22 @@ class MediaObjectsTest extends CustomApiTestCase
 
     public function testDeleteMediaObject(): void
     {
+        $client = self::createClientWithCredentials();
+
+        $iri = $this->findIriBy(MediaObject::class, ['title' => 'owned media']);
+        $client->request('DELETE', $iri);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(204);
+        $this->assertNull(
+            static::$container->get('doctrine')->getRepository(MediaObject::class)
+                ->findOneBy(['title' => 'owned media'])
+        );
+
+        // Assert that deleting a library produce a message for each media deleted by cascade.
         /** @var InMemoryTransport $transport */
-        /*$transport = self::$container->get('messenger.transport.async');
-        $this->assertCount(1, $transport->get());*/
+        $transport = self::$container->get('messenger.transport.async');
+        $this->assertCount(1, $transport->get());
     }
 
 }
