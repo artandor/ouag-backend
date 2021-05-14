@@ -4,11 +4,8 @@ namespace App\Message;
 
 final class RemoveMediaObjectImageMessage
 {
-    private string $filename;
-
-    public function __construct(string $filename)
+    public function __construct(private string $filename)
     {
-        $this->filename = $filename;
     }
 
     public function getFilename(): string

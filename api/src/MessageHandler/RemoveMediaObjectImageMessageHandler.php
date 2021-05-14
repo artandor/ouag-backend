@@ -13,14 +13,13 @@ final class RemoveMediaObjectImageMessageHandler implements MessageHandlerInterf
     {
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function __invoke(RemoveMediaObjectImageMessage $message)
     {
         $filename = $message->getFilename();
 
-        try {
-            $this->mediaStorage->delete($filename);
-        } catch (FilesystemException $e) {
-            dump($e);
-        }
+        $this->mediaStorage->delete($filename);
     }
 }
