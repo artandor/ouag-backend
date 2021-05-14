@@ -1,10 +1,11 @@
 api_platform:
-    title: Hello API Platform
+    title: Once Upon A Gift API
     version: 1.0.0
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:
         json: ['application/merge-patch+json']
+    show_webby: false
     swagger:
         versions: [ 3 ]
         api_keys:

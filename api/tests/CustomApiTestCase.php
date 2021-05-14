@@ -30,10 +30,6 @@ abstract class CustomApiTestCase extends ApiTestCase
      */
     protected function getToken($body = []): string
     {
-        if (isset($this->token)) {
-            return $this->token;
-        }
-
         $response = static::createClient()->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => $body ?: [
@@ -44,7 +40,6 @@ abstract class CustomApiTestCase extends ApiTestCase
 
         $this->assertResponseIsSuccessful();
         $data = json_decode($response->getContent());
-        $this->token = $data->token;
 
         return $data->token;
     }

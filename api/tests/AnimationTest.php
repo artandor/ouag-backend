@@ -3,11 +3,11 @@
 namespace App\Tests;
 
 use App\Entity\Animation;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class AnimationTest extends CustomApiTestCase
 {
-    use ReloadDatabaseTrait;
+    use RefreshDatabaseTrait;
 
     public function testGetAllAnimations(): void
     {

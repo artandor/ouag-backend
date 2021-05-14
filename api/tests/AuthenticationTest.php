@@ -3,12 +3,13 @@
 namespace App\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\Library;
 use App\Entity\User;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 
 class AuthenticationTest extends ApiTestCase
 {
-    use ReloadDatabaseTrait;
+    use RecreateDatabaseTrait;
 
     public function testLogin(): void
     {
@@ -33,7 +34,8 @@ class AuthenticationTest extends ApiTestCase
         $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'user@example.com'
+            'email' => 'user@example.com',
+            'displayName' => 'awtandow',
         ]);
     }
 
@@ -90,18 +92,23 @@ class AuthenticationTest extends ApiTestCase
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'email' => 'myuser@example.com',
+                'displayName' => 'michel',
                 'plainPassword' => '$3CR3T',
             ],
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'myuser@example.com'
+            'email' => 'myuser@example.com',
+            'displayName' => 'michel',
         ]);
+        $this->assertNotNull(static::$container->get('doctrine')->getRepository(Library::class)
+            ->findOneBy(['name' => 'michel']));
 
         $client->request('POST', '/users', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'email' => 'myuser@example.com',
+                'displayName' => 'michel2',
                 'plainPassword' => '$3CR3T',
             ],
         ]);
@@ -112,6 +119,20 @@ class AuthenticationTest extends ApiTestCase
         ]);
     }
 
+    public function testCreateUserWithUsernameAlreadyTaken(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myuser2@example.com',
+                'displayName' => 'awtandow',
+                'plainPassword' => '$3CR3T',
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame(422);
+    }
+
     public function testCreateUserInvalidEmail(): void
     {
         $client = self::createClient();
@@ -119,6 +140,7 @@ class AuthenticationTest extends ApiTestCase
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'email' => 'invalidemail',
+                'displayName' => '123soleim',
                 'plainPassword' => '$3CR3T',
             ],
         ]);
@@ -133,22 +155,22 @@ class AuthenticationTest extends ApiTestCase
     {
         $client = self::createClient();
 
-        $user = $this->createUser('test@example.com', '$3CR3T');
+        $iri = $this->findIriBy(User::class, ['email' => 'second.user@example.com']);
 
-        $client->request('DELETE', '/users/' . $user->getId());
+        $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(405);
 
         // retrieve a token
         $response = $client->request('POST', '/authentication_token', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
-                'email' => 'test@example.com',
-                'password' => '$3CR3T',
+                'email' => 'admin@example.com',
+                'password' => 'seCrEt',
             ],
         ]);
 
         $token = $response->toArray()['token'];
-        $client->request('DELETE', '/users/' . $user->getId(), ['auth_bearer' => $token]);
+        $client->request('DELETE', $iri, ['auth_bearer' => $token]);
         $this->assertResponseStatusCodeSame(405);
 
     }
@@ -196,10 +218,13 @@ class AuthenticationTest extends ApiTestCase
         $user1 = new User();
         $user1->setEmail('user1@example.com');
         $user1->setPlainPassword('$3CR3T');
+        $user1->setDisplayName('Marcel1');
 
         $user2 = new User();
         $user2->setEmail('user2@example.com');
         $user2->setPlainPassword('$3CR3T');
+        $user2->setDisplayName('Marcel2');
+
 
         $manager = self::$container->get('doctrine')->getManager();
         $manager->persist($user1);
@@ -236,7 +261,8 @@ class AuthenticationTest extends ApiTestCase
         $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'user@example.com'
+            'email' => 'user@example.com',
+            'displayName' => 'awtandow',
         ]);
 
         $user2 = self::createUser('testUser2@example.com', '$3CR3T2');
@@ -297,6 +323,7 @@ class AuthenticationTest extends ApiTestCase
         $user->setEmail($username);
         $user->setPlainPassword($password);
         $user->setRoles($roles);
+        $user->setDisplayName($username);
 
         $manager = static::$container->get('doctrine')->getManager();
         $manager->persist($user);

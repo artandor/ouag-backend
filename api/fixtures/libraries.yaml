@@ -1,0 +1,18 @@
+App\Entity\Library:
+    libraries_1:
+        name: 'First Lib'
+        owner: '@user_1'
+    libraries_{2..10}:
+        name: <word()>
+        owner: '@user_1'
+    libraries_11:
+        name: sharedLib
+        owner: '@user_1'
+        sharedWith: [ '@user_2', '@user_3' ]
+    libraries_12:
+        name: 'Lib of user 2 shared with 1'
+        owner: '@user_2'
+        sharedWith: [ '@user_1' ]
+    libraries_13:
+        name: 'Lib of user 2'
+        owner: '@user_2'

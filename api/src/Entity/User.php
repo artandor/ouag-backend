@@ -7,6 +7,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\GetCurrentUserController;
 use App\Repository\UserRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -59,6 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['user_read']],
 )]
 #[UniqueEntity('email')]
+#[UniqueEntity('displayName')]
 class User implements UserInterface
 {
     /**
@@ -75,6 +78,13 @@ class User implements UserInterface
     #[Groups(['user_read', 'user_write'])]
     #[Assert\Email]
     private ?string $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(['user_read', 'user_write'])]
+    #[Assert\NotBlank]
+    private ?string $displayName;
 
     /**
      * @ORM\Column(type="json")
@@ -121,11 +131,23 @@ class User implements UserInterface
     private ?bool $active;
 
     /**
+     * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private Collection $mediaObjects;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Library::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private Collection $libraries;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->setActive(true);
+        $this->mediaObjects = new ArrayCollection();
+        $this->libraries = new ArrayCollection();
     }
 
 
@@ -282,6 +304,75 @@ class User implements UserInterface
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getMediaObjects(): Collection
+    {
+        return $this->mediaObjects;
+    }
+
+    public function addMediaObject(MediaObject $mediaObject): self
+    {
+        if (!$this->mediaObjects->contains($mediaObject)) {
+            $this->mediaObjects[] = $mediaObject;
+            $mediaObject->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaObject(MediaObject $mediaObject): self
+    {
+        if ($this->mediaObjects->removeElement($mediaObject)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaObject->getOwner() === $this) {
+                $mediaObject->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Library[]
+     */
+    public function getLibraries(): Collection
+    {
+        return $this->libraries;
+    }
+
+    public function addLibrary(Library $library): self
+    {
+        if (!$this->libraries->contains($library)) {
+            $this->libraries[] = $library;
+            $library->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibrary(Library $library): self
+    {
+        if ($this->libraries->removeElement($library)) {
+            // set the owning side to null (unless already changed)
+            if ($library->getOwner() === $this) {
+                $library->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(string $displayName): self
+    {
+        $this->displayName = $displayName;
 
         return $this;
     }

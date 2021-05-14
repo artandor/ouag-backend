@@ -1,0 +1,15 @@
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+
+    mappings:
+        media_object:
+            uri_prefix: "%env(AWS_S3_BASE_URL)%/%env(AWS_S3_BUCKET_NAME)%/media"
+            upload_destination: 'media.storage'
+            # Will rename uploaded files using a uniqueid as a prefix.
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+            directory_namer:
+                service: vich_uploader.namer_directory_property
+                options: { property: 'library.id', transliterate: true }
+            delete_on_remove: true
+            
