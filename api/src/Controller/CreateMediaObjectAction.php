@@ -36,12 +36,7 @@ final class CreateMediaObjectAction
         $mediaObject->setTitle($request->request->get('title'));
         $mediaObject->setComment($request->request->get('comment'));
         $mediaObject->setLibrary($data);
-        $nsfw = $request->request->get('nsfw', 'false');
-        if ($nsfw === "true") {
-            $mediaObject->setNsfw(true);
-        } else {
-            $mediaObject->setNsfw(false);
-        }
+        $mediaObject->setNsfw($request->request->get('nsfw', 'false') === 'true');
 
         if ($file) {
             $mediaObject->file = $file;
