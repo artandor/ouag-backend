@@ -4,6 +4,7 @@ namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use App\Entity\Gift;
 use App\Entity\Library;
 use App\Entity\MediaObject;
 use Doctrine\ORM\QueryBuilder;
@@ -22,7 +23,11 @@ final class OwnerUserExtension implements QueryCollectionExtensionInterface
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if ((Library::class !== $resourceClass && MediaObject::class !== $resourceClass) || $this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
+        if ((
+                Library::class !== $resourceClass &&
+                MediaObject::class !== $resourceClass &&
+                Gift::class !== $resourceClass)
+            || $this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
             return;
         }
 
@@ -31,6 +36,9 @@ final class OwnerUserExtension implements QueryCollectionExtensionInterface
         $queryBuilder->setParameter('current_user', $user->getId());
         if (Library::class === $resourceClass) {
             $queryBuilder->orWhere(sprintf(':current_user MEMBER OF %s.sharedWith', $rootAlias));
+        }
+        if (Gift::class === $resourceClass) {
+            $queryBuilder->orWhere(sprintf(':current_user MEMBER OF %s.receivers', $rootAlias));
         }
     }
 }

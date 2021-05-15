@@ -63,7 +63,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ],
     denormalizationContext: ['groups' => ['library_write']],
     normalizationContext: ['groups' => ['library_read']],
-    security: "is_granted('ROLE_USER')"
+    security: "is_granted('ROLE_USER')",
 )]
 class Library
 {

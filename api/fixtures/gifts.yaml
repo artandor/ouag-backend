@@ -1,0 +1,20 @@
+App\Entity\Gift:
+    gifts_owned_{1..10}:
+        name: <sentence(3)>
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 365)>
+        owner: '@user_1'
+    gifts_not_owned_{1..10}:
+        name: <sentence(3)>
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 365)>
+        owner: '@user_2'
+    gifts_sent_to_me_{1..10}:
+        name: <sentence(3)>
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 365)>
+        owner: '@user_2'
+        receivers: [ '@user_1' ]

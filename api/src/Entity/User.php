@@ -14,7 +14,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -76,14 +78,14 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      */
     #[Groups(['user_read', 'user_write'])]
-    #[Assert\Email]
+    #[Email]
     private ?string $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(['user_read', 'user_write'])]
-    #[Assert\NotBlank]
+    #[NotBlank]
     private ?string $displayName;
 
     /**
@@ -92,7 +94,7 @@ class User implements UserInterface
     private array $roles = [];
 
     #[Groups(['user_write'])]
-    #[Assert\Length(min: 6, max: 255)]
+    #[Length(min: 6, max: 255)]
     protected ?string $plainPassword;
 
     /**
@@ -140,9 +142,6 @@ class User implements UserInterface
      */
     private Collection $libraries;
 
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
         $this->setActive(true);
@@ -335,9 +334,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Library[]
-     */
     public function getLibraries(): Collection
     {
         return $this->libraries;
