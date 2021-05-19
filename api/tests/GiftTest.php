@@ -3,6 +3,9 @@
 namespace App\Tests;
 
 use App\Entity\Gift;
+use App\Entity\MediaObject;
+use App\Entity\Planning;
+use App\Entity\User;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class GiftTest extends CustomApiTestCase
@@ -52,28 +55,135 @@ class GiftTest extends CustomApiTestCase
             '@context' => '/contexts/Gift',
             '@id' => '/gifts',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 20,
+            'hydra:totalItems' => 26,
         ]);
     }
 
     public function testGetAllGiftsICreated(): void
     {
+        $client = self::createClientWithCredentials();
+        $user = static::$container->get('doctrine')->getRepository(User::class)
+            ->findOneBy(['email' => 'user@example.com']);
 
+        $client->request('GET', '/gifts', [
+            'extra' => [
+                'parameters' => [
+                    'owner' => $user->getId(),
+                ]
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceCollectionJsonSchema(Gift::class);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertJsonContains([
+            '@context' => '/contexts/Gift',
+            '@id' => '/gifts',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 11,
+        ]);
     }
 
     public function testGetAllGiftsOfferedToMe(): void
     {
+        $client = self::createClientWithCredentials();
+        $user = static::$container->get('doctrine')->getRepository(User::class)
+            ->findOneBy(['email' => 'user@example.com']);
 
+        $client->request('GET', '/gifts', [
+            'extra' => [
+                'parameters' => [
+                    'receivers' => $user->getId(),
+                ]
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceCollectionJsonSchema(Gift::class);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertJsonContains([
+            '@context' => '/contexts/Gift',
+            '@id' => '/gifts',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 15,
+        ]);
     }
 
     public function testThatICannotSeeAGiftInDraftIfImReceiver(): void
     {
+    }
+
+    public function testUpdatePlanningWithMedia(): void
+    {
+        $client = self::createClientWithCredentials();
+
+        $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+
+        $plannings = $client->request('GET', $giftIri . '/plannings');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceCollectionJsonSchema(Planning::class);
+
+        $json = $plannings->toArray();
+
+        $client->request('PUT', $json['hydra:member'][0]['@id'], [
+            'json' => [
+                'mediaConfig' => [
+                    'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+                ]
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceItemJsonSchema(Planning::class);
 
     }
 
-    public function testUpdateIncreaseGiftMediaAmount(): void
+    /**
+     * @depends testUpdatePlanningWithMedia
+     */
+    public function testUpdateIncreaseGiftMediaAmountWithoutRemovingPreviousPlannings(): void
     {
-        // Assert that increasing the media amount add plannings without removing previously made plannings
+        $client = self::createClientWithCredentials();
+
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Super gift']);
+
+        $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+
+        $plannings = $client->request('GET', $giftIri . '/plannings');
+
+        $this->assertResponseIsSuccessful();
+        $json = $plannings->toArray();
+
+        $planningIri = $json['hydra:member'][0]['@id'];
+
+        $client->request('PUT', $planningIri, [
+            'json' => [
+                'mediaConfig' => [
+                    'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+                ]
+            ]
+        ]);
+
+        $client->request('PUT', $giftIri, [
+            'json' => [
+                'mediaAmount' => 35,
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+
+        // Asserts that plannings were generated on Gift update
+        $this->assertEquals(35, $gift->getPlannings()->count());
+
+        //Assert that previously updated plannings are not reset
+        $client->request('GET', $planningIri);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+        ]);
     }
 
     public function testUpdateDecreaseGiftMediaAmount(): void
@@ -84,11 +194,37 @@ class GiftTest extends CustomApiTestCase
     public function testDeleteGift(): void
     {
         // Should delete gifts and all linked plannings and PlanningMedia
+        $client = self::createClientWithCredentials();
+
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+        $client->request('DELETE', $iri);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(204);
+        $this->assertNull(
+            static::$container->get('doctrine')->getRepository(Gift::class)
+                ->findOneBy(['name' => 'Super gift'])
+        );
     }
 
     public function testGiftPermissions(): void
     {
-        // Cannot see unowned gift in collections
-        // Cannot PUT, DELETE unowned gift
+        $client = self::createClientWithCredentials();
+
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift not owned']);
+
+        $client->request('GET', $iri);
+        $this->assertResponseStatusCodeSame(403);
+
+        $client->request('PUT', $iri, [
+            'json' => [
+                'name' => 'I am almighty and update smthing i don\'t own'
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(403);
+
+        $client->request('DELETE', $iri);
+        $this->assertResponseStatusCodeSame(403);
+
     }
 }

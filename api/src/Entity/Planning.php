@@ -23,10 +23,12 @@ use Symfony\Component\Validator\Constraints\NotNull;
  * )
  */
 #[ApiResource(
-    collectionOperations: [],
+    collectionOperations: [
+],
     itemOperations: [
-    'put' => ['security' => "is_granted('ROLE_USER') and object.getGift().getCreator() == user"],
-    'patch' => ['security' => "is_granted('ROLE_USER') and object.getGift().getCreator() == user"],
+    'get' => ['security' => "is_granted('ROLE_USER') and object.getGift().getOwner() == user"],
+    'put' => ['security' => "is_granted('ROLE_USER') and object.getGift().getOwner() == user"],
+    'patch' => ['security' => "is_granted('ROLE_USER') and object.getGift().getOwner() == user"],
 ],
     denormalizationContext: ['groups' => ['planning_write']],
     normalizationContext: ['groups' => ['planning_read']],
@@ -57,16 +59,28 @@ class Planning
     private ?\DateTimeInterface $plannedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     */
+    #[Groups(['planning_write', 'planning_read'])]
+    private ?MediaObject $media;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Animation::class)
+     */
+    #[Groups(['planning_write', 'planning_read'])]
+    private ?Animation $animation;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['planning_write', 'planning_read'])]
+    private ?string $comment;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Gift::class, inversedBy="plannings")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Gift $gift;
-
-    /**
-     * @ORM\OneToOne(targetEntity=PlanningMediaObject::class, mappedBy="planning", cascade={"persist", "remove"})
-     */
-    #[Groups(['planning_write', 'planning_read'])]
-    private ?PlanningMediaObject $mediaConfig;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -129,23 +143,6 @@ class Planning
         return $this;
     }
 
-    public function getMediaConfig(): ?PlanningMediaObject
-    {
-        return $this->mediaConfig;
-    }
-
-    public function setMediaConfig(PlanningMediaObject $mediaConfig): self
-    {
-        // set the owning side of the relation if necessary
-        if ($mediaConfig->getPlanning() !== $this) {
-            $mediaConfig->setPlanning($this);
-        }
-
-        $this->mediaConfig = $mediaConfig;
-
-        return $this;
-    }
-
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
@@ -166,6 +163,42 @@ class Planning
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getMedia(): ?MediaObject
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?MediaObject $media): self
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    public function getAnimation(): ?Animation
+    {
+        return $this->animation;
+    }
+
+    public function setAnimation(?Animation $animation): self
+    {
+        $this->animation = $animation;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

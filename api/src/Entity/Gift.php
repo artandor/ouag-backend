@@ -20,17 +20,23 @@ use Symfony\Component\Validator\Constraints\Positive;
  * @ORM\Entity(repositoryClass=GiftRepository::class)
  */
 #[ApiResource(
-    subresourceOperations: [
-    'api_gifts_plannings_get_subresource' => [
-        'security' => "is_granted('ROLE_USER') and object.getOwner() == user",
-    ],
+    collectionOperations: [
+    'get',
+    'post'
+],
+    itemOperations: [
+    'get',
+    'put' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
+    'delete' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
 ],
     denormalizationContext: ['groups' => ['gift_write']],
     normalizationContext: ['groups' => ['gift_read']],
     security: "is_granted('ROLE_USER')",
 )]
 #[ApiFilter(filterClass: SearchFilter::class, properties: [
-    // 'state'
+    'owner' => 'exact',
+    'receivers' => 'exact',
+    // 'state' => 'exact',
 ])]
 class Gift
 {
@@ -103,7 +109,8 @@ class Gift
     private ?\DateTimeInterface $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="receivedGifts")
+     * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\JoinTable(name="gift_receiver_users")
      */
     private Collection $receivers;
 
@@ -119,7 +126,7 @@ class Gift
             return null;
         }
 
-        return $actualPlanning->getMediaConfig()->getMedia();
+        return $actualPlanning->getMedia();
     }
 
 

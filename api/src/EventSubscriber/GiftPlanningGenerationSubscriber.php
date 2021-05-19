@@ -4,34 +4,31 @@
 namespace App\EventSubscriber;
 
 
-use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Gift;
 use App\Entity\Planning;
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
-class GiftPlanningGenerationSubscriber implements EventSubscriberInterface
+class GiftPlanningGenerationSubscriber implements EventSubscriber
 {
     public function __construct(private EntityManagerInterface $em)
     {
     }
 
-    public static function getSubscribedEvents(): array
+    public function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::VIEW => ['generatePlanning', EventPriorities::POST_WRITE]
+            //KernelEvents::VIEW => ['generatePlanning', EventPriorities::POST_WRITE],
+            'postPersist'
         ];
     }
 
-    public function generatePlanning(ViewEvent $event): void
+    public function postPersist(LifecycleEventArgs $args): void
     {
-        $gift = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
+        $gift = $args->getEntity();
 
-        if (!$gift instanceof Gift || Request::METHOD_POST !== $method) {
+        if (!$gift instanceof Gift) {
             return;
         }
 

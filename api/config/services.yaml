@@ -38,6 +38,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    App\EventSubscriber\GiftPlanningGenerationSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
+
     Aws\S3\S3Client:
         arguments:
             -   version: latest
@@ -51,5 +55,3 @@ services:
     App\Doctrine\OwnerUserExtension:
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection }
-
-    'App\DataTransformer\MediaObjectInputDataTransformer': ~
