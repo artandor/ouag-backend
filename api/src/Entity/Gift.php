@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints\Positive;
     'post'
 ],
     itemOperations: [
-    'get',
+    'get' => ['security' => "is_granted('ROLE_USER') and (object.getOwner() == user or object.getReceivers().contains(user))"],
     'put' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
     'delete' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
 ],
@@ -65,6 +65,7 @@ class Gift
      * @ORM\Column(type="integer")
      */
     #[Positive]
+    #[NotNull]
     #[Groups(['gift_write', 'gift_read'])]
     private ?int $recurrence;
 

@@ -1,7 +1,7 @@
 App\Entity\Gift:
     gift_owned_named:
         name: Super gift
-        startAt: <dateTime('2021-05-19 19:28:21')>
+        startAt: <(new DateTime("2035-05-19"))>
         recurrence: 1
         mediaAmount: 30
         owner: '@user_1'

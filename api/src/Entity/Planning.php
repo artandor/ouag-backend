@@ -60,6 +60,7 @@ class Planning
 
     /**
      * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     #[Groups(['planning_write', 'planning_read'])]
     private ?MediaObject $media;

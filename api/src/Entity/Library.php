@@ -96,7 +96,7 @@ class Library
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinTable(name="library_sharedWith_users")
+     * @ORM\JoinTable(name="library_sharedwith_users")
      */
     #[Groups(['library_write', 'library_read'])]
     private Collection $sharedWith;

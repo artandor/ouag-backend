@@ -128,9 +128,7 @@ class GiftTest extends CustomApiTestCase
 
         $client->request('PUT', $json['hydra:member'][0]['@id'], [
             'json' => [
-                'mediaConfig' => [
-                    'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
-                ]
+                'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
             ]
         ]);
 
@@ -161,22 +159,20 @@ class GiftTest extends CustomApiTestCase
 
         $client->request('PUT', $planningIri, [
             'json' => [
-                'mediaConfig' => [
-                    'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
-                ]
+                'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
             ]
         ]);
 
         $client->request('PUT', $giftIri, [
             'json' => [
-                'mediaAmount' => 35,
+                'mediaAmount' => 40,
             ]
         ]);
 
         $this->assertResponseIsSuccessful();
 
         // Asserts that plannings were generated on Gift update
-        $this->assertEquals(35, $gift->getPlannings()->count());
+        $this->assertEquals(40, $gift->getPlannings()->count());
 
         //Assert that previously updated plannings are not reset
         $client->request('GET', $planningIri);
@@ -188,7 +184,44 @@ class GiftTest extends CustomApiTestCase
 
     public function testUpdateDecreaseGiftMediaAmount(): void
     {
-        // Assert that decreasing the media amount remove latest positions
+        $client = self::createClientWithCredentials();
+
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Super gift']);
+
+        $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+
+        $plannings = $client->request('GET', $giftIri . '/plannings');
+
+        $json = $plannings->toArray();
+
+        $planningIri = $json['hydra:member'][0]['@id'];
+
+        $client->request('PUT', $planningIri, [
+            'json' => [
+                'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+            ]
+        ]);
+
+        $client->request('PUT', $giftIri, [
+            'json' => [
+                'mediaAmount' => 10,
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+
+        // Asserts that plannings were removed on Gift update
+        $this->assertEquals(10, $gift->getPlannings()->count());
+        $this->assertEquals(9, $gift->getPlannings()[9]->getPosition());
+
+        //Assert that previously updated plannings are not reset
+        $client->request('GET', $planningIri);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+        ]);
     }
 
     public function testDeleteGift(): void
