@@ -4,7 +4,6 @@ namespace App\Tests;
 
 use App\Entity\Gift;
 use App\Entity\MediaObject;
-use App\Entity\Planning;
 use App\Entity\User;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
@@ -113,33 +112,6 @@ class GiftTest extends CustomApiTestCase
     {
     }
 
-    public function testUpdatePlanningWithMedia(): void
-    {
-        $client = self::createClientWithCredentials();
-
-        $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
-
-        $plannings = $client->request('GET', $giftIri . '/plannings');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceCollectionJsonSchema(Planning::class);
-
-        $json = $plannings->toArray();
-
-        $client->request('PUT', $json['hydra:member'][0]['@id'], [
-            'json' => [
-                'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
-            ]
-        ]);
-
-        $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Planning::class);
-
-    }
-
-    /**
-     * @depends testUpdatePlanningWithMedia
-     */
     public function testUpdateIncreaseGiftMediaAmountWithoutRemovingPreviousPlannings(): void
     {
         $client = self::createClientWithCredentials();
