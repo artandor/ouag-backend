@@ -20,7 +20,6 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            //KernelEvents::VIEW => ['generatePlanning', EventPriorities::POST_WRITE],
             'postPersist',
             'onFlush',
         ];
