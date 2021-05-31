@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PlanningRepository;
-use Doctrine\Common\Collections\Criteria;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -56,7 +56,7 @@ class Planning
      * @ORM\Column(type="datetime", nullable=true)
      */
     #[Groups(['planning_read'])]
-    private ?\DateTimeInterface $plannedAt;
+    private ?DateTimeInterface $plannedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=MediaObject::class)
@@ -87,21 +87,13 @@ class Planning
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private \DateTimeInterface $createdAt;
+    private DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
-    private \DateTimeInterface $updatedAt;
-
-    public static function createActualMediaCriteria(): Criteria
-    {
-        return Criteria::create()
-            ->andWhere(Criteria::expr()->lte('plannedAt', new \DateTimeImmutable()))
-            ->orderBy(['plannedAt' => 'DESC'])
-            ->setMaxResults(1);
-    }
+    private DateTimeInterface $updatedAt;
 
     public function getId(): ?int
     {
@@ -120,12 +112,12 @@ class Planning
         return $this;
     }
 
-    public function getPlannedAt(): ?\DateTimeInterface
+    public function getPlannedAt(): ?DateTimeInterface
     {
         return $this->plannedAt;
     }
 
-    public function setPlannedAt(?\DateTimeInterface $plannedAt): self
+    public function setPlannedAt(?DateTimeInterface $plannedAt): self
     {
         $this->plannedAt = $plannedAt;
 
@@ -144,24 +136,24 @@ class Planning
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

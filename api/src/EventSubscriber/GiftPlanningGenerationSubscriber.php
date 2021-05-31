@@ -10,6 +10,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\ORMException;
 
 class GiftPlanningGenerationSubscriber implements EventSubscriber
 {
@@ -43,7 +44,7 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
         });
     }
 
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
@@ -64,7 +65,11 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
                 } elseif ($uow->getEntityChangeSet($entity)['mediaAmount'][0] > $uow->getEntityChangeSet($entity)['mediaAmount'][1]) {
                     $plannings = $em->getRepository(Planning::class)->findBy(['gift' => $entity], ['position' => 'ASC']);
                     for ($i = $uow->getEntityChangeSet($entity)['mediaAmount'][0]; $uow->getEntityChangeSet($entity)['mediaAmount'][1] < $i; $i--) {
-                        $em->remove($plannings[$i - 1]);
+                        try {
+                            $em->remove($plannings[$i - 1]);
+                        } catch (ORMException $e) {
+
+                        }
                     }
                     $classMetadata = $em->getClassMetadata(Gift::class);
                     $uow->computeChangeSet($classMetadata, $entity);

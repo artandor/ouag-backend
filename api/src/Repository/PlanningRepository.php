@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Planning;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,5 +19,13 @@ class PlanningRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Planning::class);
+    }
+
+    public static function createActualMediaCriteria(): Criteria
+    {
+        return Criteria::create()
+            ->andWhere(Criteria::expr()->lte('plannedAt', new DateTimeImmutable()))
+            ->orderBy(['plannedAt' => 'DESC'])
+            ->setMaxResults(1);
     }
 }
