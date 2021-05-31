@@ -174,7 +174,7 @@ class Planning
 
     public function getAnimation(): ?Animation
     {
-        return $this->animation;
+        return $this->animation ?? $this->gift->getDefaultAnimation();
     }
 
     public function setAnimation(?Animation $animation): self

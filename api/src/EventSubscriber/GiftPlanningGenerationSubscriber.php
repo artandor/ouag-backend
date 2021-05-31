@@ -11,10 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\ORMException;
+use Psr\Log\LoggerInterface;
 
 class GiftPlanningGenerationSubscriber implements EventSubscriber
 {
-    public function __construct(private EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em, private LoggerInterface $logger)
     {
     }
 
@@ -68,7 +69,9 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
                         try {
                             $em->remove($plannings[$i - 1]);
                         } catch (ORMException $e) {
-
+                            $this->logger->error('An error occurred while removing plannings from gift ' . $entity->getId(), [
+                                'cause' => $e->getTraceAsString(),
+                            ]);
                         }
                     }
                     $classMetadata = $em->getClassMetadata(Gift::class);

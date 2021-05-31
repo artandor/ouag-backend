@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Api;
 
 use App\Entity\Gift;
 use App\Entity\MediaObject;

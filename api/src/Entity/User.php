@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\GetCurrentUserController;
 use App\Repository\UserRepository;
 use DateTimeInterface;
@@ -64,6 +67,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 )]
 #[UniqueEntity('email')]
 #[UniqueEntity('displayName')]
+#[ApiFilter(OrderFilter::class, properties: ['createdAt' => 'DESC', 'updatedAt'])]
+#[ApiFilter(BooleanFilter::class, properties: ['active'])]
 class User implements UserInterface
 {
     /**
@@ -106,12 +111,14 @@ class User implements UserInterface
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['user_read'])]
     private ?DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['user_read'])]
     private ?DateTimeInterface $updatedAt;
 
     /**
