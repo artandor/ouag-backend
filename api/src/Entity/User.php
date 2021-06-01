@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\GetCurrentUserController;
 use App\Repository\UserRepository;
 use DateTimeInterface;
@@ -14,7 +17,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -62,6 +67,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[UniqueEntity('email')]
 #[UniqueEntity('displayName')]
+#[ApiFilter(OrderFilter::class, properties: ['createdAt' => 'DESC', 'updatedAt'])]
+#[ApiFilter(BooleanFilter::class, properties: ['active'])]
 class User implements UserInterface
 {
     /**
@@ -76,14 +83,14 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      */
     #[Groups(['user_read', 'user_write'])]
-    #[Assert\Email]
+    #[Email]
     private ?string $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Groups(['user_read', 'user_write'])]
-    #[Assert\NotBlank]
+    #[NotBlank]
     private ?string $displayName;
 
     /**
@@ -92,7 +99,7 @@ class User implements UserInterface
     private array $roles = [];
 
     #[Groups(['user_write'])]
-    #[Assert\Length(min: 6, max: 255)]
+    #[Length(min: 6, max: 255)]
     protected ?string $plainPassword;
 
     /**
@@ -104,12 +111,14 @@ class User implements UserInterface
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['user_read'])]
     private ?DateTimeInterface $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['user_read'])]
     private ?DateTimeInterface $updatedAt;
 
     /**
@@ -140,9 +149,6 @@ class User implements UserInterface
      */
     private Collection $libraries;
 
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
         $this->setActive(true);
@@ -335,9 +341,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Library[]
-     */
     public function getLibraries(): Collection
     {
         return $this->libraries;

@@ -1,0 +1,32 @@
+App\Entity\Gift:
+    gift_owned_named:
+        name: Super gift
+        startAt: <(new DateTime("2035-05-19"))>
+        recurrence: 1
+        mediaAmount: 30
+        owner: '@user_1'
+    gift_not_owned_named:
+        name: Super gift not owned
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 365)>
+        owner: '@user_2'
+    gifts_owned_{1..10}:
+        name: <sentence(3)>
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 20)>
+        owner: '@user_1'
+    gifts_not_owned_{1..10}:
+        name: <sentence(3)>
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 8)>
+        owner: '@user_2'
+    gifts_sent_to_me_{1..15}:
+        name: <sentence(3)>
+        startAt: <dateTimeBetween('-1 months', '+12 months')>
+        recurrence: <numberBetween(1, 60)>
+        mediaAmount: <numberBetween(1, 14)>
+        owner: '@user_2'
+        receivers: [ '@user_1' ]

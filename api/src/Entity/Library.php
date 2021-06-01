@@ -23,8 +23,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'post',
 ],
     itemOperations: [
-    'get' => ['security' => "is_granted('ROLE_USER') and (object.getOwner() == user
-        or object.getSharedWith().contains(user))"],
+    'get' => ['security' => "is_granted('ROLE_ADMIN') or
+        (object.getOwner() == user or object.getSharedWith().contains(user))"
+    ],
     'put' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
     'delete' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
     'postMedia' => [
@@ -63,7 +64,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ],
     denormalizationContext: ['groups' => ['library_write']],
     normalizationContext: ['groups' => ['library_read']],
-    security: "is_granted('ROLE_USER')"
+    security: "is_granted('ROLE_USER')",
 )]
 class Library
 {
@@ -96,6 +97,7 @@ class Library
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\JoinTable(name="library_shared_with_users")
      */
     #[Groups(['library_write', 'library_read'])]
     private Collection $sharedWith;
