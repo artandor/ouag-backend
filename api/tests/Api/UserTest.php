@@ -89,24 +89,15 @@ class UserTest extends CustomApiTestCase
 
     public function testDeleteUser(): void
     {
-        $client = self::createClient();
-
         $iri = $this->findIriBy(User::class, ['email' => 'second.user@example.com']);
 
-        $client->request('DELETE', $iri);
+        self::createClient()->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(405);
 
-        // retrieve a token
-        $response = $client->request('POST', '/authentication_token', [
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'email' => 'admin@example.com',
-                'password' => 'seCrEt',
-            ],
-        ]);
-
-        $token = $response->toArray()['token'];
-        $client->request('DELETE', $iri, ['auth_bearer' => $token]);
+        self::createClientWithCredentials($this->getToken([
+            'email' => 'admin@example.com',
+            'password' => 'seCrEt',
+        ]))->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(405);
 
     }
