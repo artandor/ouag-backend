@@ -20,6 +20,12 @@ security:
             anonymous: true
             methods: [ 'POST' ]
             security: false
+        verify:
+            pattern: ^/users/verify
+            stateless: true
+            anonymous: true
+            methods: [ 'GET' ]
+            security: false
         refresh:
             pattern: ^/authentication_token/refresh
             stateless: true
@@ -49,3 +55,4 @@ security:
         - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/authentication_token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/users/verify, roles: IS_AUTHENTICATED_ANONYMOUSLY }

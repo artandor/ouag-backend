@@ -8,12 +8,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\GetCurrentUserController;
-use App\Repository\UserRepository;
+use App\Controller\UserVerifyController;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -29,6 +27,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     collectionOperations: [
     'get' => ['security' => "is_granted('ROLE_ADMIN')"],
     'post',
+    'userVerify' => [
+        //todo : "POST User => Mail avec code est envoyé => L'utilisateur se connecte sur le lien => Ca valide",
+        'method' => 'GET',
+        'path' => '/users/verify',
+        'controller' => UserVerifyController::class,
+    ],
     'getCurrentUser' => [
         'method' => 'GET',
         'path' => '/users/me',
@@ -151,7 +155,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->setActive(true);
+        $this->setActive(false);
         $this->mediaObjects = new ArrayCollection();
         $this->libraries = new ArrayCollection();
     }
@@ -302,7 +306,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->active;
     }
