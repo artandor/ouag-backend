@@ -4,6 +4,7 @@ namespace App\Tests\Api;
 
 use App\Entity\Gift;
 use App\Entity\MediaObject;
+use App\Entity\Planning;
 use App\Entity\User;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
@@ -186,7 +187,11 @@ class GiftTest extends CustomApiTestCase
 
         // Asserts that plannings were removed on Gift update
         $this->assertEquals(10, $gift->getPlannings()->count());
-        $this->assertEquals(9, $gift->getPlannings()[9]->getPosition());
+
+        /** @var Planning $latestPlanning */
+        $latestPlanning = static::$container->get('doctrine')->getRepository(Planning::class)
+            ->findOneBy(['gift' => $gift->getId()], ['position' => 'DESC']);
+        $this->assertEquals(9, $latestPlanning->getPosition());
 
         //Assert that previously updated plannings are not reset
         $client->request('GET', $planningIri);
