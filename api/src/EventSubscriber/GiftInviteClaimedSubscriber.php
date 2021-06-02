@@ -4,7 +4,9 @@
 namespace App\EventSubscriber;
 
 
-class GiftInviteClaimedSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class GiftInviteClaimedSubscriber implements EventSubscriberInterface
 {
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\ClaimGiftInviteAction;
 use App\Repository\GiftInviteRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -15,11 +16,40 @@ use Symfony\Component\Validator\Constraints\Email;
  * @ORM\Entity(repositoryClass=GiftInviteRepository::class)
  */
 #[ApiResource(
-    collectionOperations: [],
+    collectionOperations: [
+    'claim_gift_invite' => [
+        'method' => 'GET',
+        'path' => 'gift_invites/claim',
+        'security' => "is_granted('ROLE_USER')",
+        'controller' => ClaimGiftInviteAction::class,
+        'pagination_enabled' => false,
+        'openapi_context' => [
+            'summary' => 'Claim a gift using an Invite token',
+            'description' => 'Claim a gift using an Invite token',
+            'parameters' => ['token' => ['name' => 'token', 'type' => 'string', 'in' => 'query']],
+            'responses' => [
+                '200' => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/GiftInvite-gift_invite_read',
+                            ],
+                        ],
+                        'application/json+ld' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/GiftInvite.jsonld-gift_invite_read',
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ]
+    ],
+],
     itemOperations: [
-    'get',
-    'put',
-    'delete'
+    'get' => ['security' => "is_granted('ROLE_ADMIN') or object.getGift().getOwner() == user",],
+    'put' => ['security' => "is_granted('ROLE_ADMIN') or object.getGift().getOwner() == user",],
+    'delete' => ['security' => "is_granted('ROLE_ADMIN') or object.getGift().getOwner() == user",],
 ],
     denormalizationContext: ['groups' => ['gift_invite_write']],
     normalizationContext: ['groups' => ['gift_invite_read']]
@@ -37,7 +67,7 @@ class GiftInvite
      * @ORM\Column(type="string", length=255)
      */
     #[Email]
-    #[Groups(['gift_invite_write', 'gift_invite_read'])]
+    #[Groups(['gift_invite_write', 'gift_invite_read', 'gift_read'])]
     private ?string $email;
 
     /**
@@ -48,25 +78,25 @@ class GiftInvite
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['gift_invite_write', 'gift_invite_read'])]
+    #[Groups(['gift_invite_write', 'gift_invite_read', 'gift_read'])]
     private ?string $creatorNickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['gift_invite_write', 'gift_invite_read'])]
+    #[Groups(['gift_invite_write', 'gift_invite_read', 'gift_read'])]
     private ?string $receiverNickname;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    #[Groups(['gift_invite_write', 'gift_invite_read'])]
+    #[Groups(['gift_invite_write', 'gift_invite_read', 'gift_read'])]
     private ?string $comment;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    #[Groups(['gift_invite_read'])]
+    #[Groups(['gift_invite_read', 'gift_read'])]
     private ?bool $claimed;
 
     /**
@@ -83,7 +113,7 @@ class GiftInvite
     private ?DateTimeInterface $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Gift::class)
+     * @ORM\ManyToOne(targetEntity=Gift::class, inversedBy="invites")
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Gift $gift;

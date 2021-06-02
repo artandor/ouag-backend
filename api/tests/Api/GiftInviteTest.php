@@ -30,28 +30,41 @@ class GiftInviteTest extends CustomApiTestCase
         $this->assertMatchesResourceItemJsonSchema(GiftInvite::class);
     }
 
-    public function testCreateInviteWithoutGift()
+    public function testCreateInviteForGiftIDontOwn()
     {
-        $this->createClientWithCredentials()->request('POST', '/invites', ['json' => [
+        $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift not owned']);
+        $this->createClientWithCredentials()->request('POST', $giftIri . '/invites', ['json' => [
             'email' => 'marco-polo@example.com',
             'creatorNickname' => 'Rosa',
             'receiverNickname' => 'Marco',
             'comment' => 'Salute',
         ]]);
 
-        $this->assertResponseStatusCodeSame(405);
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testCreateInviteWithoutGift()
+    {
+        $this->createClientWithCredentials()->request('POST', '/gift_invites', ['json' => [
+            'email' => 'marco-polo@example.com',
+            'creatorNickname' => 'Rosa',
+            'receiverNickname' => 'Marco',
+            'comment' => 'Salute',
+        ]]);
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testUpdateInvite()
     {
         $iri = $this->findIriBy(GiftInvite::class, ['receiverNickname' => 'Marcoleptic']);
-        self::createClientWithCredentials()->request('PUT', $iri, [
+        self::createClientWithCredentials()->request('PUT', $iri, ['json' => [
             'email' => 'marco-polochon@example.com',
-        ]);
+        ]]);
 
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'email' => 'marco-polo@example.com',
+            'email' => 'marco-polochon@example.com',
             'receiverNickname' => 'Marcoleptic',
         ]);
         $this->assertMatchesResourceItemJsonSchema(GiftInvite::class);
@@ -60,22 +73,17 @@ class GiftInviteTest extends CustomApiTestCase
     public function testGetAllInvitesFromGiftIOwn()
     {
         $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
-        $this->createClientWithCredentials()->request('GET', $giftIri . '/invites');
+        $response = $this->createClientWithCredentials()->request('GET', $giftIri);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceCollectionJsonSchema(GiftInvite::class);
-        $this->assertJsonContains([
-            '@context' => '/contexts/Invite',
-            '@id' => '/invites',
-            '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 11,
-        ]);
+        $this->assertMatchesResourceItemJsonSchema(Gift::class);
+        $this->assertCount(11, $response->toArray()['invites']);
     }
 
     public function testGetInvitesFromGiftIDontOwn()
     {
         $giftIri = $this->findIriBy(Gift::class, ['name' => 'Super gift not owned']);
-        $this->createClientWithCredentials()->request('GET', $giftIri . '/invites');
+        $this->createClientWithCredentials()->request('GET', $giftIri);
 
         $this->assertResponseStatusCodeSame(403);
     }
@@ -91,7 +99,7 @@ class GiftInviteTest extends CustomApiTestCase
 
     public function testClaimGiftFromInviteWithGoodEmailAndToken()
     {
-        self::createClientWithCredentials()->request('GET', '/invites/claim', [
+        self::createClientWithCredentials()->request('GET', '/gift_invites/claim', [
             'extra' => ['parameters' => ['token' => '123456']],
         ]);
 
@@ -101,23 +109,22 @@ class GiftInviteTest extends CustomApiTestCase
 
     public function testClaimGiftFromInviteWithBadEmail()
     {
-        self::createClientWithCredentials()->request('GET', '/invites/claim', [
+        self::createClientWithCredentials($this->getToken([
+            'email' => 'second.user@example.com',
+            'password' => 'Second.!seCrEt',
+        ]))->request('GET', '/gift_invites/claim', [
             'extra' => ['parameters' => ['token' => '123456']],
         ]);
 
-        $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(GiftInvite::class);
+        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testClaimGiftFromInviteWithBadToken()
     {
-        self::createClientWithCredentials($this->getToken([
-            'email' => 'second.user@example.com',
-            'password' => 'Second.!seCrEt',
-        ]))->request('GET', '/invites/claim', [
+        self::createClientWithCredentials()->request('GET', '/gift_invites/claim', [
             'extra' => ['parameters' => ['token' => '123458']],
         ]);
 
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseStatusCodeSame(404);
     }
 }
