@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
 use App\Repository\GiftRepository;
 use App\Repository\PlanningRepository;
@@ -25,7 +26,35 @@ use Symfony\Component\Validator\Constraints\Positive;
 #[ApiResource(
     collectionOperations: [
     'get',
-    'post'
+    'post',
+    'claim_gift_invite' => [
+        'method' => 'GET',
+        'path' => 'gifts/claim',
+        'security' => "is_granted('ROLE_USER')",
+        'controller' => ClaimGiftInviteAction::class,
+        'pagination_enabled' => false,
+        'openapi_context' => [
+            'summary' => 'Claim a gift using an Invite token',
+            'description' => 'Claim a gift using an Invite token',
+            'parameters' => ['token' => ['name' => 'token', 'type' => 'string', 'in' => 'query']],
+            'responses' => [
+                '200' => [
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/Gift-gift_read',
+                            ],
+                        ],
+                        'application/json+ld' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/Gift.jsonld-gift_read',
+                            ],
+                        ],
+                    ]
+                ]
+            ]
+        ]
+    ],
 ],
     itemOperations: [
     'get' => ['security' => "is_granted('ROLE_USER') and (object.getOwner() == user or object.getReceivers().contains(user))"],
@@ -60,7 +89,7 @@ use Symfony\Component\Validator\Constraints\Positive;
                 ],
             ]
         ]
-    ]
+    ],
 ],
     denormalizationContext: ['groups' => ['gift_write']],
     normalizationContext: ['groups' => ['gift_read']],
@@ -146,6 +175,7 @@ class Gift
      * @ORM\ManyToMany(targetEntity=User::class)
      * @ORM\JoinTable(name="gift_receiver_users")
      */
+    #[Groups(['gift_read'])]
     private Collection $receivers;
 
     /**

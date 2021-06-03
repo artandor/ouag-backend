@@ -4,6 +4,7 @@ namespace App\Tests\Api;
 
 use App\Entity\Gift;
 use App\Entity\GiftInvite;
+use App\Entity\User;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class GiftInviteTest extends CustomApiTestCase
@@ -97,14 +98,17 @@ class GiftInviteTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(204);
     }
 
-    public function testClaimGiftFromInviteWithGoodEmailAndToken()
+    public function testClaimGiftFromInviteWithGoodEmailAndTokenAddsInvitedToReceivers()
     {
-        self::createClientWithCredentials()->request('GET', '/gift_invites/claim', [
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
             'extra' => ['parameters' => ['token' => '123456']],
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(GiftInvite::class);
+        $this->assertMatchesResourceItemJsonSchema(Gift::class);
+        $this->assertJsonContains([
+            'receivers' => [$this->findIriBy(User::class, ['email' => 'user@example.com'])]
+        ]);
     }
 
     public function testClaimGiftFromInviteWithBadEmail()
@@ -112,7 +116,7 @@ class GiftInviteTest extends CustomApiTestCase
         self::createClientWithCredentials($this->getToken([
             'email' => 'second.user@example.com',
             'password' => 'Second.!seCrEt',
-        ]))->request('GET', '/gift_invites/claim', [
+        ]))->request('GET', '/gifts/claim', [
             'extra' => ['parameters' => ['token' => '123456']],
         ]);
 
@@ -121,7 +125,7 @@ class GiftInviteTest extends CustomApiTestCase
 
     public function testClaimGiftFromInviteWithBadToken()
     {
-        self::createClientWithCredentials()->request('GET', '/gift_invites/claim', [
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
             'extra' => ['parameters' => ['token' => '123458']],
         ]);
 

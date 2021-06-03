@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\ClaimGiftInviteAction;
 use App\Repository\GiftInviteRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -17,34 +16,6 @@ use Symfony\Component\Validator\Constraints\Email;
  */
 #[ApiResource(
     collectionOperations: [
-    'claim_gift_invite' => [
-        'method' => 'GET',
-        'path' => 'gift_invites/claim',
-        'security' => "is_granted('ROLE_USER')",
-        'controller' => ClaimGiftInviteAction::class,
-        'pagination_enabled' => false,
-        'openapi_context' => [
-            'summary' => 'Claim a gift using an Invite token',
-            'description' => 'Claim a gift using an Invite token',
-            'parameters' => ['token' => ['name' => 'token', 'type' => 'string', 'in' => 'query']],
-            'responses' => [
-                '200' => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/GiftInvite-gift_invite_read',
-                            ],
-                        ],
-                        'application/json+ld' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/GiftInvite.jsonld-gift_invite_read',
-                            ],
-                        ],
-                    ]
-                ]
-            ]
-        ]
-    ],
 ],
     itemOperations: [
     'get' => ['security' => "is_granted('ROLE_ADMIN') or object.getGift().getOwner() == user",],

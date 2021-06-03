@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Gift;
 use App\Entity\GiftInvite;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,10 +18,8 @@ final class ClaimGiftInviteAction
     {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Gift
     {
-//        return new JsonResponse('ok', 200);
-
         $token = $request->query->get('token');
         /**
          * @var User $user
@@ -44,7 +43,7 @@ final class ClaimGiftInviteAction
         $invite->getGift()->addReceiver($user);
         $this->entityManager->flush();
 
-        return $invite;
+        return $invite->getGift();
     }
 
 }
