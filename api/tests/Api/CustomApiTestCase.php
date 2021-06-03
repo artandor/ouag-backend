@@ -8,9 +8,6 @@ use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 abstract class CustomApiTestCase extends ApiTestCase
 {
-    private string $token;
-    private Client $clientWithCredentials;
-
     use RefreshDatabaseTrait;
 
     public function setUp(): void

@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Email;
 
@@ -25,6 +26,7 @@ use Symfony\Component\Validator\Constraints\Email;
     denormalizationContext: ['groups' => ['gift_invite_write']],
     normalizationContext: ['groups' => ['gift_invite_read']]
 )]
+#[UniqueEntity(fields: ['email', 'gift'], message: 'This email is already invited.')]
 class GiftInvite
 {
     /**

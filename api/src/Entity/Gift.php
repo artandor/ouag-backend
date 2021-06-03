@@ -72,7 +72,7 @@ use Symfony\Component\Validator\Constraints\Positive;
             'requestBody' => ['content' => [
                 'application/json' => [
                     'schema' => [
-                        '$ref' => '#/components/schemas/GiftInvite.jsonld-gift_invite_write',
+                        '$ref' => '#/components/schemas/GiftInvite-gift_invite_write',
                     ]
                 ]
             ]],
@@ -80,6 +80,11 @@ use Symfony\Component\Validator\Constraints\Positive;
                 '201' => [
                     'description' => 'The Gift Invite created',
                     'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/GiftInvite-gift_invite_read',
+                            ],
+                        ],
                         'application/json+ld' => [
                             'schema' => [
                                 '$ref' => '#/components/schemas/GiftInvite.jsonld-gift_invite_read',

@@ -151,5 +151,4 @@ class UserTest extends CustomApiTestCase
             'email' => 'monkeyTest@example.com'
         ]);
     }
-
 }
