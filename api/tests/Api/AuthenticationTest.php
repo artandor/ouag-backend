@@ -119,6 +119,25 @@ class AuthenticationTest extends ApiTestCase
         ]);
     }
 
+    public function testCreateUserSendsEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myuser@example.com',
+                'displayName' => 'michel',
+                'plainPassword' => '$3CR3T',
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHeaderSame($email, 'To', 'myuser@example.com');
+        $this->assertEmailHtmlBodyContains($email, 'href="http');
+        $this->assertEmailHtmlBodyContains($email, 'id=');
+    }
+
     public function testCreateUserWithUsernameAlreadyTaken(): void
     {
         $client = self::createClient();
