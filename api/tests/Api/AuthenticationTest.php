@@ -2,13 +2,11 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
-use App\Entity\User;
-use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-class AuthenticationTest extends ApiTestCase
+class AuthenticationTest extends CustomApiTestCase
 {
-    use RecreateDatabaseTrait;
+    use ReloadDatabaseTrait;
 
     public function testLogin(): void
     {
@@ -86,61 +84,23 @@ class AuthenticationTest extends ApiTestCase
 
     public function testGetMe(): void
     {
-        $client = self::createClient();
+        $client = self::createClientWithCredentials();
 
-        $response = $client->request('POST', '/authentication_token', [
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'email' => 'user@example.com',
-                'password' => 'seCrEt',
-            ],
-        ]);
-
-        $json = $response->toArray();
-        $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
+        $client->request('GET', '/users/me');
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             'email' => 'user@example.com',
             'displayName' => 'awtandow',
         ]);
 
-        $user2 = self::createUser('testUser2@example.com', '$3CR3T2');
-
-        $response = $client->request('POST', '/authentication_token', [
-            'headers' => ['Content-Type' => 'application/json'],
-            'json' => [
-                'email' => 'testUser2@example.com',
-                'password' => '$3CR3T2',
-            ],
-        ]);
-
-        $json = $response->toArray();
-        $client->request('GET', '/users/me', ['auth_bearer' => $json['token']]);
+        $client = self::createClientWithCredentials($this->getToken([
+            'email' => 'second.user@example.com',
+            'password' => 'Second.!seCrEt',
+        ]));
+        $client->request('GET', '/users/me');
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'id' => $user2->getId(),
-            'email' => 'testUser2@example.com',
+            'email' => 'second.user@example.com',
         ]);
-    }
-
-    public static function createUser(string $username, string $password, array $roles = []): User
-    {
-        $user = new User();
-        $user->setEmail($username);
-        $user->setPlainPassword($password);
-        $user->setRoles($roles);
-        $user->setDisplayName($username);
-
-        $manager = static::$container->get('doctrine')->getManager();
-        $manager->persist($user);
-        $manager->flush();
-        return $user;
-    }
-
-    public function testCreateUserHelper(): void
-    {
-        self::createClient();
-        $user = self::createUser('test@mail.fr', '$ecret');
-        $this->assertEquals('test@mail.fr', $user->getEmail());
     }
 }
