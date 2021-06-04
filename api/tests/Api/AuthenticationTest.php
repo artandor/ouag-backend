@@ -136,6 +136,84 @@ class AuthenticationTest extends ApiTestCase
         $this->assertEmailHeaderSame($email, 'To', 'myuser@example.com');
         $this->assertEmailHtmlBodyContains($email, 'href="http');
         $this->assertEmailHtmlBodyContains($email, 'id=');
+        $this->assertEmailHtmlBodyContains($email, 'Welcome');
+
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myuser2@example.com',
+                'displayName' => 'michel2',
+                'plainPassword' => '$3CR3T',
+                'preferredLanguage' => 'fr',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Bienvenue');
+    }
+
+    public function testMailLanguageBasedOnUserPreferredLanguage(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myrandomuser@example.com',
+                'displayName' => 'mockito',
+                'plainPassword' => '$3CR3T',
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Once your account activated, you\'ll be able to enjoy the features OUAG has to offer.');
+
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myfrenchuser@example.com',
+                'displayName' => 'michel',
+                'plainPassword' => '$3CR3T',
+                'preferredLanguage' => 'fr',
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Une fois votre compte activé, vous pourrez profitez des fonctionnalités que OUAG a à vous offrir.');
+
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myenglishuser@example.com',
+                'displayName' => 'mickael',
+                'plainPassword' => '$3CR3T',
+                'preferredLanguage' => 'en',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Once your account activated, you\'ll be able to enjoy the features OUAG has to offer.');
+
+    }
+
+    public function testUserConnectWithInactiveAccount(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/authentication_token', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'inactiveuser@example.com',
+                'password' => 'seCrEt',
+            ],
+        ]);
+
+        $this->assertQueuedEmailCount(1);
+        $this->assertResponseStatusCodeSame(401);
     }
 
     public function testCreateUserWithUsernameAlreadyTaken(): void

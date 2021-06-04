@@ -3,12 +3,24 @@ App\Entity\User:
         displayName: awtandow
         email: user@example.com
         plainPassword: seCrEt
+        active: true
+        preferredLanguage: null
     user_2:
         displayName: <userName()>
         email: second.user@example.com
         plainPassword: Second.!seCrEt
+        active: true
+        preferredLanguage: null
     user_3:
         displayName: <userName()>
         email: admin@example.com
         plainPassword: seCrEt
         roles: [ 'ROLE_ADMIN' ]
+        active: true
+        preferredLanguage: null
+    user_4:
+        displayName: miguelito
+        email: inactiveuser@example.com
+        plainPassword: seCrEt
+        active: false
+        preferredLanguage: fr
