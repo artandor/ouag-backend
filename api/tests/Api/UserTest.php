@@ -186,7 +186,7 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, 'Once your account activated, you\'ll be able to enjoy the features OUAG has to offer.');
+        $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
     }
 
     public function testUserWithFrenchPreferredLanguageGetFrenchEmail(): void
@@ -223,7 +223,7 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, 'Once your account activated, you\'ll be able to enjoy the features OUAG has to offer.');
+        $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
 
     }
 
@@ -243,7 +243,7 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, 'Once your account activated, you\'ll be able to enjoy the features OUAG has to offer.');
+        $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
 
     }
 }

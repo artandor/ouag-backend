@@ -31,7 +31,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     'get' => ['security' => "is_granted('ROLE_ADMIN')"],
     'post',
     'userVerify' => [
-        //todo : "POST User => Mail avec code est envoyé => L'utilisateur se connecte sur le lien => Ca valide",
         'method' => 'GET',
         'path' => '/users/verify',
         'controller' => UserVerifyController::class,

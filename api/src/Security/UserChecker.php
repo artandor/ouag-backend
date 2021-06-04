@@ -4,12 +4,14 @@
 namespace App\Security;
 
 
+
 use App\Entity\User;
 use App\Services\UserMailerService;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserChecker implements \Symfony\Component\Security\Core\User\UserCheckerInterface
+class UserChecker implements UserCheckerInterface
 {
     public function __construct(private UserMailerService $userMailer)
     {
