@@ -103,4 +103,19 @@ class AuthenticationTest extends CustomApiTestCase
             'email' => 'second.user@example.com',
         ]);
     }
+
+    public function testUserConnectWithInactiveAccount(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/authentication_token', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'inactiveuser@example.com',
+                'password' => 'seCrEt',
+            ],
+        ]);
+
+        $this->assertQueuedEmailCount(1);
+        $this->assertResponseStatusCodeSame(401);
+    }
 }
