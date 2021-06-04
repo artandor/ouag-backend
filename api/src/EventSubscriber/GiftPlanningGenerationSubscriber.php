@@ -52,6 +52,10 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof Gift) {
+                // If the field media amount hasn't been updated, don't do anything
+                if (!isset($uow->getEntityChangeSet($entity)['mediaAmount'][1])) {
+                    continue;
+                }
                 // If the mediaAmount increased, we add more plannings to those existing
                 if ($uow->getEntityChangeSet($entity)['mediaAmount'][0] < $uow->getEntityChangeSet($entity)['mediaAmount'][1]) {
                     for ($i = $uow->getEntityChangeSet($entity)['mediaAmount'][0]; $i < $uow->getEntityChangeSet($entity)['mediaAmount'][1]; $i++) {

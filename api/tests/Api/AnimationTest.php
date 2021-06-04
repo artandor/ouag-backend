@@ -11,9 +11,7 @@ class AnimationTest extends CustomApiTestCase
 
     public function testGetAllAnimations(): void
     {
-        $client = self::createClientWithCredentials();
-
-        $response = $client->request('GET', '/animations');
+        $response = self::createClientWithCredentials()->request('GET', '/animations');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -39,9 +37,9 @@ class AnimationTest extends CustomApiTestCase
 
     public function testGetAllEnabledAnimations(): void
     {
-        $client = self::createClientWithCredentials();
-
-        $response = $client->request('GET', '/animations', ['extra' => ['parameters' => ['enabled' => 'true']]]);
+        $response = self::createClientWithCredentials()->request('GET', '/animations', [
+            'extra' => ['parameters' => ['enabled' => 'true']]
+        ]);
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -68,9 +66,9 @@ class AnimationTest extends CustomApiTestCase
 
     public function testGetAllDisabledAnimations(): void
     {
-        $client = self::createClientWithCredentials();
-
-        $response = $client->request('GET', '/animations', ['extra' => ['parameters' => ['enabled' => 'false']]]);
+        $response = self::createClientWithCredentials()->request('GET', '/animations', [
+            'extra' => ['parameters' => ['enabled' => 'false']],
+        ]);
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -97,10 +95,8 @@ class AnimationTest extends CustomApiTestCase
 
     public function testGetOneAnimation(): void
     {
-        $client = self::createClientWithCredentials();
-
         $iri = $this->findIriBy(Animation::class, ['name' => 'Fireworks']);
-        $client->request('GET', $iri);
+        self::createClientWithCredentials()->request('GET', $iri);
         $this->assertResponseIsSuccessful();
         $this->assertMatchesResourceItemJsonSchema(Animation::class);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -112,9 +108,7 @@ class AnimationTest extends CustomApiTestCase
 
     public function testCreateAnimationAsUser(): void
     {
-        $client = self::createClientWithCredentials();
-
-        $client->request('POST', '/animations', [
+        self::createClientWithCredentials()->request('POST', '/animations', [
             'json' => [
                 'name' => 'superAnim',
                 'lottieLink' => 'https://lottiefiles.com/59444-ufo-error-page-404',
@@ -150,10 +144,8 @@ class AnimationTest extends CustomApiTestCase
 
     public function testUpdateAnimationAsUser(): void
     {
-        $client = self::createClientWithCredentials();
-
         $iri = $this->findIriBy(Animation::class, ['name' => 'Fireworks']);
-        $client->request('PUT', $iri, [
+        self::createClientWithCredentials()->request('PUT', $iri, [
             'json' => ['enabled' => false,]
         ]);
         $this->assertResponseStatusCodeSame(403);
@@ -179,10 +171,8 @@ class AnimationTest extends CustomApiTestCase
 
     public function testDeleteAnimationAsUser(): void
     {
-        $client = self::createClientWithCredentials();
-
         $iri = $this->findIriBy(Animation::class, ['name' => 'Fireworks']);
-        $client->request('DELETE', $iri);
+        self::createClientWithCredentials()->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(403);
     }
 

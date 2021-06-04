@@ -109,10 +109,6 @@ class GiftTest extends CustomApiTestCase
         ]);
     }
 
-    public function testThatICannotSeeAGiftInDraftIfImReceiver(): void
-    {
-    }
-
     public function testUpdateIncreaseGiftMediaAmountWithoutRemovingPreviousPlannings(): void
     {
         $client = self::createClientWithCredentials();
@@ -203,7 +199,7 @@ class GiftTest extends CustomApiTestCase
 
     public function testDeleteGift(): void
     {
-        // Should delete gifts and all linked plannings and PlanningMedia
+        // Should delete gifts and all linked plannings
         $client = self::createClientWithCredentials();
 
         $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
