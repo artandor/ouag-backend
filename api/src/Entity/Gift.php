@@ -189,6 +189,11 @@ class Gift
     #[Groups(['gift_read'])]
     private Collection $invites;
 
+    /**
+     * @ORM\Column(type="string", length=100, options={"default": "draft"})
+     */
+    #[Groups(['gift_read'])]
+    private ?string $state;
 
     #[Groups(['gift_read'])]
     public function getActualMedia(): ?MediaObject
@@ -209,6 +214,7 @@ class Gift
         $this->plannings = new ArrayCollection();
         $this->receivers = new ArrayCollection();
         $this->invites = new ArrayCollection();
+        $this->state = 'draft';
     }
 
     public function getId(): ?int
@@ -392,6 +398,18 @@ class Gift
                 $invite->setGift(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

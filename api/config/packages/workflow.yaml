@@ -1,0 +1,22 @@
+framework:
+    workflows:
+        gift_publishing:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Gift
+            initial_marking: draft
+            places:
+                - draft
+                - ordered
+                - published
+            transitions:
+                order:
+                    from: draft
+                    to: ordered
+                publish:
+                    from: ordered
+                    to: published
+
