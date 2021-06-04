@@ -29,7 +29,7 @@ class UserMailerService
         $email = (new TemplatedEmail())
             ->from(Address::create('Once Upon A Gift <postmaster@once-upon-a-gift.com>'))
             ->to($user->getEmail())
-            ->subject($this->translator->trans('Please confirm your account', array(), null, $user->getPreferredLanguage()))
+            ->subject($this->translator->trans('Confirm your account', array(), null, $user->getPreferredLanguage()))
             ->htmlTemplate('emails/signup.html.twig')
             ->context([
                 'locale' => $user->getPreferredLanguage(),
