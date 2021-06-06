@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\GetCurrentUserController;
+use App\Controller\UserVerifyController;
 use App\Repository\UserRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,6 +30,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     collectionOperations: [
     'get' => ['security' => "is_granted('ROLE_ADMIN')"],
     'post',
+    'userVerify' => [
+        'method' => 'GET',
+        'path' => '/users/verify',
+        'controller' => UserVerifyController::class,
+    ],
     'getCurrentUser' => [
         'method' => 'GET',
         'path' => '/users/me',
@@ -151,7 +157,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->setActive(true);
+        $this->setActive(false);
         $this->mediaObjects = new ArrayCollection();
         $this->libraries = new ArrayCollection();
     }
@@ -302,7 +308,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->active;
     }

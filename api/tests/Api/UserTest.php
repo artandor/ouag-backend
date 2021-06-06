@@ -151,4 +151,99 @@ class UserTest extends CustomApiTestCase
             'email' => 'monkeyTest@example.com'
         ]);
     }
+
+    public function testCreatingUserSendsEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myuser@example.com',
+                'displayName' => 'michel',
+                'plainPassword' => '$3CR3T',
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHeaderSame($email, 'To', 'myuser@example.com');
+        $this->assertEmailHtmlBodyContains($email, 'href="http');
+        $this->assertEmailHtmlBodyContains($email, 'id=');
+        $this->assertEmailHtmlBodyContains($email, 'Welcome');
+    }
+
+    public function testUserWithNoPreferredLanguageGetEnglishEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myrandomuser@example.com',
+                'displayName' => 'mockito',
+                'plainPassword' => '$3CR3T',
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
+    }
+
+    public function testUserWithFrenchPreferredLanguageGetFrenchEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myfrenchuser@example.com',
+                'displayName' => 'michel',
+                'plainPassword' => '$3CR3T',
+                'preferredLanguage' => 'fr',
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Une fois votre compte activé, vous pourrez profitez des fonctionnalités que OUAG a à vous offrir.');
+    }
+
+    public function testUserWithEnglishPreferredLanguageGetEnglishEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myenglishuser@example.com',
+                'displayName' => 'mickael',
+                'plainPassword' => '$3CR3T',
+                'preferredLanguage' => 'en',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
+
+    }
+
+    public function testUserWithOtherPreferredLanguageGetEnglishEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/users', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'myenglishuser@example.com',
+                'displayName' => 'mickael',
+                'plainPassword' => '$3CR3T',
+                'preferredLanguage' => 'yolo',
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
+
+    }
 }
