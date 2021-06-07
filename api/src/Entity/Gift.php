@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
+use App\Controller\GiftWorkflowOrder;
 use App\Repository\GiftRepository;
 use App\Repository\PlanningRepository;
 use DateTimeInterface;
@@ -40,14 +41,14 @@ use Symfony\Component\Validator\Constraints\Positive;
             'responses' => [
                 '200' => [
                     'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/Gift-gift_read',
-                            ],
-                        ],
                         'application/json+ld' => [
                             'schema' => [
                                 '$ref' => '#/components/schemas/Gift.jsonld-gift_read',
+                            ],
+                        ],
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/Gift-gift_read',
                             ],
                         ],
                     ]
@@ -95,6 +96,12 @@ use Symfony\Component\Validator\Constraints\Positive;
             ]
         ]
     ],
+    'gift_order' => [
+        'method' => 'GET',
+        'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
+        'path' => 'gifts/{id}/order',
+        'controller' => GiftWorkflowOrder::class,
+    ],
 ],
     denormalizationContext: ['groups' => ['gift_write']],
     normalizationContext: ['groups' => ['gift_read']],
@@ -103,7 +110,7 @@ use Symfony\Component\Validator\Constraints\Positive;
 #[ApiFilter(filterClass: SearchFilter::class, properties: [
     'owner' => 'exact',
     'receivers' => 'exact',
-    // 'state' => 'exact',
+    'state' => 'exact',
 ])]
 class Gift
 {

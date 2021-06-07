@@ -5,13 +5,14 @@ namespace App\EventSubscriber;
 
 
 use App\Entity\Gift;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class GiftStateWorkflowSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger, private EntityManagerInterface $em)
     {
     }
 
@@ -32,8 +33,12 @@ class GiftStateWorkflowSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $this->logger->info('Gift ' . $gift->getId() . ' is transitioning to ordered state.');
+
         foreach ($gift->getPlannings() as $planning) {
             $planning->setPlannedAt($planning->calculatePlannedAt());
+            $this->em->persist($planning);
         }
+        $this->em->flush();
     }
 }

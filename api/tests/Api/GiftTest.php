@@ -233,4 +233,31 @@ class GiftTest extends CustomApiTestCase
         $this->assertResponseStatusCodeSame(403);
 
     }
+
+
+    public function testOrderGiftGeneratePlannedAtData()
+    {
+        $client = self::createClientWithCredentials();
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+        $response = $client->request('GET', $iri . '/order');
+
+        $this->assertResponseIsSuccessful();
+        $json = $response->toArray();
+
+        $planningsResponse = $client->request('GET', $json['@id'] . '/plannings');
+        $this->assertResponseIsSuccessful();
+        $item = $planningsResponse->toArray()['hydra:member'][0];
+        dump($item);
+        $this->assertNotNull($item['plannedAt']);
+    }
+
+    public function testOrderGiftSwitchesStateToPublished()
+    {
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+        $response = self::createClientWithCredentials()->request('GET', $iri . '/order');
+
+        $this->assertResponseIsSuccessful();
+        $json = $response->toArray();
+        $this->assertEquals('published', $json['state']);
+    }
 }
