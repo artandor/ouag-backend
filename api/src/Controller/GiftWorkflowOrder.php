@@ -16,8 +16,6 @@ final class GiftWorkflowOrder
     public function __invoke(Gift $data): Gift
     {
         $this->giftPublishingStateMachine->apply($data, 'order');
-        // This is temporary, remove it when the payment flow is done.
-        $this->giftPublishingStateMachine->apply($data, 'publish');
         return $data;
     }
 
