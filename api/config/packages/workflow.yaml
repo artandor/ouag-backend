@@ -2,6 +2,8 @@ framework:
     workflows:
         gift_publishing:
             type: 'state_machine'
+            audit_trail:
+                enabled: true
             marking_store:
                 type: 'method'
                 property: 'state'

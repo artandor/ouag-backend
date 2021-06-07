@@ -231,33 +231,33 @@ class GiftTest extends CustomApiTestCase
 
         $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(403);
-
     }
 
 
     public function testOrderGiftGeneratePlannedAtData()
     {
-        $client = self::createClientWithCredentials();
         $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
-        $response = $client->request('GET', $iri . '/order');
+        self::createClientWithCredentials()->request('PUT', $iri . '/order', ['json' => []]);
 
         $this->assertResponseIsSuccessful();
-        $json = $response->toArray();
 
-        $planningsResponse = $client->request('GET', $json['@id'] . '/plannings');
-        $this->assertResponseIsSuccessful();
-        $item = $planningsResponse->toArray()['hydra:member'][0];
-        dump($item);
-        $this->assertNotNull($item['plannedAt']);
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Super gift']);
+
+        /** @var Planning $planning */
+        $planning = static::$container->get('doctrine')->getRepository(Planning::class)
+            ->findOneBy(['gift' => $gift->getId(), 'position' => 0]);
+        $this->assertNotNull($planning->getPlannedAt());
     }
 
-    public function testOrderGiftSwitchesStateToPublished()
+    public function testOrderGiftSwitchesStateToOrdered()
     {
         $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
-        $response = self::createClientWithCredentials()->request('GET', $iri . '/order');
+        $response = self::createClientWithCredentials()->request('PUT', $iri . '/order', ['json' => []]);
 
         $this->assertResponseIsSuccessful();
         $json = $response->toArray();
-        $this->assertEquals('published', $json['state']);
+        $this->assertEquals('ordered', $json['state']);
     }
 }

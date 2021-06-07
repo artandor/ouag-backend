@@ -97,7 +97,7 @@ use Symfony\Component\Validator\Constraints\Positive;
         ]
     ],
     'gift_order' => [
-        'method' => 'GET',
+        'method' => 'PUT',
         'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
         'path' => 'gifts/{id}/order',
         'controller' => GiftWorkflowOrder::class,
