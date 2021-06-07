@@ -5,7 +5,7 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="5t8GzaF" resname="Confirm your account">
+      <trans-unit id="8hNrxHb" resname="Confirm your account">
         <source>Confirm your account</source>
         <target>Confirmez votre compte</target>
       </trans-unit>
@@ -25,6 +25,22 @@
       <trans-unit id="DIVF6zX" resname="Once your account is activated, you'll be able to enjoy the features OUAG has to offer.">
         <source>Once your account is activated, you'll be able to enjoy the features OUAG has to offer.</source>
         <target>Une fois votre compte activé, vous pourrez profitez des fonctionnalités que OUAG a à vous offrir.</target>
+      </trans-unit>
+      <trans-unit id="FsbzAUk" resname="Your gift has been claim">
+        <source>Your gift has been claim</source>
+        <target>Votre cadeau a été réclamé</target>
+      </trans-unit>
+      <trans-unit id="6OcaZr5" resname="Hello %username_sender%.">
+        <source>Hello %username_sender%.</source>
+        <target>Bonjour {username_sender}.</target>
+      </trans-unit>
+      <trans-unit id="jKYm4lJ" resname="We are sending you this email to let you know that %username_receiver% just claimed your gift.">
+        <source>We are sending you this email to let you know that %username_receiver% just claimed your gift.</source>
+        <target>Nous vous envoyons cet email pour vous informer que {username_receiver} vient de réclamer votre cadeau.</target>
+      </trans-unit>
+      <trans-unit id="VKwElzB" resname="Your gift gift_name has been claim">
+        <source>Your gift gift_name has been claim</source>
+        <target>Votre cadeau {gift_name} a été réclamé</target>
       </trans-unit>
     </body>
   </file>

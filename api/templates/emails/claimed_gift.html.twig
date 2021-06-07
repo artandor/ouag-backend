@@ -1,0 +1,7 @@
+{% include 'base.html.header.twig' %}
+<h1 class="text-center">{% trans into locale %}Your gift has been claim{% endtrans %}</h1>
+<div class="block">
+    <p>{% trans into locale %}Hello %username_sender%.{% endtrans %}</p>
+    <p>{% trans into locale %}We are sending you this email to let you know that %username_receiver% just claimed your gift.{% endtrans %}</p>
+</div>
+{% include 'base.html.footer.twig' %}

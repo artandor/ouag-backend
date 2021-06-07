@@ -1,21 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-</head>
-<body>
-<div class="body">
-    <div class="container">
-        <div class="content">
-            <h1 class="text-center">{% trans into locale %}Nice to meet you %username%{% endtrans %}</h1>
-            <p class="block">
-                {% trans into locale %}Welcome to {% endtrans %}<strong> Once Upon A Gift</strong>.<br>
-                {% trans into locale %} Please activate your account by clicking the following link : <a
-                href="%signedUrl%">Click Here</a>{% endtrans %}<br>
-                {% trans into locale %}Once your account is activated, you'll be able to enjoy the features OUAG has to offer.{% endtrans %}
-            </p>
-
-        </div>
-    </div>
+{% include 'base.html.header.twig' %}
+<h1 class="text-center">{% trans into locale %}Nice to meet you %username%{% endtrans %}</h1>
+<div class="block">
+    <p>{% trans into locale %}Welcome to {% endtrans %}<strong> Once Upon A Gift</strong>.</p>
+    <p> {% trans into locale %} Please activate your account by clicking the following link : <a
+            href="%signedUrl%">Click Here</a>{% endtrans %}</p>
+    <p>{% trans into locale %}Once your account is activated, you'll be able to enjoy the features OUAG has to offer.{% endtrans %}</p>
 </div>
-</body>
-</html>
+{% include 'base.html.footer.twig' %}
