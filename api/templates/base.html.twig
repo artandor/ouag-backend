@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="body">
+    <div class="container">
+        <div class="content">
+            {% block body %}{% endblock %}
+            <p>{% trans into locale %}Note : This is an automatic email, please do not answer it. You can delete it if you want.{% endtrans %}</p>
+            {% block javascripts %}{% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

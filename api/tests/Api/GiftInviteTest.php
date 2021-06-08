@@ -120,7 +120,7 @@ class GiftInviteTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, 'We are sending you this email to let you know that');
+        $this->assertEmailHtmlBodyContains($email, 'We\'re sure your gift is perfect, but just in case,');
     }
 
     public function testClaimGiftFromInviteWithGoodEmailAndTokenSendFrenchCreatorAnFrenchEmail()
@@ -135,7 +135,7 @@ class GiftInviteTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, 'Nous vous envoyons cet email pour vous informer que');
+        $this->assertEmailHtmlBodyContains($email, 'Nous sommes persuadés que votre cadeau est parfait,');
     }
 
     public function testClaimGiftFromInviteWithGoodEmailAndTokenSendEnglishCreatorAnEnglishEmail()
@@ -150,7 +150,7 @@ class GiftInviteTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, 'We are sending you this email to let you know that');
+        $this->assertEmailHtmlBodyContains($email, 'We\'re sure your gift is perfect, but just in case,');
     }
 
     public function testClaimGiftFromInviteWithBadEmail()
