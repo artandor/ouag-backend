@@ -111,6 +111,48 @@ class GiftInviteTest extends CustomApiTestCase
         ]);
     }
 
+    public function testClaimGiftFromInviteWithGoodEmailAndTokenSendNonFrenchCreatorAnEnglishEmail()
+    {
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => '123456']],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'We\'re sure your gift is perfect, but just in case,');
+    }
+
+    public function testClaimGiftFromInviteWithGoodEmailAndTokenSendFrenchCreatorAnFrenchEmail()
+    {
+        self::createClientWithCredentials($this->getToken([
+            'email' => 'activeuser@example.com',
+            'password' => 'seCrEt',
+        ]))->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => "987654"]],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'Nous sommes persuadés que votre cadeau est parfait,');
+    }
+
+    public function testClaimGiftFromInviteWithGoodEmailAndTokenSendEnglishCreatorAnEnglishEmail()
+    {
+        self::createClientWithCredentials($this->getToken([
+            'email' => 'activeuser_en@example.com',
+            'password' => 'seCrEt',
+        ]))->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => "123789"]],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, 'We\'re sure your gift is perfect, but just in case,');
+    }
+
     public function testClaimGiftFromInviteWithBadEmail()
     {
         self::createClientWithCredentials($this->getToken([

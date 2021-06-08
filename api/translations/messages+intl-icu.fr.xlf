@@ -5,7 +5,7 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="5t8GzaF" resname="Confirm your account">
+      <trans-unit id="8hNrxHb" resname="Confirm your account">
         <source>Confirm your account</source>
         <target>Confirmez votre compte</target>
       </trans-unit>
@@ -17,14 +17,34 @@
         <source>Welcome to</source>
         <target>Bienvenue sur</target>
       </trans-unit>
-      <trans-unit id="iTW06Ut" resname="Please activate your account by clicking the following link : &lt;a&#10;                href=&quot;%signedUrl%&quot;&gt;Click Here&lt;/a&gt;">
-        <source>Please activate your account by clicking the following link : &lt;a
-                href="%signedUrl%"&gt;Click Here&lt;/a&gt;</source>
-        <target><![CDATA[Veuillez activer votre compte en cliquant sur le lien suivant : <a href="{signedUrl}">Cliquez ici</a>]]></target>
-      </trans-unit>
       <trans-unit id="DIVF6zX" resname="Once your account is activated, you'll be able to enjoy the features OUAG has to offer.">
         <source>Once your account is activated, you'll be able to enjoy the features OUAG has to offer.</source>
         <target>Une fois votre compte activé, vous pourrez profitez des fonctionnalités que OUAG a à vous offrir.</target>
+      </trans-unit>
+      <trans-unit id="FsbzAUk" resname="Your gift has been claim">
+        <source>Your gift has been claim</source>
+        <target>Votre cadeau a été réclamé</target>
+      </trans-unit>
+      <trans-unit id="6OcaZr5" resname="Hello %username_sender%,">
+        <source>Hello %username_sender%,</source>
+        <target>Bonjour {username_sender},</target>
+      </trans-unit>
+      <trans-unit id="YTOX9GE" resname="%email_receiver% received your gift %gift_name%. We're sure your gift is perfect, but just in case, remember that you can still update all souvenirs that are not yet send.">
+        <source>%email_receiver% received your gift %gift_name%. We're sure your gift is perfect, but just in case, remember that you can still update all souvenirs that are not yet send.</source>
+        <target>{email_receiver} a bien reçu votre cadeau {gift_name}. Nous sommes persuadés que votre cadeau est parfait, mais au cas où, vous pouvez toujours modifier les souvenirs qui n'ont pas encore été envoyés.</target>
+      </trans-unit>
+      <trans-unit id="TzAjsaJ" resname="gift_receiver received your gift gift_name !">
+        <source>gift_receiver received your gift gift_name !</source>
+        <target>{gift_receiver} a reçu votre cadeau {gift_name} !</target>
+      </trans-unit>
+      <trans-unit id="b52c_WU" resname="Please activate your account by clicking the following link : &lt;a&#10;            href=&quot;%signedUrl%&quot;&gt;Click Here&lt;/a&gt;">
+        <source>Please activate your account by clicking the following link : &lt;a
+            href="%signedUrl%"&gt;Click Here&lt;/a&gt;</source>
+        <target><![CDATA[Veuillez activer votre compte en cliquant sur le lien suivant : <a href="{signedUrl}">Cliquez ici</a>]]></target>
+      </trans-unit>
+      <trans-unit id="NlemebD" resname="Note : This is an automatic email, please do not answer it. You can delete it if you want.">
+        <source>Note : This is an automatic email, please do not answer it. You can delete it if you want.</source>
+        <target>Note : Ceci est un email automatique, veuillez ne pas y répondre. Vous pouvez le supprimer si vous voulez.</target>
       </trans-unit>
     </body>
   </file>

@@ -24,3 +24,15 @@ App\Entity\User:
         plainPassword: seCrEt
         active: false
         preferredLanguage: fr
+    user_5:
+        displayName: miguelito
+        email: activeuser@example.com
+        plainPassword: seCrEt
+        active: true
+        preferredLanguage: fr
+    user_6:
+        displayName: miguel_en
+        email: activeuser_en@example.com
+        plainPassword: seCrEt
+        active: true
+        preferredLanguage: en

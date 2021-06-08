@@ -1,0 +1,8 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <h1 class="text-center">{% trans into locale %}Your gift has been claim{% endtrans %}</h1>
+    <div class="block">
+        <p>{% trans into locale %}Hello %username_sender%,{% endtrans %}</p>
+        <p>{% trans into locale %}%email_receiver% received your gift %gift_name%. We're sure your gift is perfect, but just in case, remember that you can still update all souvenirs that are not yet send.{% endtrans %}</p>
+    </div>
+{% endblock %}

@@ -6,6 +6,20 @@ App\Entity\GiftInvite:
         comment: <paragraph()>
         token: 123456
         gift: '@gift_owned_named'
+    gift_invite_my_gift_fr:
+        email: '@user_5->email'
+        creatorNickname: '@user_5->displayName'
+        receiverNickname: Marcoleptic
+        comment: <paragraph()>
+        token: 987654
+        gift: '@gift_owned_named_fr'
+    gift_invite_my_gift_en:
+        email: '@user_6->email'
+        creatorNickname: '@user_6->displayName'
+        receiverNickname: Marcoleptic
+        comment: <paragraph()>
+        token: 123789
+        gift: '@gift_owned_named_en'
     gift_invite_owned_{1..10}:
         email: <email()>
         creatorNickname: <firstName()>

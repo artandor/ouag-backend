@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Gift;
 use App\Entity\GiftInvite;
 use App\Entity\User;
+use App\Services\UserMailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Core\Security;
 
 final class ClaimGiftInviteAction
 {
-    public function __construct(private EntityManagerInterface $entityManager, private Security $security)
+    public function __construct(private EntityManagerInterface $entityManager, private Security $security, private UserMailerService $userMailer)
     {
     }
 
@@ -41,6 +42,7 @@ final class ClaimGiftInviteAction
 
         $invite->setClaimed(true);
         $invite->getGift()->addReceiver($user);
+        $this->userMailer->giftInviteClaimSendEmail($invite);
         $this->entityManager->flush();
 
         return $invite->getGift();

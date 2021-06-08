@@ -5,6 +5,18 @@ App\Entity\Gift:
         recurrence: 1
         mediaAmount: 30
         owner: '@user_1'
+    gift_owned_named_fr:
+        name: Super gift 2
+        startAt: <(new DateTime("2035-05-19"))>
+        recurrence: 1
+        mediaAmount: 30
+        owner: '@user_5'
+    gift_owned_named_en:
+        name: Super gift 3
+        startAt: <(new DateTime("2035-05-19"))>
+        recurrence: 1
+        mediaAmount: 30
+        owner: '@user_6'
     gift_not_owned_named:
         name: Super gift not owned
         startAt: <dateTimeBetween('-1 months', '+12 months')>
