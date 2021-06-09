@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <style>
+        .text-center {
+            text-align: center;
+        }
+
+        .img-responsive {
+            width: 100%;
+        }
+
+        .code {
+            padding: 15px;
+            font-weight: bold;
+            border: firebrick solid 1rem;
+            background-color: lightgrey;
+            width: 110px;
+        }
+
+        .blockquote {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .blockquote-footer {
+            display: block;
+            font-size: 80%;
+            color: #6c757d;
+        }
+    </style>
+    <div>
+        <h1 class="text-center">{% trans into locale %}Hey there{% endtrans %} {{ invite.receiverNickname }} !</h1>
+        <p class="text-center">{% trans into locale %}%creator_name% has a present for you{% endtrans %} !
+        </p>
+        {% if invite.comment %}
+            <h3>{% trans into locale %}He even left you a message{% endtrans %} :</h3>
+            <blockquote class="blockquote text-center">
+                <p>{{ invite.comment }}</p>
+            </blockquote>
+        {% endif %}
+        <a href="https://staging-ouag-front.nicolasmylle.fr/auth">
+            <img class="text-center img-responsive"
+                 src="{{ email.image('@images/box-close-up-gift-842876.jpg') }}"
+                 alt="Gift closed">
+        </a>
+
+        <h2 class="text-center">{% trans into locale %}How to retrieve your gift ?{% endtrans %}</h2>
+        <div>
+            <h3>{% trans into locale %}Download the mobile app and register with this email{% endtrans %}</h3>
+            <a
+                href="https://play.google.com/store/apps/details?id=com.ouag.mobile"><img
+                    class="text-center"
+                    src="{{ email.image('@images/en_badge_web_generic.png') }}"
+                    alt="Gift closed"></a>
+
+            <div>
+                <ol>
+                    <li>{% trans into locale %}Click the{% endtrans %} <img
+                            class="text-center"
+                            src="{{ email.image('@images/gift-box.png') }}"
+                            alt="Gift icon"> {% trans into locale %}gift icon and enter this code{% endtrans %}
+                    </li>
+                    <h2 class="code text-center">{{ invite.token }}</h2>
+                    <li>{% trans into locale %}Enjoy your gift ! And don't forget to say thank you to %creator_name%{% endtrans %}</li>
+                </ol>
+            </div>
+        </div>
+        <div>
+            <h2>{% trans into locale %}Feedback / Bug{% endtrans %}</h2>
+            <p>{% trans into locale %}If you encounter a bug or want to make a feedback, please do it at this <a
+                    href="https://forms.gle/Wq78YawyCinQhsbE8">address</a>{% endtrans %}</p>
+        </div>
+
+    </div>
+{% endblock %}

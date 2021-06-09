@@ -25,7 +25,7 @@
         <source>Your gift has been claim</source>
         <target>Votre cadeau a été réclamé</target>
       </trans-unit>
-      <trans-unit id="6OcaZr5" resname="Hello %username_sender%,">
+      <trans-unit id="HV.rWIx" resname="Hello %username_sender%,">
         <source>Hello %username_sender%,</source>
         <target>Bonjour {username_sender},</target>
       </trans-unit>
@@ -45,6 +45,52 @@
       <trans-unit id="NlemebD" resname="Note : This is an automatic email, please do not answer it. You can delete it if you want.">
         <source>Note : This is an automatic email, please do not answer it. You can delete it if you want.</source>
         <target>Note : Ceci est un email automatique, veuillez ne pas y répondre. Vous pouvez le supprimer si vous voulez.</target>
+      </trans-unit>
+      <trans-unit id="7walBT5" resname="gift_sender sent you a gift !!">
+        <source>gift_sender sent you a gift !!</source>
+        <target>{ invite.creatorNickname ?: gift.owner.displayName } vous a envoyé un cadeau !!</target>
+      </trans-unit>
+      <trans-unit id="CPgcDvs" resname="Hey there">
+        <source>Hey there</source>
+        <target>Salut </target>
+      </trans-unit>
+      <trans-unit id="SngchXi" resname="He even left you a message">
+        <source>He even left you a message</source>
+        <target>Il vous a même laissé un message</target>
+      </trans-unit>
+      <trans-unit id="VSRRrE8" resname="How to retrieve your gift ?">
+        <source>How to retrieve your gift ?</source>
+        <target>Comment obtenir votre cadeau ?</target>
+      </trans-unit>
+      <trans-unit id="vILoiIO" resname="Download the mobile app and register with this email">
+        <source>Download the mobile app and register with this email</source>
+        <target>Téléchargez l'application mobile et créez un compte avec cet email</target>
+      </trans-unit>
+      <trans-unit id="yWtPM2T" resname="Click the">
+        <source>Click the</source>
+        <target>Cliquez sur l'</target>
+      </trans-unit>
+      <trans-unit id="wvnnWEG" resname="gift icon and enter this code">
+        <source>gift icon and enter this code</source>
+        <target>icone de cadeau et entrez ce code</target>
+      </trans-unit>
+      <trans-unit id="LG76g8J" resname="Feedback / Bug">
+        <source>Feedback / Bug</source>
+        <target>Retours / Bug</target>
+      </trans-unit>
+      <trans-unit id="yJ5y9WS" resname="If you encounter a bug or want to make a feedback, please do it at this &lt;a&#10;                    href=&quot;https://forms.gle/Wq78YawyCinQhsbE8&quot;&gt;address&lt;/a&gt;">
+        <source>If you encounter a bug or want to make a feedback, please do it at this &lt;a
+                    href="https://forms.gle/Wq78YawyCinQhsbE8"&gt;address&lt;/a&gt;</source>
+        <target><![CDATA[Si vous rencontrez un soucis ou voulez nous faire un retour, veuillez le faire à cette <a
+                    href="https://forms.gle/Wq78YawyCinQhsbE8">adresse</a>]]></target>
+      </trans-unit>
+      <trans-unit id="hgCg1b3" resname="%creator_name% has a present for you">
+        <source>%creator_name% has a present for you</source>
+        <target>{ creator_name } a un cadeau pour vous</target>
+      </trans-unit>
+      <trans-unit id="cOPhIru" resname="Enjoy your gift ! And don't forget to say thank you to %creator_name%">
+        <source>Enjoy your gift ! And don't forget to say thank you to %creator_name%</source>
+        <target>Profitez bien de votre cadeau ! Et n'oubliez pas de remercier { creator_name }</target>
       </trans-unit>
     </body>
   </file>

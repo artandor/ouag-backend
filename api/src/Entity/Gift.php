@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
 use App\Controller\GiftWorkflowOrder;
+use App\Controller\GiftWorkflowPublish;
 use App\Repository\GiftRepository;
 use App\Repository\PlanningRepository;
 use DateTimeInterface;
@@ -101,6 +102,12 @@ use Symfony\Component\Validator\Constraints\Positive;
         'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
         'path' => 'gifts/{id}/order',
         'controller' => GiftWorkflowOrder::class,
+    ],
+    'gift_publish' => [
+        'method' => 'PUT',
+        'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
+        'path' => 'gifts/{id}/publish',
+        'controller' => GiftWorkflowPublish::class,
     ],
 ],
     denormalizationContext: ['groups' => ['gift_write']],

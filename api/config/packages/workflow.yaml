@@ -15,7 +15,7 @@ framework:
                 - ordered
                 - published
             transitions:
-                order:
+                checkout:
                     from: draft
                     to: ordered
                 publish:

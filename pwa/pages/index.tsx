@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from 'next/image'
 
 const Welcome = () => (
     <>
@@ -84,6 +85,18 @@ const Welcome = () => (
                                 <h3>
                                     <a href="/.well-known/mercure/ui/">
                                         Mercure Debugger
+                                    </a>
+                                </h3>
+                            </div>
+                        </div>
+                        <div className="other__bloc">
+                            <div style={{ margin: '15px' }}>
+                                <Image src="/assets/email.svg" width='44px' height='44px' />
+                            </div>
+                            <div className="other__content">
+                                <h3>
+                                    <a href="http://localhost:8025/">
+                                        Mail Catcher (Mailhog)
                                     </a>
                                 </h3>
                             </div>
