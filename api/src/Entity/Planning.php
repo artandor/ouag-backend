@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\CreatePlanningFromRandomLibrariesController;
 use App\Repository\PlanningRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,7 +64,7 @@ class Planning
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     #[Groups(['planning_write', 'planning_read'])]
-    private ?MediaObject $media;
+    private ?MediaObject $media = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Animation::class)

@@ -22,6 +22,7 @@ class GiftTest extends CustomApiTestCase
                 'startAt' => '16-05-2021',
                 'recurrence' => 2,
                 'mediaAmount' => 10,
+                'fillingMethod' => '',
             ]
         ]);
 
@@ -32,6 +33,7 @@ class GiftTest extends CustomApiTestCase
             'startAt' => '2021-05-16T00:00:00+00:00',
             'recurrence' => 2,
             'mediaAmount' => 10,
+            'fillingMethod' => '',
         ]);
 
         // Asserts that plannings were generated on Gift creation
@@ -40,6 +42,50 @@ class GiftTest extends CustomApiTestCase
             ->findOneBy(['name' => 'Birthday moma']);
 
         $this->assertEquals(10, $gift->getPlannings()->count());
+    }
+
+    public function testCreateAutomaticGift(): void
+    {
+        $client = self::createClientWithCredentials($this->getToken([
+            'email' => 'activeuser@example.com',
+            'password' => 'seCrEt',
+        ]));
+
+        $client->request('POST', '/gifts', [
+            'json' => [
+                'name' => 'Test Automatic Filling',
+                'startAt' => '16-05-2021',
+                'recurrence' => 2,
+                'mediaAmount' => 15,
+                'fillingMethod' => 'automatic',
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesResourceItemJsonSchema(Gift::class);
+        $this->assertJsonContains([
+            'name' => 'Test Automatic Filling',
+            'startAt' => '2021-05-16T00:00:00+00:00',
+            'recurrence' => 2,
+            'mediaAmount' => 15,
+            'fillingMethod' => 'automatic',
+        ]);
+
+        // Asserts that plannings were generated on Gift creation
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Test Automatic Filling']);
+        $this->assertEquals(15, $gift->getPlannings()->count());
+
+        // Asserts that plannings are filled with MediaObjects from user libraries, then their MediaObject is null when there are no more available MediaObjects
+        $firstEmptyPlanning = $gift->getPlannings()->get(10);
+        $lastFilledPlanning = $gift->getPlannings()->get(9);
+        if ($lastFilledPlanning instanceof Planning) {
+            $this->assertNotNull($lastFilledPlanning->getMedia());
+        }
+        if ($firstEmptyPlanning instanceof Planning) {
+            $this->assertNull($firstEmptyPlanning->getMedia());
+        }
     }
 
     public function testGetAllGiftsImConcernedWith(): void
