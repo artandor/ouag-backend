@@ -22,7 +22,6 @@ class GiftTest extends CustomApiTestCase
                 'startAt' => '16-05-2021',
                 'recurrence' => 2,
                 'mediaAmount' => 10,
-                'fillingMethod' => '',
             ]
         ]);
 
@@ -33,7 +32,6 @@ class GiftTest extends CustomApiTestCase
             'startAt' => '2021-05-16T00:00:00+00:00',
             'recurrence' => 2,
             'mediaAmount' => 10,
-            'fillingMethod' => '',
         ]);
 
         // Asserts that plannings were generated on Gift creation
