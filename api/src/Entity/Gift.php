@@ -209,12 +209,12 @@ class Gift
         return $actualPlanning->getMedia();
     }
 
-
     public function __construct()
     {
         $this->plannings = new ArrayCollection();
         $this->receivers = new ArrayCollection();
         $this->invites = new ArrayCollection();
+        $this->fillingMethod = null;
     }
 
     public function getId(): ?int
@@ -275,9 +275,11 @@ class Gift
         return $this->fillingMethod;
     }
 
-    public function setFillingMethod(?string $fillingMethod): void
+    public function setFillingMethod(?string $fillingMethod): self
     {
         $this->fillingMethod = $fillingMethod;
+
+        return $this;
     }
 
     public function getOwner(): ?User

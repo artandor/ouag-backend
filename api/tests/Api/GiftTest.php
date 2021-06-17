@@ -22,7 +22,6 @@ class GiftTest extends CustomApiTestCase
                 'startAt' => '16-05-2021',
                 'recurrence' => 2,
                 'mediaAmount' => 10,
-                'fillingMethod' => '',
             ]
         ]);
 
@@ -33,7 +32,6 @@ class GiftTest extends CustomApiTestCase
             'startAt' => '2021-05-16T00:00:00+00:00',
             'recurrence' => 2,
             'mediaAmount' => 10,
-            'fillingMethod' => '',
         ]);
 
         // Asserts that plannings were generated on Gift creation
@@ -80,8 +78,13 @@ class GiftTest extends CustomApiTestCase
         // Asserts that plannings are filled with MediaObjects from user libraries, then their MediaObject is null when there are no more available MediaObjects
         $firstEmptyPlanning = $gift->getPlannings()->get(10);
         $lastFilledPlanning = $gift->getPlannings()->get(9);
+        $firstFilledPlanning = $gift->getPlannings()->get(1);
+
         if ($lastFilledPlanning instanceof Planning) {
             $this->assertNotNull($lastFilledPlanning->getMedia());
+            if ($firstFilledPlanning instanceof Planning) {
+                $this->assertNotEquals($firstFilledPlanning->getMedia(), $lastFilledPlanning->getMedia());
+            }
         }
         if ($firstEmptyPlanning instanceof Planning) {
             $this->assertNull($firstEmptyPlanning->getMedia());

@@ -75,7 +75,7 @@ App\Entity\MediaObject:
         size: <numberBetween(1000, 1000000)>
         library: '@libraries_13'
         owner: '@user_2'
-    media_objects_owned_2{1..10}:
+    media_objects_owned_by_user5_{1..10}:
         title: owned media 2
         nsfw: <boolean()>
         comment: <sentence()>
