@@ -1,44 +1,45 @@
-import {FunctionComponent, useState} from "react";
+import {useState} from "react";
 import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
-import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
+import authProvider from "../../utils/authProvider";
 
-interface Props {
-    user?: User;
-    editMode;
-}
-
-export const Form: FunctionComponent<Props> = ({user, editMode}) => {
+export default function LoginForm() {
     const [error, setError] = useState(null);
     const router = useRouter();
 
     return (
         <div>
-            <h1>{user ? `Edit User ${user["@id"]}` : `Create User`}</h1>
+            <h1>Login</h1>
             <Formik
-                initialValues={user ? {...user} : new User()}
+                initialValues={new User()}
                 validate={(values) => {
                     const errors = {};
                     // add your validation logic here
                     return errors;
                 }}
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
-                    const isCreation = !values["@id"];
+                    console.log(values)
                     try {
-                        await fetch(isCreation ? "/users" : values["@id"], {
-                            method: isCreation ? "POST" : "PUT",
-                            body: JSON.stringify(values),
-                        });
-                        setStatus({
-                            isValid: true,
-                            msg: isCreation ? 'You need to validate your account, please check your email' : 'Account updated.',
-                        });
-                        if (!isCreation) {
-                            router.push("/users/profile");
-                            editMode(false)
-                        }
+                        authProvider.login({username: values['email'], password: values['plainPassword']})
+                            .then(() => {
+                                setStatus({
+                                    isValid: true,
+                                    msg: 'Connexion successfull',
+                                });
+
+                                router.push("/users/profile");
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                                setStatus({
+                                    isValid: false,
+                                    msg: `${error}`,
+                                });
+                            })
+
                     } catch (error) {
+                        console.log(error)
                         setStatus({
                             isValid: false,
                             msg: `${error.defaultErrorMsg}`,
@@ -67,7 +68,7 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                                 name="email"
                                 id="_email"
                                 value={values.email ?? ""}
-                                type="text"
+                                type="email"
                                 placeholder=""
                                 className={`form-control${
                                     errors.email && touched.email ? " is-invalid" : ""
@@ -75,7 +76,6 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                                 aria-invalid={errors.email && touched.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                disabled={user != undefined}
                                 required={true}
                             />
                         </div>
@@ -85,37 +85,14 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                             name="email"
                         />
                         <div className="form-group">
-                            <label className="form-control-label" htmlFor="_displayName">
-                                displayName
-                            </label>
-                            <input
-                                name="displayName"
-                                id="_displayName"
-                                value={values.displayName ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.displayName && touched.displayName ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.displayName && touched.displayName}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="displayName"
-                        />
-                        <div className="form-group">
                             <label className="form-control-label" htmlFor="_plainPassword">
-                                plainPassword
+                                Plain Password
                             </label>
                             <input
                                 name="plainPassword"
                                 id="_plainPassword"
                                 value={values.plainPassword ?? ""}
-                                type="text"
+                                type="password"
                                 placeholder=""
                                 className={`form-control${
                                     errors.plainPassword && touched.plainPassword
@@ -132,37 +109,6 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                             component="div"
                             name="plainPassword"
                         />
-                        <div className="form-group">
-                            <label
-                                className="form-control-label"
-                                htmlFor="_preferredLanguage"
-                            >
-                                preferredLanguage
-                            </label>
-                            <input
-                                name="preferredLanguage"
-                                id="_preferredLanguage"
-                                value={values.preferredLanguage ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.preferredLanguage && touched.preferredLanguage
-                                        ? " is-invalid"
-                                        : ""
-                                }`}
-                                aria-invalid={
-                                    errors.preferredLanguage && touched.preferredLanguage
-                                }
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="preferredLanguage"
-                        />
-
                         {status && status.msg && (
                             <div
                                 className={`alert ${
@@ -179,15 +125,11 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                             className="btn btn-success"
                             disabled={isSubmitting}
                         >
-                            Submit
+                            Login
                         </button>
                     </form>
                 )}
             </Formik>
-            <button className="btn btn-primary"
-                    onClick={() => !user ? router.replace('/users/login') : editMode(false)}>
-                <a>{!user ? 'Login' : 'Back'}</a>
-            </button>
         </div>
     );
 };
