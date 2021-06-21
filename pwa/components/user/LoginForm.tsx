@@ -86,7 +86,7 @@ export default function LoginForm() {
                         />
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_plainPassword">
-                                Plain Password
+                                Password
                             </label>
                             <input
                                 name="plainPassword"

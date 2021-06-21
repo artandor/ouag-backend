@@ -6,10 +6,11 @@ import {User} from "../../types/User";
 
 interface Props {
     user?: User;
-    editMode;
+    setEditMode;
+    setUser;
 }
 
-export const Form: FunctionComponent<Props> = ({user, editMode}) => {
+export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => {
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -26,7 +27,7 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
                     const isCreation = !values["@id"];
                     try {
-                        await fetch(isCreation ? "/users" : values["@id"], {
+                        const response = await fetch(isCreation ? "/users" : values["@id"], {
                             method: isCreation ? "POST" : "PUT",
                             body: JSON.stringify(values),
                         });
@@ -35,8 +36,8 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                             msg: isCreation ? 'You need to validate your account, please check your email' : 'Account updated.',
                         });
                         if (!isCreation) {
-                            router.push("/users/profile");
-                            editMode(false)
+                            setUser(await response)
+                            setEditMode(false)
                         }
                     } catch (error) {
                         setStatus({
@@ -61,7 +62,7 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_email">
-                                email
+                                Email
                             </label>
                             <input
                                 name="email"
@@ -69,13 +70,11 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                                 value={values.email ?? ""}
                                 type="text"
                                 placeholder=""
-                                className={`form-control${
-                                    errors.email && touched.email ? " is-invalid" : ""
-                                }`}
+                                className={`${user != undefined ? " form-control-plaintext" : ""}`}
                                 aria-invalid={errors.email && touched.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                disabled={user != undefined}
+                                readOnly={user != undefined}
                                 required={true}
                             />
                         </div>
@@ -86,7 +85,7 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                         />
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_displayName">
-                                displayName
+                                Display name
                             </label>
                             <input
                                 name="displayName"
@@ -109,13 +108,13 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                         />
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_plainPassword">
-                                plainPassword
+                                Password
                             </label>
                             <input
                                 name="plainPassword"
                                 id="_plainPassword"
                                 value={values.plainPassword ?? ""}
-                                type="text"
+                                type="password"
                                 placeholder=""
                                 className={`form-control${
                                     errors.plainPassword && touched.plainPassword
@@ -137,7 +136,7 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                                 className="form-control-label"
                                 htmlFor="_preferredLanguage"
                             >
-                                preferredLanguage
+                                Preferred language
                             </label>
                             <input
                                 name="preferredLanguage"
@@ -181,13 +180,14 @@ export const Form: FunctionComponent<Props> = ({user, editMode}) => {
                         >
                             Submit
                         </button>
+
+                        <button className="float-end btn btn-primary" type={"button"}
+                                onClick={() => !user ? router.replace('/users/login') : setEditMode(false)}>
+                            <a>{!user ? 'Login' : 'Back'}</a>
+                        </button>
                     </form>
                 )}
             </Formik>
-            <button className="btn btn-primary"
-                    onClick={() => !user ? router.replace('/users/login') : editMode(false)}>
-                <a>{!user ? 'Login' : 'Back'}</a>
-            </button>
         </div>
     );
 };

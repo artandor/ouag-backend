@@ -2,13 +2,14 @@ import {FunctionComponent, useState} from "react";
 import {useRouter} from "next/router";
 import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
+import authProvider from "../../utils/authProvider";
 
 interface Props {
     user: User;
-    editMode;
+    setEditMode;
 }
 
-export const Show: FunctionComponent<Props> = ({user, editMode}) => {
+export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -56,12 +57,20 @@ export const Show: FunctionComponent<Props> = ({user, editMode}) => {
                     {error}
                 </div>
             )}
-            <button className="btn btn-warning" onClick={(event) => editMode(true)}>
-                Edit
-            </button>
-            <button className="btn btn-danger disabled" onClick={handleDelete}>
-                <a>Delete</a>
-            </button>
+            <div className={'btn-group col-12'} role={'group'} aria-label={'actions'}>
+                <button className="btn btn-warning" onClick={(event) => setEditMode(true)}>
+                    Edit
+                </button>
+                {/* The delete button is hidden until https://github.com/artandor/ouag-backend/issues/21 is done */}
+                <button className="btn btn-danger d-none" onClick={handleDelete}>
+                    <a>Delete</a>
+                </button>
+                <button className="btn btn-primary" onClick={(event) => {
+                    authProvider.logout().then(value => router.push('/users/login'));
+                }}>
+                    <a>Logout</a>
+                </button>
+            </div>
         </div>
     );
 };

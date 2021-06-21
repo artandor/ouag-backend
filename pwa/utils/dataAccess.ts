@@ -3,6 +3,8 @@ import has from "lodash/has";
 import mapValues from "lodash/mapValues";
 import isomorphicFetch from "isomorphic-unfetch";
 import {ENTRYPOINT} from "../config/entrypoint";
+import routerService from 'next/router'
+import authProvider from "./authProvider";
 
 const MIME_TYPE = "application/ld+json";
 
@@ -11,7 +13,7 @@ interface Violation {
     propertyPath: string;
 }
 
-export const fetch = async (id: string, init: RequestInit = {}) => {
+export const fetch = async (id: string, init: RequestInit = {}, router = routerService) => {
     if (typeof init.headers === "undefined") init.headers = {};
     if (!init.headers.hasOwnProperty("Accept"))
         init.headers = {...init.headers, Accept: MIME_TYPE};
@@ -28,9 +30,25 @@ export const fetch = async (id: string, init: RequestInit = {}) => {
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         };
 
-    const resp = await isomorphicFetch(ENTRYPOINT + id, init);
-    if (resp.status === 204) return;
+    let resp = await isomorphicFetch(ENTRYPOINT + id, init);
 
+    if (resp.status === 401) {
+        await resp.json().then(async ({message}) => {
+            if (message == 'Expired JWT Token') {
+                await authProvider.refreshToken()
+                    .then(async () => {
+                        init.headers["Authorization"] = `Bearer ${localStorage.getItem('token')}`;
+                        resp = await isomorphicFetch(ENTRYPOINT + id, init)
+                        console.log(resp)
+                    })
+                    .catch((e) => {
+                        router.push('/users/login')
+                    })
+            } else router.push('/users/login')
+        })
+    }
+
+    if (resp.status === 204) return;
     const json = await resp.json();
     if (resp.ok) return normalize(json);
 
