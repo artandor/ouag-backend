@@ -76,7 +76,7 @@ class MediaObject
     #[ApiProperty(openapiContext: ['description' => 'Use this property to add a file (gif, video, photo) as a media',
         'type' => 'string', 'format' => 'binary'])]
     #[Groups(['media_object_create'])]
-    public string $file;
+    public $file;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
