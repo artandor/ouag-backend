@@ -171,6 +171,12 @@ class Gift
     private ?DateTimeInterface $createdAt;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['gift_write', 'gift_read'])]
+    private ?string $fillingMethod;
+
+    /**
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
@@ -188,7 +194,6 @@ class Gift
      */
     #[Groups(['gift_read'])]
     private Collection $invites;
-
 
     #[Groups(['gift_read'])]
     public function getActualMedia(): ?MediaObject
@@ -209,6 +214,7 @@ class Gift
         $this->plannings = new ArrayCollection();
         $this->receivers = new ArrayCollection();
         $this->invites = new ArrayCollection();
+        $this->fillingMethod = null;
     }
 
     public function getId(): ?int
@@ -260,6 +266,18 @@ class Gift
     public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getFillingMethod(): ?string
+    {
+        return $this->fillingMethod;
+    }
+
+    public function setFillingMethod(?string $fillingMethod): self
+    {
+        $this->fillingMethod = $fillingMethod;
 
         return $this;
     }
