@@ -33,7 +33,7 @@ final class UserVerifyController
             throw new GoneHttpException("The provided user couldn't be found");
         }
         try {
-            $this->helper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
+            $this->helper->validateEmailConfirmation($request->getUri(), strval($user->getId()), $user->getEmail());
         } catch (VerifyEmailExceptionInterface $e) {
             throw new UnprocessableEntityHttpException();
         }

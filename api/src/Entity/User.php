@@ -101,6 +101,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @var array<string> $roles
      */
     private array $roles = [];
 
@@ -202,6 +203,9 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -254,7 +258,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         $this->plainPassword = null;

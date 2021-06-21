@@ -93,7 +93,7 @@ class Library
      * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['library_read'])]
-    private User $owner;
+    private ?User $owner;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class)
@@ -147,7 +147,7 @@ class Library
         return $this->owner;
     }
 
-    public function setOwner(User $owner): self
+    public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
 

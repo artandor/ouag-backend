@@ -20,6 +20,10 @@ final class UserResourcesSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @inheritDoc
+     * @return array<string,array<int, int|string>>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
