@@ -33,9 +33,9 @@ jobs:
         run: curl -v -o /dev/null http://localhost
       - name: Check HTTPS reachability
         run: curl  -vk -o /dev/null https://localhost
-      - name: PHPStan
-        run: docker-compose exec -T php vendor/bin/phpstan analyse -c phpstan.neon
       - name: PHPUnit
         run: docker-compose exec -T php bin/phpunit --testdox
+      - name: PHPStan
+        run: docker-compose exec -T php vendor/bin/phpstan analyse -c phpstan.neon
       - name: Jest
         run: docker-compose exec -T pwa yarn test --passWithNoTests
