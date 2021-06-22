@@ -96,6 +96,11 @@ class Planning
      */
     private DateTimeInterface $updatedAt;
 
+    public function __construct()
+    {
+        $this->media = null;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

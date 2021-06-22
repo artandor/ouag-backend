@@ -189,6 +189,12 @@ class Gift
     private ?DateTimeInterface $createdAt;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['gift_write', 'gift_read'])]
+    private ?string $fillingMethod;
+
+    /**
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
@@ -233,6 +239,7 @@ class Gift
         $this->receivers = new ArrayCollection();
         $this->invites = new ArrayCollection();
         $this->state = self::STATE_DRAFT;
+        $this->fillingMethod = null;
     }
 
     public function getId(): ?int
@@ -284,6 +291,18 @@ class Gift
     public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getFillingMethod(): ?string
+    {
+        return $this->fillingMethod;
+    }
+
+    public function setFillingMethod(?string $fillingMethod): self
+    {
+        $this->fillingMethod = $fillingMethod;
 
         return $this;
     }

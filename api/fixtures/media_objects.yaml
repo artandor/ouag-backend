@@ -75,3 +75,12 @@ App\Entity\MediaObject:
         size: <numberBetween(1000, 1000000)>
         library: '@libraries_13'
         owner: '@user_2'
+    media_objects_owned_by_user5_{1..10}:
+        title: owned media 2
+        nsfw: <boolean()>
+        comment: <sentence()>
+        content: <randomNumber(9)>.png
+        type: <mimeType()>
+        size: <numberBetween(1000, 1000000)>
+        library: '@libraries_14'
+        owner: '@user_5'
