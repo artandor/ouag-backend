@@ -121,6 +121,10 @@ use Symfony\Component\Validator\Constraints\Positive;
 ])]
 class Gift
 {
+    const STATE_DRAFT = 'draft';
+    const STATE_ORDERED = 'ordered';
+    const STATE_PUBLISHED = 'published';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -228,7 +232,7 @@ class Gift
         $this->plannings = new ArrayCollection();
         $this->receivers = new ArrayCollection();
         $this->invites = new ArrayCollection();
-        $this->state = 'draft';
+        $this->state = self::STATE_DRAFT;
     }
 
     public function getId(): ?int

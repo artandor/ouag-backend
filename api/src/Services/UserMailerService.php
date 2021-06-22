@@ -68,16 +68,17 @@ class UserMailerService
     {
         $gift = $invite->getGift();
         $sender = $gift->getOwner();
+        $senderName = $invite->getCreatorNickname() ?? $gift->getOwner()->getDisplayName();
         $email = (new TemplatedEmail())
             ->from(new Address('postmaster@once-upon-a-gift.com', 'Once Upon A Gift'))
             ->to(new Address($invite->getEmail()))
-            ->subject($this->translator->trans('gift_sender sent you a gift !!', ['gift_sender' => $invite->getCreatorNickname()], 'messages', $sender->getPreferredLanguage()))
+            ->subject($this->translator->trans('gift_sender sent you a gift !!', ['gift_sender' => $senderName], 'messages', $sender->getPreferredLanguage()))
             ->htmlTemplate('emails/gift_invitation.html.twig')
             ->context([
                 'gift' => $gift,
                 'invite' => $invite,
                 'locale' => $sender->getPreferredLanguage(),
-                'creator_name' => $invite->getCreatorNickname() ?? $gift->getOwner()->getDisplayName()
+                'creator_name' => $senderName,
             ]);
         $email->setHeaders($email->getHeaders()
             ->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply'));

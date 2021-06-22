@@ -9,16 +9,16 @@ framework:
                 property: 'state'
             supports:
                 - App\Entity\Gift
-            initial_marking: draft
+            initial_marking: !php/const App\Entity\Gift::STATE_DRAFT
             places:
-                - draft
-                - ordered
-                - published
+                - !php/const App\Entity\Gift::STATE_DRAFT
+                - !php/const App\Entity\Gift::STATE_ORDERED
+                - !php/const App\Entity\Gift::STATE_PUBLISHED
             transitions:
                 checkout:
-                    from: draft
-                    to: ordered
+                    from: !php/const App\Entity\Gift::STATE_DRAFT
+                    to: !php/const App\Entity\Gift::STATE_ORDERED
                 publish:
-                    from: ordered
-                    to: published
+                    from: !php/const App\Entity\Gift::STATE_ORDERED
+                    to: !php/const App\Entity\Gift::STATE_PUBLISHED
 

@@ -5,10 +5,6 @@
             text-align: center;
         }
 
-        .img-responsive {
-            width: 100%;
-        }
-
         .code {
             padding: 15px;
             font-weight: bold;
@@ -21,12 +17,6 @@
             margin-bottom: 1rem;
             font-size: 1.25rem;
         }
-
-        .blockquote-footer {
-            display: block;
-            font-size: 80%;
-            color: #6c757d;
-        }
     </style>
     <div>
         <h1 class="text-center">{% trans into locale %}Hey there{% endtrans %} {{ invite.receiverNickname }} !</h1>
@@ -38,11 +28,6 @@
                 <p>{{ invite.comment }}</p>
             </blockquote>
         {% endif %}
-        <a href="https://staging-ouag-front.nicolasmylle.fr/auth">
-            <img class="text-center img-responsive"
-                 src="{{ email.image('@images/box-close-up-gift-842876.jpg') }}"
-                 alt="Gift closed">
-        </a>
 
         <h2 class="text-center">{% trans into locale %}How to retrieve your gift ?{% endtrans %}</h2>
         <div>

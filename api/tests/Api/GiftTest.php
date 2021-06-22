@@ -258,7 +258,7 @@ class GiftTest extends CustomApiTestCase
 
         $this->assertResponseIsSuccessful();
         $json = $response->toArray();
-        $this->assertEquals('ordered', $json['state']);
+        $this->assertEquals(Gift::STATE_ORDERED, $json['state']);
     }
 
     public function testPublishingGiftSwitchesStateToPublishedAndSendsInvites()
@@ -269,7 +269,7 @@ class GiftTest extends CustomApiTestCase
 
         $this->assertResponseIsSuccessful();
         $json = $response->toArray();
-        $this->assertEquals('published', $json['state']);
+        $this->assertEquals(Gift::STATE_PUBLISHED, $json['state']);
 
         $this->assertQueuedEmailCount(10);
         $email = $this->getMailerMessage(0);
