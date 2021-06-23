@@ -104,7 +104,7 @@ class GiftTest extends CustomApiTestCase
             '@context' => '/contexts/Gift',
             '@id' => '/gifts',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 26,
+            'hydra:totalItems' => 27,
         ]);
     }
 
@@ -129,7 +129,7 @@ class GiftTest extends CustomApiTestCase
             '@context' => '/contexts/Gift',
             '@id' => '/gifts',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 11,
+            'hydra:totalItems' => 12,
         ]);
     }
 
@@ -280,6 +280,49 @@ class GiftTest extends CustomApiTestCase
 
         $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(403);
+    }
 
+
+    public function testOrderGiftGeneratePlannedAtData()
+    {
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+        self::createClientWithCredentials()->request('PUT', $iri . '/order', ['json' => []]);
+
+        $this->assertResponseIsSuccessful();
+
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Super gift']);
+
+        /** @var Planning $planning */
+        $planning = static::$container->get('doctrine')->getRepository(Planning::class)
+            ->findOneBy(['gift' => $gift->getId(), 'position' => 0]);
+        $this->assertNotNull($planning->getPlannedAt());
+    }
+
+    public function testOrderGiftSwitchesStateToOrdered()
+    {
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
+        $response = self::createClientWithCredentials()->request('PUT', $iri . '/order', ['json' => []]);
+
+        $this->assertResponseIsSuccessful();
+        $json = $response->toArray();
+        $this->assertEquals(Gift::STATE_ORDERED, $json['state']);
+    }
+
+    public function testPublishingGiftSwitchesStateToPublishedAndSendsInvites()
+    {
+        $client = self::createClientWithCredentials();
+        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift ordered']);
+        $response = $client->request('PUT', $iri . '/publish', ['json' => []]);
+
+        $this->assertResponseIsSuccessful();
+        $json = $response->toArray();
+        $this->assertEquals(Gift::STATE_PUBLISHED, $json['state']);
+
+        $this->assertQueuedEmailCount(10);
+        $email = $this->getMailerMessage(0);
+        $this->assertEmailHtmlBodyContains($email, '123456');
+        $this->assertEmailHtmlBodyContains($email, 'Enjoy your gift ! And don\'t forget to say thank you to');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PlanningRepository;
+use DateInterval;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -127,6 +128,15 @@ class Planning
         $this->plannedAt = $plannedAt;
 
         return $this;
+    }
+
+    public function calculatePlannedAt(): DateTimeInterface
+    {
+        /** @var \DateTime $date */
+        $date = clone $this->getGift()->getStartAt();
+        return $date->add(new DateInterval(
+            sprintf('P%dD', $this->getGift()->getRecurrence() * $this->getPosition())
+        ));
     }
 
     public function getGift(): ?Gift
