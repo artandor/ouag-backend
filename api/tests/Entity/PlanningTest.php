@@ -42,7 +42,7 @@ class PlanningTest extends KernelTestCase
     public function giftPlanningProviderPositionTwo(): array
     {
         $date = new DateTime();
-        $date->setDate('2021', '06', '04');
+        $date->setDate(2021, 06, 04);
 
         $gift = new Gift();
         $gift->setStartAt($date);

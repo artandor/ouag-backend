@@ -132,6 +132,7 @@ class Planning
 
     public function calculatePlannedAt(): DateTimeInterface
     {
+        /** @var \DateTime $date */
         $date = clone $this->getGift()->getStartAt();
         return $date->add(new DateInterval(
             sprintf('P%dD', $this->getGift()->getRecurrence() * $this->getPosition())
