@@ -27,14 +27,8 @@ export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
 
     return (
         <div>
-            <h1>{`Welcome to your profile ${user["displayName"]}`}</h1>
+            <h1>Welcome to your profile {user["displayName"]}</h1>
             <table className="table table-responsive table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
                 <tbody>
                 <tr>
                     <th scope="row">email</th>

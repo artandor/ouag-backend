@@ -138,11 +138,10 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                             >
                                 Preferred language
                             </label>
-                            <input
+                            <select
                                 name="preferredLanguage"
                                 id="_preferredLanguage"
                                 value={values.preferredLanguage ?? ""}
-                                type="text"
                                 placeholder=""
                                 className={`form-control${
                                     errors.preferredLanguage && touched.preferredLanguage
@@ -154,7 +153,10 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                                 }
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                            />
+                            >
+                                <option value={'en'}>English</option>
+                                <option value={'fr'}>Français</option>
+                            </select>
                         </div>
                         <ErrorMessage
                             className="text-danger"
