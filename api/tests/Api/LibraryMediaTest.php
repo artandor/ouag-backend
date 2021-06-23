@@ -35,6 +35,26 @@ class LibraryMediaTest extends CustomApiTestCase
         ]);
     }
 
+    public function testCreateAMediaImageInALibraryIOwnFailWrongFileExtension(): void
+    {
+        $file = new UploadedFile('fixtures/files/file.aseprite', 'file.aseprite');
+        $client = self::createClientWithCredentials();
+
+        $iri = $this->findIriBy(Library::class, ['name' => 'First Lib']);
+        $client->request('POST', $iri . '/media_objects', [
+            'headers' => ['Content-Type' => 'multipart/form-data'],
+            'extra' => [
+                'parameters' => [
+                    'title' => 'Mon fichier uploaded'
+                ],
+                'files' => [
+                    'file' => $file
+                ]
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(422);
+    }
+
     public function testGetAllMediasOfALibraryIOwn(): void
     {
         $client = self::createClientWithCredentials();
@@ -99,7 +119,6 @@ class LibraryMediaTest extends CustomApiTestCase
         ]);
         $this->assertCount(0, $response->toArray()['hydra:member']);
     }
-
 
 
     public function testCreateAMediaInALibraryShared(): void
