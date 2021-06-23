@@ -20,6 +20,9 @@ class RemoveFileEventSubscriber implements EventSubscriberInterface
     {
     }
 
+    /**
+     * @return array<string,array<int, string>>
+     */
     public static function getSubscribedEvents()
     {
         return [

@@ -26,9 +26,9 @@ final class CreateMediaObjectAction
         /** @var UploadedFile $file */
         $file = $request->files->get('file');
         $textContent = $request->request->get('content');
-        if (!$file && !$textContent) {
+        if ($file == null && $textContent == null) {
             throw new UnprocessableEntityHttpException('Either "file" or "content is required."');
-        } elseif ($file && $textContent) {
+        } elseif ($file != null && $textContent != null) {
             throw new UnprocessableEntityHttpException('Only one of "file" or "content is supported."');
         }
 
@@ -38,9 +38,9 @@ final class CreateMediaObjectAction
         $mediaObject->setLibrary($data);
         $mediaObject->setNsfw($request->request->get('nsfw', 'false') === 'true');
 
-        if ($file) {
+        if ($file != null) {
             $mediaObject->file = $file;
-            $mediaObject->setSize($file->getSize());
+            $mediaObject->setSize(strval($file->getSize()));
             $mediaObject->setType($file->getMimeType());
         } else {
             $mediaObject->setContent($textContent);

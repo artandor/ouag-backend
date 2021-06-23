@@ -7,6 +7,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Gift;
 use App\Entity\Library;
 use App\Entity\MediaObject;
+use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
@@ -23,11 +24,13 @@ final class OwnerUserExtension implements QueryCollectionExtensionInterface
 
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
+        /** @var User $user */
+        $user = $this->security->getUser();
         if ((
                 Library::class !== $resourceClass &&
                 MediaObject::class !== $resourceClass &&
                 Gift::class !== $resourceClass)
-            || $this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
+            || $this->security->isGranted('ROLE_ADMIN') || null == $user) {
             return;
         }
 

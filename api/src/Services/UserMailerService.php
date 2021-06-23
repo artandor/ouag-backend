@@ -23,7 +23,7 @@ class UserMailerService
     {
         $signatureComponents = $this->helper->generateSignature(
             'api_users_userVerify_collection',
-            $user->getId(),
+            strval($user->getId()),
             $user->getEmail(),
             ['id' => $user->getId()],
         );

@@ -180,7 +180,7 @@ class Gift
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $owner;
+    private User $owner;
 
     /**
      * @Gedmo\Timestampable(on="create")
