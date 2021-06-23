@@ -90,7 +90,7 @@ class MediaObject
      * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['media_object_read'])]
-    private User $owner;
+    private ?User $owner;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -193,7 +193,7 @@ class MediaObject
         return $this->owner;
     }
 
-    public function setOwner(User $owner): void
+    public function setOwner(?User $owner): void
     {
         $this->owner = $owner;
     }

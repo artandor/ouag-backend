@@ -94,7 +94,7 @@ class GiftInvite
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
-        $this->token = mt_rand(100000, 999999);
+        $this->token = strval(mt_rand(100000, 999999));
         $this->claimed = false;
     }
 

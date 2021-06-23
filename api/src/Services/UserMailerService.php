@@ -19,11 +19,11 @@ class UserMailerService
     {
     }
 
-    public function sendValidationEmail(User $user)
+    public function sendValidationEmail(User $user): void
     {
         $signatureComponents = $this->helper->generateSignature(
             'api_users_userVerify_collection',
-            $user->getId(),
+            strval($user->getId()),
             $user->getEmail(),
             ['id' => $user->getId()],
         );
@@ -42,7 +42,7 @@ class UserMailerService
         $this->mailer->send($email);
     }
 
-    public function giftInviteClaimSendEmail(GiftInvite $invite)
+    public function giftInviteClaimSendEmail(GiftInvite $invite): void
     {
         $gift = $invite->getGift();
         $sender = $gift->getOwner();

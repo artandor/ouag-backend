@@ -16,7 +16,7 @@ final class RemoveMediaObjectImageMessageHandler implements MessageHandlerInterf
     /**
      * @throws FilesystemException
      */
-    public function __invoke(RemoveMediaObjectImageMessage $message)
+    public function __invoke(RemoveMediaObjectImageMessage $message): void
     {
         $filename = $message->getFilename();
 

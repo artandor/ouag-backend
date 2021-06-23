@@ -16,7 +16,7 @@ class HashPasswordSubscriber implements EventSubscriber
     }
 
     /**
-     * @return array
+     * @return array<int, string>
      */
     public function getSubscribedEvents(): array
     {
