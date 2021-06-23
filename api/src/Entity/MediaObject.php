@@ -8,7 +8,7 @@ use App\Repository\MediaObjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\File as File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -77,7 +77,8 @@ class MediaObject
     #[ApiProperty(openapiContext: ['description' => 'Use this property to add a file (gif, video, photo) as a media',
         'type' => 'string', 'format' => 'binary'])]
     #[Groups(['media_object_create'])]
-    #[Assert\File(
+    #[File(
+        maxSize: '100M',
         mimeTypes: ['image/png', 'image/jpg', 'image/gif', 'video/mp4'],
         mimeTypesMessage: "Please upload a valid type file (.jpg, .png, .gif, .mp4)",
     )]
