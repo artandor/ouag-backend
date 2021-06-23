@@ -10,7 +10,7 @@ export default function LoginForm() {
 
     return (
         <div>
-            <h1>Login</h1>
+            <h1 className="text-center">Login</h1>
             <Formik
                 initialValues={new User()}
                 validate={(values) => {
@@ -31,10 +31,9 @@ export default function LoginForm() {
                                 router.push("/users/profile");
                             })
                             .catch((error) => {
-                                console.log(error)
                                 setStatus({
                                     isValid: false,
-                                    msg: `${error}`,
+                                    msg: "Wrong credentials or this account doesn't exists.",
                                 });
                             })
 
@@ -60,16 +59,13 @@ export default function LoginForm() {
                       isSubmitting,
                   }) => (
                     <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_email">
-                                email
-                            </label>
+                        <div className="form-group my-2">
                             <input
                                 name="email"
                                 id="_email"
                                 value={values.email ?? ""}
                                 type="email"
-                                placeholder=""
+                                placeholder="Email"
                                 className={`form-control${
                                     errors.email && touched.email ? " is-invalid" : ""
                                 }`}
@@ -84,16 +80,14 @@ export default function LoginForm() {
                             component="div"
                             name="email"
                         />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_plainPassword">
-                                Password
-                            </label>
+
+                        <div className="form-group my-2">
                             <input
                                 name="plainPassword"
                                 id="_plainPassword"
                                 value={values.plainPassword ?? ""}
                                 type="password"
-                                placeholder=""
+                                placeholder="Password"
                                 className={`form-control${
                                     errors.plainPassword && touched.plainPassword
                                         ? " is-invalid"
@@ -122,7 +116,7 @@ export default function LoginForm() {
 
                         <button
                             type="submit"
-                            className="btn btn-success"
+                            className="btn btn-success my-1 col-12"
                             disabled={isSubmitting}
                         >
                             Login

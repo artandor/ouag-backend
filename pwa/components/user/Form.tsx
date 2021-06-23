@@ -70,7 +70,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                                 value={values.email ?? ""}
                                 type="text"
                                 placeholder=""
-                                className={`${user != undefined ? " form-control-plaintext" : ""}`}
+                                className={`${user != undefined ? " form-control-plaintext" : "form-control"}`}
                                 aria-invalid={errors.email && touched.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
