@@ -1,0 +1,24 @@
+{
+  "locales": [
+    "en",
+    "fr"
+  ],
+  "defaultLocale": "en",
+  "pages": {
+    "*": [
+      "shared"
+    ],
+    "/": [
+      "home"
+    ],
+    "/users/login": [
+      "login"
+    ],
+    "/users/register": [
+      "register"
+    ],
+    "/users/profile": [
+      "profile"
+    ]
+  }
+}

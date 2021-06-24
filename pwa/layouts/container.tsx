@@ -1,7 +1,12 @@
+import Navbar from "../components/common/Navbar";
+
 export default function ContainerLayout({children}) {
     return (
-        <div className={"container"}>
-            {children}
-        </div>
+        <>
+            <Navbar/>
+            <div className={"container"}>
+                {children}
+            </div>
+        </>
     )
 }

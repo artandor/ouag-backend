@@ -8,7 +8,7 @@ function RegisterPage() {
             <Head>
                 <title>Register</title>
             </Head>
-            <Form editMode={null}/>
+            <Form/>
         </ContainerLayout>
     )
 }

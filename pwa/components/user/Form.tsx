@@ -6,8 +6,8 @@ import {User} from "../../types/User";
 
 interface Props {
     user?: User;
-    setEditMode;
-    setUser;
+    setEditMode?;
+    setUser?;
 }
 
 export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => {
@@ -16,7 +16,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
 
     return (
         <div>
-            <h1>{user ? `Edit User ${user["@id"]}` : `Create User`}</h1>
+            <h1 className="text-center">{user ? t('profile:title') : t('register:title')}</h1>
             <Formik
                 initialValues={user ? {...user} : new User()}
                 validate={(values) => {
@@ -37,6 +37,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                         });
                         if (!isCreation) {
                             setUser(await response)
+                            setCookie('NEXT_LOCALE', response["preferredLanguage"], {path: '/'});
                             setEditMode(false)
                         }
                     } catch (error) {
@@ -177,13 +178,13 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
 
                         <button
                             type="submit"
-                            className="btn btn-success"
+                            className="btn btn-success mt-2"
                             disabled={isSubmitting}
                         >
                             Submit
                         </button>
 
-                        <button className="float-end btn btn-primary" type={"button"}
+                        <button className="float-end btn btn-primary mt-2" type={"button"}
                                 onClick={() => !user ? router.replace('/users/login') : setEditMode(false)}>
                             <a>{!user ? 'Login' : 'Back'}</a>
                         </button>

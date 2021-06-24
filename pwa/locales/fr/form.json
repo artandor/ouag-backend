@@ -1,0 +1,8 @@
+{
+  "userForm": {
+    "update": "Modifier votre profil",
+    "newAccount": "Nouveau Compte",
+    "validateAccount": "Vous devez valider votre compte, veuillez vérifier vos emails",
+    "updatedAccount": "Modifications enregistrées"
+  }
+}

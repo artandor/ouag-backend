@@ -3,6 +3,7 @@ import {useRouter} from "next/router";
 import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
 import authProvider from "../../utils/authProvider";
+import useTranslation from "next-translate/useTranslation";
 
 interface Props {
     user: User;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
+    const {t} = useTranslation('profile');
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -27,19 +29,19 @@ export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
 
     return (
         <div>
-            <h1>Welcome to your profile {user["displayName"]}</h1>
+            <h1>{t('title')}</h1>
             <table className="table table-responsive table-striped table-hover">
                 <tbody>
                 <tr>
-                    <th scope="row">email</th>
+                    <th scope="row">Email</th>
                     <td>{user["email"]}</td>
                 </tr>
                 <tr>
-                    <th scope="row">displayName</th>
+                    <th scope="row">Display name</th>
                     <td>{user["displayName"]}</td>
                 </tr>
                 <tr>
-                    <th scope="row">preferredLanguage</th>
+                    <th scope="row">Preferred language</th>
                     <td>{user["preferredLanguage"]}</td>
                 </tr>
                 </tbody>
