@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
 import Link from 'next/link'
 import Image from 'next/image'
+import router from "next/router";
 
 export default function Navbar() {
     const {t} = useTranslation('shared');
@@ -18,7 +19,7 @@ export default function Navbar() {
     }, [])
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-2">
             <div className="container-fluid">
                 <Link href="/">
                     <a className="navbar-brand" href="#">
@@ -52,14 +53,30 @@ export default function Navbar() {
                             </ul>
                         </li>
                     </ul>
-                    {isConnected ?
-                        <button className={'btn btn-link nav-link'}
-                                onClick={() => authProvider.logout().then(r => setConnected(false))}>{t('logoutButton')}</button>
-                        :
-                        <Link href={"/users/login"}>
-                            <a className={'nav-link'}>{t('loginButton')}</a>
-                        </Link>
-                    }
+                    <div className="navbar-nav">
+                        {isConnected ?
+                            <div className="dropdown navbar-nav">
+                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i className="bi bi-person-circle"></i>{" "}
+                                    {t('accountLink')}
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                    <li><Link href={"/users/profile"}><a
+                                        className="dropdown-item">{t('profileLink')}</a></Link></li>
+                                    <li>
+                                        <a className={'dropdown-item'} href="#"
+                                           onClick={() => authProvider.logout().then(value => router.push('/users/login'))}>{t('logoutButton')}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            :
+                            <Link href={"/users/login"}>
+                                <a className={'nav-link'}>{t('loginOrRegisterButton')}</a>
+                            </Link>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>

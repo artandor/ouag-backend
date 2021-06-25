@@ -1,0 +1,24 @@
+{
+  "loginPage": {
+    "title": "Login"
+  },
+  "profilePage": {
+    "title": "My Account"
+  },
+  "registerPage": {
+    "title": "Create an account"
+  },
+  "forms": {
+    "update": "Update your profile",
+    "newAccount": "New Account",
+    "validateAccount": "You need to validate your account, please check your email",
+    "updatedAccount": "Account updated.",
+    "deleteNotice": "At the moment, if you need to delete your account, please contact",
+    "fields": {
+      "email": "Email",
+      "displayName": "Display name",
+      "password": "Password",
+      "preferredLanguage": "Preferred language"
+    }
+  }
+}

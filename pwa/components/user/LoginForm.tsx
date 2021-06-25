@@ -3,8 +3,13 @@ import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {User} from "../../types/User";
 import authProvider from "../../utils/authProvider";
+import useTranslation from "next-translate/useTranslation";
+import {fetch} from "../../utils/dataAccess";
+import {useCookies} from 'react-cookie';
 
 export default function LoginForm() {
+    const [cookies, setCookie] = useCookies(['NEXT_LOCALE']);
+    const {t} = useTranslation('users')
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -65,7 +70,7 @@ export default function LoginForm() {
                                 id="_email"
                                 value={values.email ?? ""}
                                 type="email"
-                                placeholder="Email"
+                                placeholder={t('forms.fields.email')}
                                 className={`form-control${
                                     errors.email && touched.email ? " is-invalid" : ""
                                 }`}
@@ -87,7 +92,7 @@ export default function LoginForm() {
                                 id="_plainPassword"
                                 value={values.plainPassword ?? ""}
                                 type="password"
-                                placeholder="Password"
+                                placeholder={t('forms.fields.password')}
                                 className={`form-control${
                                     errors.plainPassword && touched.plainPassword
                                         ? " is-invalid"
@@ -116,10 +121,10 @@ export default function LoginForm() {
 
                         <button
                             type="submit"
-                            className="btn btn-success my-1 col-12"
+                            className="btn btn-primary my-1 col-12"
                             disabled={isSubmitting}
                         >
-                            Login
+                            {t('shared:loginButton')}
                         </button>
                     </form>
                 )}

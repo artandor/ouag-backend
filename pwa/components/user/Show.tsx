@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
-    const {t} = useTranslation('profile');
+    const {t} = useTranslation('users');
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -29,24 +29,24 @@ export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
 
     return (
         <div>
-            <h1>{t('title')}</h1>
+            <h1>{t('profilePage.title')}</h1>
             <table className="table table-responsive table-striped table-hover">
                 <tbody>
                 <tr>
-                    <th scope="row">Email</th>
+                    <th scope="row">{t('forms.fields.email')}</th>
                     <td>{user["email"]}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Display name</th>
+                    <th scope="row">{t('forms.fields.displayName')}</th>
                     <td>{user["displayName"]}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Preferred language</th>
+                    <th scope="row">{t('forms.fields.preferredLanguage')}</th>
                     <td>{user["preferredLanguage"]}</td>
                 </tr>
                 </tbody>
             </table>
-            <p>At the moment, if you need to delete your account, please contact <a
+            <p>{t('forms.deleteNotice')} <a
                 href={'mailto:support@once-upon-a-gift.com'}>support@once-upon-a-gift.com</a></p>
             {error && (
                 <div className="alert alert-danger" role="alert">
@@ -55,16 +55,20 @@ export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
             )}
             <div className={'btn-group col-12'} role={'group'} aria-label={'actions'}>
                 <button className="btn btn-warning" onClick={(event) => setEditMode(true)}>
-                    Edit
+                    {t('shared:editButton')}
                 </button>
                 {/* The delete button is hidden until https://github.com/artandor/ouag-backend/issues/21 is done */}
                 <button className="btn btn-danger d-none" onClick={handleDelete}>
-                    <a>Delete</a>
+                    <a>
+                        {t('shared:deleteButton')}
+                    </a>
                 </button>
                 <button className="btn btn-primary" onClick={(event) => {
                     authProvider.logout().then(value => router.push('/users/login'));
                 }}>
-                    <a>Logout</a>
+                    <a>
+                        {t('shared:logoutButton')}
+                    </a>
                 </button>
             </div>
         </div>

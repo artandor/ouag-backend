@@ -11,14 +11,8 @@
     "/": [
       "home"
     ],
-    "/users/login": [
-      "login"
-    ],
-    "/users/register": [
-      "register"
-    ],
-    "/users/profile": [
-      "profile"
+    "rgx:^/users/*": [
+      "users"
     ]
   }
 }

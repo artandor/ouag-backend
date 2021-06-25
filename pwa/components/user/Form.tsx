@@ -16,7 +16,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
 
     return (
         <div>
-            <h1 className="text-center">{user ? t('profile:title') : t('register:title')}</h1>
+            <h1 className="text-center">{user ? t('profilePage.title') : t('registerPage.title')}</h1>
             <Formik
                 initialValues={user ? {...user} : new User()}
                 validate={(values) => {
@@ -63,7 +63,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_email">
-                                Email
+                                {t('forms.fields.email')}
                             </label>
                             <input
                                 name="email"
@@ -86,7 +86,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                         />
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_displayName">
-                                Display name
+                                {t('forms.fields.displayName')}
                             </label>
                             <input
                                 name="displayName"
@@ -109,7 +109,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                         />
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_plainPassword">
-                                Password
+                                {t('forms.fields.password')}
                             </label>
                             <input
                                 name="plainPassword"
@@ -137,7 +137,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                                 className="form-control-label"
                                 htmlFor="_preferredLanguage"
                             >
-                                Preferred language
+                                {t('forms.fields.preferredLanguage')}
                             </label>
                             <select
                                 name="preferredLanguage"
@@ -178,13 +178,13 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
 
                         <button
                             type="submit"
-                            className="btn btn-success mt-2"
+                            className="btn btn-primary mt-2"
                             disabled={isSubmitting}
                         >
-                            Submit
+                            {t('shared:submitButton')}
                         </button>
 
-                        <button className="float-end btn btn-primary mt-2" type={"button"}
+                        <button className="float-end btn btn-light mt-2" type={"button"}
                                 onClick={() => !user ? router.replace('/users/login') : setEditMode(false)}>
                             <a>{!user ? 'Login' : 'Back'}</a>
                         </button>
