@@ -42,7 +42,7 @@ export default function LoginForm() {
                             .catch((error) => {
                                 setStatus({
                                     isValid: false,
-                                    msg: "Wrong credentials or this account doesn't exists.",
+                                    msg: "Wrong credentials or this account doesn't exist.",
                                 });
                             })
 
