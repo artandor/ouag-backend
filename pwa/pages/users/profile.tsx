@@ -4,8 +4,10 @@ import {Show} from "../../components/user/Show";
 import {useEffect, useState} from "react";
 import {Form} from "../../components/user/Form";
 import ContainerLayout from "../../layouts/container";
+import useTranslation from 'next-translate/useTranslation'
 
 function ProfilePage() {
+    const {t} = useTranslation('users');
     let [editMode, setEditMode] = useState(false);
     let [user, setUser] = useState({})
 
@@ -22,7 +24,7 @@ function ProfilePage() {
             <div>
                 <div>
                     <Head>
-                        <title>My Account</title>
+                        <title>{t('profilePage.title')}</title>
                     </Head>
                 </div>
                 {!user ? "Loading" : editMode ? <Form user={user} setUser={setUser} setEditMode={setEditMode}/> :

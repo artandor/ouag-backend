@@ -32,8 +32,12 @@ export default function LoginForm() {
                                     isValid: true,
                                     msg: 'Connexion successfull',
                                 });
-
-                                router.push("/users/profile");
+                                fetch("/users/me")
+                                    .then((res) => {
+                                        console.log(res);
+                                        setCookie('NEXT_LOCALE', res["preferredLanguage"], {path: '/'})
+                                        router.push("/users/profile", "/users/profile", {locale: res["preferredLanguage"]});
+                                    })
                             })
                             .catch((error) => {
                                 setStatus({

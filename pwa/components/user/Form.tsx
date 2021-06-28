@@ -3,6 +3,8 @@ import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
+import useTranslation from 'next-translate/useTranslation'
+import {useCookies} from 'react-cookie';
 
 interface Props {
     user?: User;
@@ -11,6 +13,8 @@ interface Props {
 }
 
 export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => {
+    const [cookies, setCookie] = useCookies(['NEXT_LOCALE']);
+    const {t} = useTranslation('users');
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -33,12 +37,13 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                         });
                         setStatus({
                             isValid: true,
-                            msg: isCreation ? 'You need to validate your account, please check your email' : 'Account updated.',
+                            msg: isCreation ? t('userForm.validateAccount') : t('userForm.updatedAccount'),
                         });
                         if (!isCreation) {
                             setUser(await response)
                             setCookie('NEXT_LOCALE', response["preferredLanguage"], {path: '/'});
                             setEditMode(false)
+                            router.push(router.pathname, router.pathname, {locale: response["preferredLanguage"]});
                         }
                     } catch (error) {
                         setStatus({
@@ -186,7 +191,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
 
                         <button className="float-end btn btn-light mt-2" type={"button"}
                                 onClick={() => !user ? router.replace('/users/login') : setEditMode(false)}>
-                            <a>{!user ? 'Login' : 'Back'}</a>
+                            <a>{!user ? t('shared:loginButton') : t('shared:backButton')}</a>
                         </button>
                     </form>
                 )}
