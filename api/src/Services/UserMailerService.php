@@ -19,11 +19,11 @@ class UserMailerService
     {
     }
 
-    public function sendValidationEmail(User $user)
+    public function sendValidationEmail(User $user): void
     {
         $signatureComponents = $this->helper->generateSignature(
             'api_users_userVerify_collection',
-            $user->getId(),
+            strval($user->getId()),
             $user->getEmail(),
             ['id' => $user->getId()],
         );
@@ -38,11 +38,13 @@ class UserMailerService
                 'username' => $user->getDisplayName(),
                 'signedUrl' => $signatureComponents->getSignedUrl(),
             ]);
+        $email->setHeaders($email->getHeaders()
+            ->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply'));
 
         $this->mailer->send($email);
     }
 
-    public function giftInviteClaimSendEmail(GiftInvite $invite)
+    public function giftInviteClaimSendEmail(GiftInvite $invite): void
     {
         $gift = $invite->getGift();
         $sender = $gift->getOwner();
@@ -57,6 +59,29 @@ class UserMailerService
                 'email_receiver' => $invite->getEmail(),
                 'gift_name' => $gift->getName(),
             ]);
+        $email->setHeaders($email->getHeaders()
+            ->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply'));
+        $this->mailer->send($email);
+    }
+
+    public function giftSendInvite(GiftInvite $invite): void
+    {
+        $gift = $invite->getGift();
+        $sender = $gift->getOwner();
+        $senderName = $invite->getCreatorNickname() ?? $gift->getOwner()->getDisplayName();
+        $email = (new TemplatedEmail())
+            ->from(new Address('postmaster@once-upon-a-gift.com', 'Once Upon A Gift'))
+            ->to(new Address($invite->getEmail()))
+            ->subject($this->translator->trans('gift_sender sent you a gift !!', ['gift_sender' => $senderName], 'messages', $sender->getPreferredLanguage()))
+            ->htmlTemplate('emails/gift_invitation.html.twig')
+            ->context([
+                'gift' => $gift,
+                'invite' => $invite,
+                'locale' => $sender->getPreferredLanguage(),
+                'creator_name' => $senderName,
+            ]);
+        $email->setHeaders($email->getHeaders()
+            ->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply'));
         $this->mailer->send($email);
     }
 }

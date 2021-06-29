@@ -1,0 +1,24 @@
+framework:
+    workflows:
+        gift_publishing:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Gift
+            initial_marking: !php/const App\Entity\Gift::STATE_DRAFT
+            places:
+                - !php/const App\Entity\Gift::STATE_DRAFT
+                - !php/const App\Entity\Gift::STATE_ORDERED
+                - !php/const App\Entity\Gift::STATE_PUBLISHED
+            transitions:
+                checkout:
+                    from: !php/const App\Entity\Gift::STATE_DRAFT
+                    to: !php/const App\Entity\Gift::STATE_ORDERED
+                publish:
+                    from: !php/const App\Entity\Gift::STATE_ORDERED
+                    to: !php/const App\Entity\Gift::STATE_PUBLISHED
+

@@ -8,6 +8,8 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
+use App\Controller\GiftWorkflowOrder;
+use App\Controller\GiftWorkflowPublish;
 use App\Repository\GiftRepository;
 use App\Repository\PlanningRepository;
 use DateTimeInterface;
@@ -40,14 +42,14 @@ use Symfony\Component\Validator\Constraints\Positive;
             'responses' => [
                 '200' => [
                     'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/Gift-gift_read',
-                            ],
-                        ],
                         'application/json+ld' => [
                             'schema' => [
                                 '$ref' => '#/components/schemas/Gift.jsonld-gift_read',
+                            ],
+                        ],
+                        'application/json' => [
+                            'schema' => [
+                                '$ref' => '#/components/schemas/Gift-gift_read',
                             ],
                         ],
                     ]
@@ -95,6 +97,18 @@ use Symfony\Component\Validator\Constraints\Positive;
             ]
         ]
     ],
+    'gift_order' => [
+        'method' => 'PUT',
+        'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
+        'path' => 'gifts/{id}/order',
+        'controller' => GiftWorkflowOrder::class,
+    ],
+    'gift_publish' => [
+        'method' => 'PUT',
+        'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
+        'path' => 'gifts/{id}/publish',
+        'controller' => GiftWorkflowPublish::class,
+    ],
 ],
     denormalizationContext: ['groups' => ['gift_write']],
     normalizationContext: ['groups' => ['gift_read']],
@@ -103,10 +117,14 @@ use Symfony\Component\Validator\Constraints\Positive;
 #[ApiFilter(filterClass: SearchFilter::class, properties: [
     'owner' => 'exact',
     'receivers' => 'exact',
-    // 'state' => 'exact',
+    'state' => 'exact',
 ])]
 class Gift
 {
+    const STATE_DRAFT = 'draft';
+    const STATE_ORDERED = 'ordered';
+    const STATE_PUBLISHED = 'published';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -162,13 +180,19 @@ class Gift
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?User $owner;
+    private User $owner;
 
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private ?DateTimeInterface $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    #[Groups(['gift_write', 'gift_read'])]
+    private ?string $fillingMethod;
 
     /**
      * @Gedmo\Timestampable(on="update")
@@ -189,6 +213,11 @@ class Gift
     #[Groups(['gift_read'])]
     private Collection $invites;
 
+    /**
+     * @ORM\Column(type="string", length=100, options={"default": "draft"})
+     */
+    #[Groups(['gift_read'])]
+    private ?string $state;
 
     #[Groups(['gift_read'])]
     public function getActualMedia(): ?MediaObject
@@ -209,6 +238,8 @@ class Gift
         $this->plannings = new ArrayCollection();
         $this->receivers = new ArrayCollection();
         $this->invites = new ArrayCollection();
+        $this->state = self::STATE_DRAFT;
+        $this->fillingMethod = null;
     }
 
     public function getId(): ?int
@@ -260,6 +291,18 @@ class Gift
     public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getFillingMethod(): ?string
+    {
+        return $this->fillingMethod;
+    }
+
+    public function setFillingMethod(?string $fillingMethod): self
+    {
+        $this->fillingMethod = $fillingMethod;
 
         return $this;
     }
@@ -392,6 +435,18 @@ class Gift
                 $invite->setGift(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

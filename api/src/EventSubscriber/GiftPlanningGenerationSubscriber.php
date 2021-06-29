@@ -30,14 +30,21 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args): void
     {
         $gift = $args->getEntity();
-
         if (!$gift instanceof Gift) {
             return;
         }
 
         $this->em->transactional(function ($em) use ($gift) {
+            $totalMediasOwner = $gift->getOwner()->getMediaObjects();
+            $totalMediasOwnerArray = $totalMediasOwner->toArray();
+            shuffle($totalMediasOwnerArray);
+            $totalMediasOwnerCount = $totalMediasOwner->count();
+
             for ($i = 0; $i < $gift->getMediaAmount(); $i++) {
                 $planning = new Planning();
+                if ($gift->getFillingMethod() === "automatic" && $i < $totalMediasOwnerCount) {
+                    $planning->setMedia($totalMediasOwnerArray[$i]);
+                }
                 $planning->setGift($gift);
                 $planning->setPosition($i);
                 $em->persist($planning);

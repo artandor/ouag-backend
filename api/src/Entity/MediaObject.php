@@ -8,6 +8,7 @@ use App\Repository\MediaObjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -76,6 +77,11 @@ class MediaObject
     #[ApiProperty(openapiContext: ['description' => 'Use this property to add a file (gif, video, photo) as a media',
         'type' => 'string', 'format' => 'binary'])]
     #[Groups(['media_object_create'])]
+    #[File(
+        maxSize: '100M',
+        mimeTypes: ['image/png', 'image/jpg', 'image/gif', 'video/mp4'],
+        mimeTypesMessage: "Please upload a valid type file (.jpg, .png, .gif, .mp4)",
+    )]
     public $file;
 
     /**
@@ -90,7 +96,7 @@ class MediaObject
      * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['media_object_read'])]
-    private User $owner;
+    private ?User $owner;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -193,7 +199,7 @@ class MediaObject
         return $this->owner;
     }
 
-    public function setOwner(User $owner): void
+    public function setOwner(?User $owner): void
     {
         $this->owner = $owner;
     }

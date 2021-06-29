@@ -26,6 +26,13 @@ App\Entity\GiftInvite:
         receiverNickname: <firstName()>
         comment: <paragraph()>
         gift: '@gift_owned_named'
+    gift_invite_owned_{11..20}:
+        email: <email()>
+        creatorNickname: <firstName()>
+        receiverNickname: <firstName()>
+        comment: <paragraph()>
+        token: 123456
+        gift: '@gift_owned_ordered'
     gift_invite_not_owned_{1..10}:
         email: <email()>
         creatorNickname: <firstName()>
