@@ -1,0 +1,12 @@
+{
+  "loginButton": "Login",
+  "loginOrRegisterButton": "Login / Register",
+  "profileLink": "Profile",
+  "accountLink": "Mon compte",
+  "logoutButton": "Logout",
+  "registerButton": "Register",
+  "submitButton": "Submit",
+  "editButton": "Edit",
+  "deleteButton": "Edit",
+  "backButton": "Back"
+}

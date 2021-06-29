@@ -137,7 +137,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['user_write'])]
+    #[Groups(['user_read', 'user_write'])]
     private ?string $preferredLanguage;
 
     /**

@@ -1,49 +1,70 @@
 import jwtDecode from "jwt-decode";
-import { ENTRYPOINT } from "../config/entrypoint";
+import {ENTRYPOINT} from "../config/entrypoint";
 
 export default {
-  login: ({ username, password }) => {
-    const request = new Request(
-      `${ENTRYPOINT}/authentication_token`,
-      {
-        method: "POST",
-        body: JSON.stringify({ email: username, password }),
-        headers: new Headers({ "Content-Type": "application/json" }),
-      }
-    );
-    return fetch(request)
-      .then((response) => {
-        if (response.status < 200 || response.status >= 300) {
-          throw new Error(response.statusText);
+    login: ({username, password}) => {
+        const request = new Request(
+            `${ENTRYPOINT}/authentication_token`,
+            {
+                method: "POST",
+                body: JSON.stringify({email: username, password: password}),
+                headers: new Headers({"Content-Type": "application/json"}),
+            }
+        );
+        return fetch(request)
+            .then(async (response) => {
+                if (response.status < 200 || response.status >= 300) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(({token, refresh_token}) => {
+                localStorage.setItem("token", token);
+                localStorage.setItem("refreshToken", refresh_token);
+            });
+    },
+    refreshToken: () => {
+        const request = new Request(
+            `${ENTRYPOINT}/authentication_token/refresh`,
+            {
+                method: "POST",
+                body: JSON.stringify({refresh_token: localStorage.getItem('refreshToken')}),
+                headers: new Headers({"Content-Type": "application/json"}),
+            }
+        )
+        return fetch(request)
+            .then(async (response) => {
+                if (response.status < 200 || response.status >= 300) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(({token}) => {
+                localStorage.setItem("token", token);
+            });
+    },
+    logout: () => {
+        localStorage.clear();
+        return Promise.resolve();
+    },
+    checkAuth: () => {
+        try {
+            // @ts-ignore
+            if (!localStorage.getItem("token") || new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
+                return Promise.reject();
+            }
+            return Promise.resolve();
+        } catch (e) {
+            // override possible jwtDecode error
+            return Promise.reject();
         }
-        return response.json();
-      })
-      .then(({ token }) => {
-        localStorage.setItem("token", token);
-      });
-  },
-  logout: () => {
-    localStorage.removeItem("token");
-    return Promise.resolve();
-  },
-  checkAuth: () => {
-    try {
-      // @ts-ignore
-      if (!localStorage.getItem("token") || new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
-        return Promise.reject();
-      }
-      return Promise.resolve();
-    } catch (e) {
-      // override possible jwtDecode error
-      return Promise.reject();
-    }
-  },
-  checkError: (err) => {
-    if ([401].includes(err?.status || err?.response?.status)) {
-      localStorage.removeItem("token");
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  },
-  getPermissions: () => Promise.resolve(),
+    },
+    checkError: (err) => {
+        if ([401].includes(err?.status || err?.response?.status)) {
+            localStorage.removeItem("token");
+            return Promise.reject();
+        }
+        return Promise.resolve();
+    },
+    getPermissions: () => Promise.resolve(),
 };
