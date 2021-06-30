@@ -13,6 +13,9 @@
     ],
     "rgx:^/users/*": [
       "users"
+    ],
+    "/gifts": [
+      "gifts"
     ]
   }
 }

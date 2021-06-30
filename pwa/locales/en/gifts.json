@@ -1,0 +1,11 @@
+{
+  "giftCreation": "Create a Gift",
+  "recapAttention": {
+    "one": "An attention every day",
+    "other": "An attention every {{count}} days"
+  },
+  "recapMediaAmount": {
+    "one": "for {{count}} day",
+    "other": "for {{count}} days"
+  }
+}
