@@ -55,6 +55,11 @@ export default function Navbar() {
                                 <li><a className="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
+                        <li className="nav-item">
+                            <Link href="/libraries">
+                                <a className={`${router.pathname == '/libraries' ? "active" : ""} nav-link`}>Libraries</a>
+                            </Link>
+                        </li>
                     </ul>
                     <div className="navbar-nav">
                         {isConnected ?
