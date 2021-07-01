@@ -7,6 +7,7 @@ export class Gift {
         public startAt?: Date,
         public recurrence?: number,
         public mediaAmount?: number,
+        public completionPercentage?: number,
         public defaultAnimation?: string,
         public fillingMethod?: string,
         public receivers?: string[],

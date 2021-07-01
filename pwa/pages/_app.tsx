@@ -1,6 +1,7 @@
 import type {AppProps} from "next/app";
 import "bootswatch/dist/journal/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "../styles/global.css"
 import Head from 'next/head'
 
 function MyApp({Component, pageProps}: AppProps) {

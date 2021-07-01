@@ -3,6 +3,7 @@ import Link from "next/link";
 import {Gift} from "../../types/Gift";
 import {useRouter} from "next/router";
 import useTranslation from "next-translate/useTranslation";
+import {getDaysBetweenDates} from "../../utils/common";
 
 interface Props {
     gifts: Gift[];
@@ -19,7 +20,7 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
             <Link href={"/gifts/create"}>
                 <a className="btn btn-primary my-2">{t('giftCreation')}</a>
             </Link>
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-3">
                 {gifts &&
                 gifts.length !== 0 &&
                 gifts.map((gift) => (
@@ -28,34 +29,48 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
                             <div className="card h-100">
                                 <div className="card-img-top">
                                     {new Date(gift.startAt) <= todayDate ?
+                                        // TODO : Replace this by the current media object that is gifted
                                         <img
                                             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.cmu.edu%2Fnews%2Fstories%2Farchives%2F2017%2Fnovember%2Fimages%2Fpredict-perfect-gift_900x600-min.jpg&f=1&nofb=1"
-                                            alt="Cover of this gift" className={"img-fluid"}/> : ""}
+                                            alt="Cover of this gift" className={"img-fluid"}/> :
+                                        <div style={{height: "26vh"}}
+                                             className="d-flex align-items-center justify-content-center alert-primary">
+                                            <p className="h2">{`Starts in ${getDaysBetweenDates(new Date(gift.startAt), todayDate)} days`}</p>
+                                        </div>}
                                 </div>
                                 <div className="card-body">
                                     <div className="card-title d-flex justify-content-between">
-                                        <h4>{gift.name}</h4>
+                                        <h4 className="text-ellipsis me-1">{gift.name}</h4>
                                         <h4>
                                             <span
-                                                className={`badge bg-${gift.state == 'draft' ? 'info'
-                                                    : gift.state == 'ordered' ? 'warning' : 'primary'}`}>{gift.state}</span>
+                                                className={`text-capitalize badge bg-${gift.state == 'draft' ? 'info'
+                                                    : gift.state == 'ordered' ? 'warning text-dark' : 'success'}`}>{gift.state}</span>
                                         </h4>
                                     </div>
                                     <p className="card-text">{t('recapAttention', {count: gift.recurrence})} {t('recapMediaAmount', {count: gift.mediaAmount})}</p>
-                                    <div className="progress">
-                                        <div className="progress-bar" role="progressbar" style={{width: "70%"}}
-                                             aria-valuenow={100} aria-valuemin={0} aria-valuemax={100}>25%
+                                    <div className="text-center text-bold"><strong>
+                                        {gift.state == 'published' ?
+                                            <label htmlFor="giftProgress">{t('distributionPercentage')}</label> :
+                                            <label htmlFor="giftProgress">{t('fillPercentage')}</label>}
+                                    </strong></div>
+                                    <div className="progress" id="giftProgress">
+                                        <div
+                                            className={`progress-bar ${gift.state == 'published' ? 'bg-success' : 'bg-info'}`}
+                                            role="progressbar" style={{width: `${gift.completionPercentage}%`}}
+                                            aria-valuenow={gift.completionPercentage} aria-valuemin={0}
+                                            aria-valuemax={100}>{gift.completionPercentage}%
                                         </div>
                                     </div>
                                 </div>
                                 <div className="card-footer d-flex justify-content-between align-middle">
-                                    {new Date(gift.startAt) > todayDate ?
-                                        `Starts in ${Math.ceil((new Date(gift.startAt).getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24))} days`
-                                        : `Started at : ${new Date(gift.startAt).toLocaleDateString(router.locale, {
+                                    {new Date(gift.startAt) <= todayDate ?
+                                        <div className="d-flex content-end">
+                                            {t('starting')}{` ${new Date(gift.startAt).toLocaleDateString(router.locale, {
                                             day: 'numeric',
                                             month: 'short',
                                             year: 'numeric',
                                         })}`}
+                                        </div> : <p></p>}
                                     <Link href={`${gift["@id"]}`}>
                                         <a>
                                             <i className="bi bi-pen" aria-hidden="true"/>{" "}

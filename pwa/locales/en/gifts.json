@@ -1,5 +1,8 @@
 {
   "giftCreation": "Create a Gift",
+  "starting": "Start",
+  "distributionPercentage": "Distributed",
+  "fillPercentage": "Media filled",
   "recapAttention": {
     "one": "An attention every day",
     "other": "An attention every {{count}} days"
