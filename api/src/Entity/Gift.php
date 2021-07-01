@@ -59,9 +59,9 @@ use Symfony\Component\Validator\Constraints\Positive;
     ],
 ],
     itemOperations: [
-    'get' => ['security' => "is_granted('ROLE_USER') and (object.getOwner() == user or object.getReceivers().contains(user))"],
-    'put' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
-    'delete' => ['security' => "is_granted('ROLE_USER') and object.getOwner() == user"],
+    'get' => ['security' => "is_granted('ROLE_ADMIN') or (object.getOwner() == user or object.getReceivers().contains(user))"],
+    'put' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
+    'delete' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
     'post_new_invite' => [
         'method' => 'POST',
         'security' => "is_granted('ROLE_USER') and object.getOwner() == user",
@@ -231,6 +231,25 @@ class Gift
         }
 
         return $actualPlanning->getMedia();
+    }
+
+    #[Groups(['gift_read'])]
+    public function getCompletionPercentage(): int
+    {
+        $currentDate = new \DateTime('now');
+        $completed = 0;
+        if ($this->state == self::STATE_DRAFT) {
+            foreach ($this->getPlannings() as $planning) {
+                if ($planning->getMedia() != null) $completed++;
+            }
+        } else {
+            foreach ($this->getPlannings() as $planning) {
+                if ($planning->getPlannedAt() <= $currentDate) {
+                    return $planning->getPosition() + 1 / $this->getMediaAmount() * 100;
+                }
+            }
+        }
+        return $completed / $this->getMediaAmount() * 100;
     }
 
     public function __construct()
