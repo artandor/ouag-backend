@@ -3,3 +3,16 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.form-control-inline {
+    display: inline;
+    margin: 0 10px;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    width: initial;
+    max-width: 100%;
+    font-weight: 900;
+    text-align: center;
+}

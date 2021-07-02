@@ -4,6 +4,8 @@ import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {fetch} from "../../utils/dataAccess";
 import {Gift} from "../../types/Gift";
+import useTranslation from "next-translate/useTranslation";
+import {dateToFormString} from "../../utils/common";
 
 interface Props {
     gift?: Gift;
@@ -12,6 +14,7 @@ interface Props {
 export const Form: FunctionComponent<Props> = ({gift}) => {
     const [error, setError] = useState(null);
     const router = useRouter();
+    const {t} = useTranslation('gifts')
 
     const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this item?")) return;
@@ -26,7 +29,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>{gift ? `Edit Gift ${gift["@id"]}` : `Create Gift`}</h1>
             <Formik
                 initialValues={gift ? {...gift} : new Gift()}
@@ -68,74 +71,26 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                       isSubmitting,
                   }) => (
                     <form onSubmit={handleSubmit}>
-                        <div className="form-group">
+                        <div className="text-center">
                             <label className="form-control-label" htmlFor="_name">
-                                name
+                                I want to create a gift named
                             </label>
-                            <input
+                            <strong><input
                                 name="name"
                                 id="_name"
                                 value={values.name ?? ""}
                                 type="text"
                                 placeholder=""
-                                className={`form-control${
+                                className={`form-control-inline text-primary${
                                     errors.name && touched.name ? " is-invalid" : ""
                                 }`}
                                 aria-invalid={errors.name && touched.name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage className="text-danger" component="div" name="name"/>
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_startAt">
-                                startAt
-                            </label>
-                            <input
-                                name="startAt"
-                                id="_startAt"
-                                value={values.startAt ?? ""}
-                                type="date"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.startAt && touched.startAt ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.startAt && touched.startAt}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="startAt"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_recurrence">
-                                recurrence
-                            </label>
-                            <input
-                                name="recurrence"
-                                id="_recurrence"
-                                value={values.recurrence ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.recurrence && touched.recurrence ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.recurrence && touched.recurrence}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="recurrence"
-                        />
-                        <div className="form-group">
+                            /></strong>
+                            <ErrorMessage className="text-danger" component="div" name="name"/>
                             <label className="form-control-label" htmlFor="_mediaAmount">
-                                mediaAmount
+                                containing
                             </label>
                             <input
                                 name="mediaAmount"
@@ -143,57 +98,77 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                 value={values.mediaAmount ?? ""}
                                 type="text"
                                 placeholder=""
-                                className={`form-control${
+                                className={`form-control-inline text-primary${
                                     errors.mediaAmount && touched.mediaAmount ? " is-invalid" : ""
                                 }`}
                                 aria-invalid={errors.mediaAmount && touched.mediaAmount}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="mediaAmount"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_defaultAnimation">
-                                defaultAnimation
+                            <label className="form-control-label" htmlFor="_mediaAmount">
+                                memories.
+                            </label>
+                            <ErrorMessage
+                                className="text-danger"
+                                component="div"
+                                name="mediaAmount"
+                            />
+                            <label className="form-control-label" htmlFor="_recurrence">
+                                A memory is sent every
                             </label>
                             <input
-                                name="defaultAnimation"
-                                id="_defaultAnimation"
-                                value={values.defaultAnimation ?? ""}
+                                name="recurrence"
+                                id="_recurrence"
+                                value={values.recurrence ?? ""}
                                 type="text"
                                 placeholder=""
-                                className={`form-control${
-                                    errors.defaultAnimation && touched.defaultAnimation
-                                        ? " is-invalid"
-                                        : ""
+                                className={`form-control-inline text-primary${
+                                    errors.recurrence && touched.recurrence ? " is-invalid" : ""
                                 }`}
-                                aria-invalid={
-                                    errors.defaultAnimation && touched.defaultAnimation
-                                }
+                                aria-invalid={errors.recurrence && touched.recurrence}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="defaultAnimation"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_fillingMethod">
-                                fillingMethod
+                            <label className="form-control-label" htmlFor="_recurrence">
+                                day(s)
+                            </label>
+                            <ErrorMessage
+                                className="text-danger"
+                                component="div"
+                                name="recurrence"
+                            />
+
+                            <label className="form-control-label" htmlFor="_startAt">
+                                from
                             </label>
                             <input
+                                name="startAt"
+                                id="_startAt"
+                                value={values.startAt ? dateToFormString(new Date(values.startAt)) : dateToFormString(new Date())}
+                                type="date"
+                                placeholder=""
+                                className={`form-control-inline text-primary${
+                                    errors.startAt && touched.startAt ? " is-invalid" : ""
+                                }`}
+                                aria-invalid={errors.startAt && touched.startAt}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <ErrorMessage
+                                className="text-danger"
+                                component="div"
+                                name="startAt"
+                            />
+
+                            <label className="form-control-label" htmlFor="_fillingMethod">
+                                I want to plan my gift
+                            </label>
+                            <select
                                 name="fillingMethod"
                                 id="_fillingMethod"
                                 value={values.fillingMethod ?? ""}
-                                type="text"
                                 placeholder=""
-                                className={`form-control${
+                                className={`form-control-inline text-primary${
                                     errors.fillingMethod && touched.fillingMethod
                                         ? " is-invalid"
                                         : ""
@@ -201,124 +176,41 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                 aria-invalid={errors.fillingMethod && touched.fillingMethod}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="fillingMethod"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_receivers">
-                                receivers
-                            </label>
-                            <input
-                                name="receivers"
-                                id="_receivers"
-                                value={values.receivers ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.receivers && touched.receivers ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.receivers && touched.receivers}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="receivers"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_invites">
-                                invites
-                            </label>
-                            <input
-                                name="invites"
-                                id="_invites"
-                                value={values.invites ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.invites && touched.invites ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.invites && touched.invites}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="invites"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_state">
-                                state
-                            </label>
-                            <input
-                                name="state"
-                                id="_state"
-                                value={values.state ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.state && touched.state ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.state && touched.state}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="state"
-                        />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_actualMedia">
-                                actualMedia
-                            </label>
-                            <input
-                                name="actualMedia"
-                                id="_actualMedia"
-                                value={values.actualMedia ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.actualMedia && touched.actualMedia ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.actualMedia && touched.actualMedia}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="actualMedia"
-                        />
-
-                        {status && status.msg && (
-                            <div
-                                className={`alert ${
-                                    status.isValid ? "alert-success" : "alert-danger"
-                                }`}
-                                role="alert"
                             >
-                                {status.msg}
-                            </div>
-                        )}
+                                <option value="manual">Manually (For each day of your gift you'll have to associate a
+                                    media)
+                                </option>
+                                <option value="automatic">Automatically (we will use your current libraries to plan your
+                                    image, then you can modify them. If you have no libraries it will do nothing)
+                                </option>
+                            </select>
 
-                        <button
-                            type="submit"
-                            className="btn btn-success"
-                            disabled={isSubmitting}
-                        >
-                            Submit
-                        </button>
+                            <ErrorMessage
+                                className="text-danger"
+                                component="div"
+                                name="fillingMethod"
+                            />
+                            {status && status.msg && (
+                                <div
+                                    className={`alert ${
+                                        status.isValid ? "alert-success" : "alert-danger"
+                                    }`}
+                                    role="alert"
+                                >
+                                    {status.msg}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="mt-3">
+                            <button
+                                type="submit"
+                                className="btn btn-success"
+                                disabled={isSubmitting}
+                            >
+                                Submit
+                            </button>
+                        </div>
                     </form>
                 )}
             </Formik>
