@@ -57,6 +57,6 @@ services:
             - { name: api_platform.doctrine.orm.query_extension.collection }
 
     app.event.jwt_created_listener:
-        class: App\EventSubscriber\JWTCreatedSubscriber
+        class: App\EventSubscriber\AuthenticationSuccessSubscriber
         tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
