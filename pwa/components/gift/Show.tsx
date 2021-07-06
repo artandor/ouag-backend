@@ -26,7 +26,7 @@ export const Show: FunctionComponent<Props> = ({gift}) => {
 
     return (
         <div>
-            <h1>{`Show Gift ${gift["@id"]}`}</h1>
+            <h1>{gift["name"]}</h1>
             <table className="table table-responsive table-striped table-hover">
                 <thead>
                 <tr>
@@ -41,7 +41,11 @@ export const Show: FunctionComponent<Props> = ({gift}) => {
                 </tr>
                 <tr>
                     <th scope="row">startAt</th>
-                    <td>{gift["startAt"]}</td>
+                    <td>{new Date(gift["startAt"]).toLocaleDateString(router.locale, {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                    })}</td>
                 </tr>
                 <tr>
                     <th scope="row">recurrence</th>

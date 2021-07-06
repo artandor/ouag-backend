@@ -7,7 +7,8 @@
   "logoutButton": "Logout",
   "registerButton": "Register",
   "submitButton": "Submit",
+  "createButton": "Create",
   "editButton": "Edit",
-  "deleteButton": "Edit",
+  "deleteButton": "Delete",
   "backButton": "Back"
 }

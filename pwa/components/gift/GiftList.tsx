@@ -16,7 +16,39 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
 
     return (
         <div>
+            <button type="button" className="btn fs-3 float-end" data-bs-target="#modalHelpGift"
+                    data-bs-toggle="modal" data-bs-placement="bottom"><i className="bi bi-question-circle"></i>
+            </button>
             <h1>Gift List</h1>
+            <div className="modal fade" id="modalHelpGift" tabIndex={-1} aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Help</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div>
+                                <p className="lead">Sur cette page, vous pourrez créer ou personnaliser vos cadeaux.</p>
+
+                                <p>Chaque cadeau est facturé en fonction du nombre de médias et du nombre de
+                                    receveurs.</p>
+
+                                <p>Lorsque vous enverrez votre cadeau, ses destinataires recevront un mail les invitant
+                                    à venir le réclamer sur l'application.</p>
+                                <ul>
+                                    <li>0.17€ par souvenir</li>
+                                    <li>Prix augmenté de 50% par receveur</li>
+                                </ul>
+                                Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans
+                                l'application.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <Link href={"/gifts/create"}>
                 <a className="btn btn-primary my-2">{t('giftCreation')}</a>
             </Link>

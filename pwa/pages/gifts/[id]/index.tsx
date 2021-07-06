@@ -12,7 +12,6 @@ const Page: NextComponentType<NextPageContext> = () => {
     let [gift, setGift] = useState({})
 
     useEffect(() => {
-        console.log(router.asPath)
         fetch(router.asPath)
             .then((giftData) => {
                 setGift(giftData)
@@ -23,7 +22,7 @@ const Page: NextComponentType<NextPageContext> = () => {
         <div>
             <div>
                 <Head>
-                    <title>{`Show Gift ${gift["@id"]}`}</title>
+                    <title>{gift["name"]}</title>
                 </Head>
             </div>
             <ContainerLayout>

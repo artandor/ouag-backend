@@ -158,6 +158,8 @@ class Gift
      * @ORM\Column(type="integer")
      */
     #[Positive]
+    #[NotNull]
+    #[NotBlank]
     #[Groups(['gift_write', 'gift_read'])]
     private ?int $mediaAmount;
 
