@@ -8,7 +8,7 @@ interface Props {
     gift: Gift;
 }
 
-export const Show: FunctionComponent<Props> = ({gift}) => {
+export const GiftShow: FunctionComponent<Props> = ({gift}) => {
     const [error, setError] = useState(null);
     const router = useRouter();
 

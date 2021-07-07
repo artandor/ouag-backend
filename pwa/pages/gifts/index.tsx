@@ -1,4 +1,3 @@
-import {NextComponentType, NextPageContext} from "next";
 import {GiftList} from "../../components/gift/GiftList";
 import {fetch} from "../../utils/dataAccess";
 import Head from "next/head";
@@ -7,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import ContainerLayout from "../../layouts/container";
 import {getUserIdFromJwt} from "../../utils/common";
 
-const Page: NextComponentType<NextPageContext> = () => {
+export default function GiftListPage() {
     const {t} = useTranslation('gifts');
     let [collection, setCollection] = useState({})
 
@@ -24,7 +23,7 @@ const Page: NextComponentType<NextPageContext> = () => {
         <div>
             <div>
                 <Head>
-                    <title>Gift List</title>
+                    <title>{t('listTitle')}</title>
                 </Head>
             </div>
             <ContainerLayout>
@@ -32,6 +31,4 @@ const Page: NextComponentType<NextPageContext> = () => {
             </ContainerLayout>
         </div>
     );
-};
-
-export default Page;
+}

@@ -20,7 +20,7 @@ export default function Navbar() {
     }, [])
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-2">
+        <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
             <div className="container-fluid">
                 <Link href="/">
                     <a className="navbar-brand" href="#">
@@ -36,11 +36,11 @@ export default function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
+                        {isConnected ? <li className="nav-item">
                             <Link href={"/gifts"}>
                                 <a className={`nav-link${router.pathname == '/gifts' ? " active" : ""}`}>{t('createGiftLink')}</a>
                             </Link>
-                        </li>
+                        </li> : null}
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">

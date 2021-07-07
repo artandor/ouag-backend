@@ -1,5 +1,4 @@
-import {NextComponentType, NextPageContext} from "next";
-import {Show} from "../../../components/gift/Show";
+import {GiftShow} from "../../../components/gift/GiftShow";
 import {fetch} from "../../../utils/dataAccess";
 import Head from "next/head";
 import {useEffect, useState} from "react";
@@ -7,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import router from "next/router";
 import ContainerLayout from "../../../layouts/container";
 
-const Page: NextComponentType<NextPageContext> = () => {
+export default function GiftShowPage() {
     const {t} = useTranslation('users');
     let [gift, setGift] = useState({})
 
@@ -26,10 +25,8 @@ const Page: NextComponentType<NextPageContext> = () => {
                 </Head>
             </div>
             <ContainerLayout>
-                <Show gift={gift}/>
+                <GiftShow gift={gift}/>
             </ContainerLayout>
         </div>
     );
 };
-
-export default Page;

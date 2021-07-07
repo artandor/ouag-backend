@@ -11,7 +11,7 @@ export function getUserIdFromJwt() {
     return result['userId']
 }
 
-function parseJwt(token): object {
+export function parseJwt(token): object {
     const base64Url = token.split('.')[1]
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
     const jsonPayload = decodeURIComponent(

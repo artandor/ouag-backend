@@ -1,5 +1,4 @@
-import {NextComponentType, NextPageContext} from "next";
-import {Form} from "../../../components/gift/Form";
+import {GiftForm} from "../../../components/gift/GiftForm";
 import {fetch} from "../../../utils/dataAccess";
 import Head from "next/head";
 import ContainerLayout from "../../../layouts/container";
@@ -7,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import {useEffect, useState} from "react";
 import router from "next/router";
 
-const Page: NextComponentType<NextPageContext> = () => {
+export default function GiftEditPage() {
     const {t} = useTranslation('users');
     let [gift, setGift] = useState()
 
@@ -22,15 +21,12 @@ const Page: NextComponentType<NextPageContext> = () => {
         <div>
             <div>
                 <Head>
-                    <title>{gift && `Edit ${gift["name"]}`}</title>
+                    <title>{gift && `${t('shared:edit')} ${gift["name"]}`}</title>
                 </Head>
             </div>
             <ContainerLayout>
-                {gift ? <Form gift={gift}/> : null}
+                {gift ? <GiftForm gift={gift}/> : null}
             </ContainerLayout>
         </div>
     );
 };
-
-
-export default Page;

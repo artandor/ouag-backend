@@ -10,8 +10,8 @@ interface Props {
 }
 
 export const GiftList: FunctionComponent<Props> = ({gifts}) => {
-    const router = useRouter()
     const {t} = useTranslation('gifts')
+    const router = useRouter()
     const todayDate = new Date();
 
     return (
@@ -19,7 +19,7 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
             <button type="button" className="btn fs-3 float-end" data-bs-target="#modalHelpGift"
                     data-bs-toggle="modal" data-bs-placement="bottom"><i className="bi bi-question-circle"></i>
             </button>
-            <h1>Gift List</h1>
+            <h1>{t('listTitle')}</h1>
             <div className="modal fade" id="modalHelpGift" tabIndex={-1} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -30,19 +30,16 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
                         </div>
                         <div className="modal-body">
                             <div>
-                                <p className="lead">Sur cette page, vous pourrez créer ou personnaliser vos cadeaux.</p>
+                                <p className="lead">{t('help.text1')}</p>
 
-                                <p>Chaque cadeau est facturé en fonction du nombre de médias et du nombre de
-                                    receveurs.</p>
+                                <p>{t('help.text2')}</p>
 
-                                <p>Lorsque vous enverrez votre cadeau, ses destinataires recevront un mail les invitant
-                                    à venir le réclamer sur l'application.</p>
+                                <p>{t('help.text3')}</p>
                                 <ul>
-                                    <li>0.17€ par souvenir</li>
-                                    <li>Prix augmenté de 50% par receveur</li>
+                                    <li>0.19€ {t('help.unitPriceLabel')}</li>
+                                    <li>{t('help.destPriceLabel', {count: 50})}</li>
                                 </ul>
-                                Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans
-                                l'application.
+                                <p>{t('help.text4')}</p>
                             </div>
                         </div>
                     </div>
@@ -76,7 +73,8 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
                                         <h4>
                                             <span
                                                 className={`text-capitalize badge bg-${gift.state == 'draft' ? 'info'
-                                                    : gift.state == 'ordered' ? 'warning text-dark' : 'success'}`}>{gift.state}</span>
+                                                    : gift.state == 'ordered' ? 'warning text-dark' : 'success'}`}>
+                                                {t(`state.${gift.state}`)}</span>
                                         </h4>
                                     </div>
                                     <p className="card-text">{t('recapAttention', {count: gift.recurrence})} {t('recapMediaAmount', {count: gift.mediaAmount})}</p>
@@ -106,7 +104,7 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
                                     <Link href={`${gift["@id"]}`}>
                                         <a>
                                             <i className="bi bi-pen" aria-hidden="true"/>{" "}
-                                            <span className="sr-only">Customize</span>
+                                            <span className="sr-only">{t('shared:customizeButton')}</span>
                                         </a>
                                     </Link>
                                 </div>

@@ -14,7 +14,7 @@
     "rgx:^/users/*": [
       "users"
     ],
-    "/gifts": [
+    "rgx:^/gifts/*": [
       "gifts"
     ]
   }

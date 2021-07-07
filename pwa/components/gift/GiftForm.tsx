@@ -5,20 +5,21 @@ import {ErrorMessage, Formik} from "formik";
 import {fetch} from "../../utils/dataAccess";
 import {Gift} from "../../types/Gift";
 import useTranslation from "next-translate/useTranslation";
+import Trans from 'next-translate/Trans'
 import {dateToFormString} from "../../utils/common";
 
 interface Props {
     gift?: Gift;
 }
 
-export const Form: FunctionComponent<Props> = ({gift}) => {
+export const GiftForm: FunctionComponent<Props> = ({gift}) => {
+    const {t} = useTranslation('gifts')
     const [error, setError] = useState(null);
     const router = useRouter();
-    const {t} = useTranslation('gifts')
 
     return (
         <div className="container">
-            <h1>{gift ? `Edit ${gift["name"]}` : `Create Gift`}</h1>
+            <h1>{gift ? `${t('shared:edit')} ${gift["name"]}` : `${t('giftCreation')}`}</h1>
             <Formik
                 initialValues={gift ? {...gift} : new Gift()}
                 validate={(values) => {
@@ -62,7 +63,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                         <div className="text-center">
                             <div className="mb-3">
                                 <label className="form-control-label" htmlFor="_name">
-                                    I want to create a gift named
+                                    {t('form.name.label')}
                                 </label>
                                 <br/>
                                 <strong><input
@@ -70,7 +71,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                     id="_name"
                                     value={values.name ?? ""}
                                     type="text"
-                                    placeholder="Happy birthday !"
+                                    placeholder={t('form.name.placeholder')}
                                     className={`form-control-inline text-primary${
                                         errors.name && touched.name ? " is-invalid" : ""
                                     }`}
@@ -109,7 +110,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-control-label" htmlFor="_recurrence">
-                                    A memory is sent every
+                                    {t('form.mediaAmount.label')}
                                 </label>
                                 <input
                                     name="recurrence"
@@ -127,7 +128,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                     onBlur={handleBlur}
                                 />
                                 <label className="form-control-label" htmlFor="_recurrence">
-                                    day(s)
+                                    {t('form.mediaAmount.labelEnd')}
                                 </label>
                                 <ErrorMessage
                                     className="text-danger"
@@ -136,7 +137,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                 />
                                 <br/>
                                 <label className="form-control-label" htmlFor="_startAt">
-                                    from
+                                    {t('form.startAt.label')}
                                 </label>
                                 <input
                                     name="startAt"
@@ -158,7 +159,7 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                 />
                             </div>
                             <label className="form-control-label" htmlFor="_fillingMethod">
-                                I want to plan the distribution
+                                {t('form.fillingMethod.label')}
                             </label>
                             <select
                                 name="fillingMethod"
@@ -174,9 +175,9 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             >
-                                <option value="manual">Manually
+                                <option value="manual">{t('form.fillingMethod.options.manual')}
                                 </option>
-                                <option value="automatic">Automatically
+                                <option value="automatic">{t('form.fillingMethod.options.automatic')}
                                 </option>
                             </select>
                             <ErrorMessage
@@ -193,19 +194,17 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                                 <div className="modal-dialog">
                                     <div className="modal-content">
                                         <div className="modal-header">
-                                            <h5 className="modal-title" id="exampleModalLabel">Help</h5>
+                                            <h5 className="modal-title"
+                                                id="exampleModalLabel">{t('form.fillingMethod.help.title')}</h5>
                                             <button type="button" className="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <div className="modal-body">
-                                            <p>In <strong>manual mode</strong>, for each day of your gift you'll have to
-                                                associate a
-                                                media.</p>
+                                            <p><Trans i18nKey='gifts:form.fillingMethod.help.manual'
+                                                      components={[<strong/>]}/></p>
                                             <hr/>
-                                            <p>In <strong>automatic mode</strong>, we will use your current libraries to
-                                                plan your
-                                                image, then you can modify them. If you have no libraries it will do
-                                                nothing.</p>
+                                            <p><Trans i18nKey='gifts:form.fillingMethod.help.automatic'
+                                                      components={[<strong/>]}/></p>
                                         </div>
                                     </div>
                                 </div>
@@ -224,10 +223,8 @@ export const Form: FunctionComponent<Props> = ({gift}) => {
                         </div>
                         <div className="text-center">
                             <Link href="/gifts">
-                                <a className="float-start float-lg-none btn btn-primary mt-3"><i
-                                    className="bi bi-backspace"></i>{" "}Back
-                                    to
-                                    list</a>
+                                <a className="float-start float-lg-none btn btn-primary mt-3">
+                                    <i className="bi bi-backspace"></i>{" "}{t('shared:backButton')}</a>
                             </Link>
 
                             <button
