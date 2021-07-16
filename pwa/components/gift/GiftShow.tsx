@@ -55,39 +55,14 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
                     <th scope="row">mediaAmount</th>
                     <td>{gift["mediaAmount"]}</td>
                 </tr>
-                {/*          <tr>
-            <th scope="row">defaultAnimation</th>
-            <td>
-              <ReferenceLinks
-                items={gift["defaultAnimation"]}
-                type="Animation"
-              />
-            </td>
-          </tr>*/}
                 <tr>
                     <th scope="row">fillingMethod</th>
                     <td>{gift["fillingMethod"]}</td>
                 </tr>
-                {/*          <tr>
-            <th scope="row">receivers</th>
-            <td>
-              <ReferenceLinks items={gift["receivers"]} type="User" />
-            </td>
-          </tr>*/}
-                {/*          <tr>
-            <th scope="row">invites</th>
-            <td>{gift["invites"]}</td>
-          </tr>*/}
                 <tr>
                     <th scope="row">state</th>
                     <td>{gift["state"]}</td>
                 </tr>
-                {/*          <tr>
-            <th scope="row">actualMedia</th>
-            <td>
-              <ReferenceLinks items={gift["actualMedia"]} type="MediaObject" />
-            </td>
-          </tr>*/}
                 </tbody>
             </table>
             {error && (

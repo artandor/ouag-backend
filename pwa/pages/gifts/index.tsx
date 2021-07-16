@@ -11,7 +11,6 @@ export default function GiftListPage() {
     let [collection, setCollection] = useState({})
 
     useEffect(() => {
-
         fetch(`/gifts?owner=${getUserIdFromJwt()}`)
             .then((collectionData) => {
                 setCollection(collectionData)

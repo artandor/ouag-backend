@@ -30,7 +30,7 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
                     const isCreation = !values["@id"];
                     try {
-                        await fetch(isCreation ? "/gifts" : values["@id"], {
+                        const result = await fetch(isCreation ? "/gifts" : values["@id"], {
                             method: isCreation ? "POST" : "PUT",
                             body: JSON.stringify(values),
                         });
@@ -38,7 +38,7 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                             isValid: true,
                             msg: `Element ${isCreation ? "created" : "updated"}.`,
                         });
-                        router.push("/gifts");
+                        router.push(result['@id']);
                     } catch (error) {
                         setStatus({
                             isValid: false,
