@@ -241,7 +241,7 @@ class Gift
         $currentDate = new \DateTime('now');
         $completed = 0;
         if ($this->state == self::STATE_DRAFT) {
-            $completed = $this->getPlannings()->matching(GiftRepository::getCompletionPercentageForDraft())->count();
+            $completed = $this->getPlannings()->matching(GiftRepository::createMediaNotNullCriteria())->count();
         } else {
             foreach ($this->getPlannings() as $planning) {
                 if ($planning->getPlannedAt() <= $currentDate) {

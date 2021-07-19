@@ -20,7 +20,7 @@ class GiftRepository extends ServiceEntityRepository
         parent::__construct($registry, Gift::class);
     }
 
-    public static function getCompletionPercentageForDraft(): Criteria
+    public static function createMediaNotNullCriteria(): Criteria
     {
         return Criteria::create()
             ->andWhere(Criteria::expr()->neq('media', null));
