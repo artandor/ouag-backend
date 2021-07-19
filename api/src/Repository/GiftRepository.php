@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Gift;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,5 +18,11 @@ class GiftRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Gift::class);
+    }
+
+    public static function createMediaNotNullCriteria(): Criteria
+    {
+        return Criteria::create()
+            ->andWhere(Criteria::expr()->neq('media', null));
     }
 }

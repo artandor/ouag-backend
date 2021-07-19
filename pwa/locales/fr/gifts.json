@@ -1,0 +1,53 @@
+{
+  "listTitle": "Gifts you created",
+  "giftCreation": "Create a Gift",
+  "starting": "Start",
+  "distributionPercentage": "Distributed",
+  "fillPercentage": "Media filled",
+  "recapAttention": {
+    "one": "An attention every day",
+    "other": "An attention every {{count}} days"
+  },
+  "recapMediaAmount": {
+    "one": "for {{count}} day",
+    "other": "for {{count}} days"
+  },
+  "state": {
+    "draft": "draft",
+    "ordered": "ordered",
+    "published": "published"
+  },
+  "help": {
+    "text1": "Sur cette page, vous pourrez créer ou personnaliser vos cadeaux.",
+    "text2": "Chaque cadeau est facturé en fonction du nombre de médias et du nombre de receveurs.",
+    "text3": "Lorsque vous enverrez votre cadeau, ses destinataires recevront un mail les invitant à venir le réclamer sur l'application.",
+    "unitPriceLabel": "par souvenir",
+    "destPriceLabel": "Prix augmenté de {{count}}% par receveur",
+    "text4": "Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans l'application."
+  },
+  "form": {
+    "name": {
+      "label": "I want to create a gift named",
+      "placeholder": "Happy birthday !"
+    },
+    "mediaAmount": {
+      "label": "A memory is sent every",
+      "labelEnd": "day(s)"
+    },
+    "startAt": {
+      "label": "from"
+    },
+    "fillingMethod": {
+      "label": "I want to plan the distribution",
+      "options": {
+        "manual": "Manually",
+        "automatic": "Automatically"
+      },
+      "help": {
+        "title": "Help",
+        "manual": "In <0>manual mode</0>, for each day of your gift you'll have to associate a media.",
+        "automatic": "In <0>automatic mode</0>, we will use your current libraries to plan your image, then you can modify them. If you have no libraries it will do nothing."
+      }
+    }
+  }
+}

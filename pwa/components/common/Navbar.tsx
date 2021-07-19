@@ -3,10 +3,11 @@ import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
 import Link from 'next/link'
 import Image from 'next/image'
-import router from "next/router";
+import {useRouter} from "next/router";
 
 export default function Navbar() {
     const {t} = useTranslation('shared');
+    const router = useRouter()
     let [isConnected, setConnected] = useState(false);
 
     useEffect(() => {
@@ -19,7 +20,7 @@ export default function Navbar() {
     }, [])
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-2">
+        <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
             <div className="container-fluid">
                 <Link href="/">
                     <a className="navbar-brand" href="#">
@@ -35,9 +36,11 @@ export default function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Link</a>
-                        </li>
+                        {isConnected ? <li className="nav-item">
+                            <Link href={"/gifts"}>
+                                <a className={`nav-link${router.pathname == '/gifts' ? " active" : ""}`}>{t('createGiftLink')}</a>
+                            </Link>
+                        </li> : null}
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">

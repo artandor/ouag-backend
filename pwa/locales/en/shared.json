@@ -2,11 +2,15 @@
   "loginButton": "Login",
   "loginOrRegisterButton": "Login / Register",
   "profileLink": "Profile",
+  "createGiftLink": "Offer a Gift",
   "accountLink": "My account",
   "logoutButton": "Logout",
   "registerButton": "Register",
   "submitButton": "Submit",
+  "createButton": "Create",
+  "edit": "Edit",
   "editButton": "Edit",
-  "deleteButton": "Edit",
-  "backButton": "Back"
+  "deleteButton": "Delete",
+  "backButton": "Back",
+  "customizeButton": "Customize"
 }
