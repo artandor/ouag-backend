@@ -2,5 +2,9 @@
   "librariesPage": {
     "title": "Libraries",
     "create": "Add library"
+  },
+  "mediasPage": {
+    "title": "Media",
+    "create": "Add media"
   }
 }

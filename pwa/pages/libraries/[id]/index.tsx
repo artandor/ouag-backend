@@ -1,32 +1,34 @@
-import {NextComponentType, NextPageContext} from "next";
 import {Show} from "../../../components/library/Show";
-import {Library} from "../../../types/Library";
-import {fetch} from "../../../utils/dataAccess";
 import Head from "next/head";
+import {fetch as fetchData} from "../../../utils/dataAccess";
+import ContainerLayout from "../../../layouts/container";
+import {useEffect, useState} from "react";
+import router from "next/router";
 
-interface Props {
-    library: Library;
-}
+export default function LibraryShowPage() {
+    let [library, setLibrary] = useState({})
 
-const Page: NextComponentType<NextPageContext, Props, Props> = ({
-                                                                    library,
-                                                                }) => {
+    useEffect(() => {
+        fetchData(router.asPath)
+            .then((libraryData) => {
+                console.log(libraryData);
+                setLibrary(libraryData);
+            })
+            .catch(() => null);
+    }, [])
+
+
     return (
         <div>
-            <div>
-                <Head>
-                    <title>{`Show Library ${library["@id"]}`}</title>
-                </Head>
-            </div>
-            <Show library={library}/>
+            {library == {} ? "pas ok" :
+                <>
+                    <Head>
+                        <title>{library["name"]}</title>
+                    </Head>
+                    <ContainerLayout>
+                        <Show library={library}/>
+                    </ContainerLayout>
+                </>}
         </div>
     );
-};
-
-Page.getInitialProps = async ({asPath}: NextPageContext) => {
-    const library = await fetch(asPath);
-
-    return {library};
-};
-
-export default Page;
+}

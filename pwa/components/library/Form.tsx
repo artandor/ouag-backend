@@ -110,29 +110,6 @@ export const Form: FunctionComponent<Props> = ({library}) => {
                             component="div"
                             name="sharedWith"
                         />
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_owner">
-                                owner
-                            </label>
-                            <input
-                                name="owner"
-                                id="_owner"
-                                value={values.owner ?? ""}
-                                type="text"
-                                placeholder="Injected by Listener/LibraryInjectOwnerSubscriber.php"
-                                className={`form-control${
-                                    errors.owner && touched.owner ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.owner && touched.owner}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="owner"
-                        />
 
                         {status && status.msg && (
                             <div
