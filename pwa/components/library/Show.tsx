@@ -97,7 +97,7 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator}) =>
                                                     {collaborator.displayName}
                                                     <i className="bi bi-trash"
                                                        onClick={() => handleCollaboratorDelete(collaborator)}
-                                                       data-bs-dismiss="modal"></i>
+                                                    ></i>
                                                 </li>);
                                         })}
                                     </ul>
