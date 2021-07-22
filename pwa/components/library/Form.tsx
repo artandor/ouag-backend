@@ -13,21 +13,9 @@ export const Form: FunctionComponent<Props> = ({library}) => {
     const [error, setError] = useState(null);
     const router = useRouter();
 
-    const handleDelete = async () => {
-        if (!window.confirm("Are you sure you want to delete this item?")) return;
-
-        try {
-            await fetch(library["@id"], {method: "DELETE"});
-            router.push("/libraries");
-        } catch (error) {
-            setError(`Error when deleting the resource: ${error}`);
-            console.error(error);
-        }
-    };
-
     return (
         <div>
-            <h1>{library ? `Edit Library ${library["@id"]}` : `Create Library`}</h1>
+            <h1>{library ? `Edit Library ${library["name"]}` : `Create Library`}</h1>
             <Formik
                 initialValues={library ? {...library} : new Library()}
                 validate={(values) => {
@@ -72,45 +60,21 @@ export const Form: FunctionComponent<Props> = ({library}) => {
                             <label className="form-control-label" htmlFor="_name">
                                 name
                             </label>
-                            <input
+                            <strong><input
                                 name="name"
                                 id="_name"
                                 value={values.name ?? ""}
                                 type="text"
                                 placeholder=""
-                                className={`form-control${
+                                className={`form-control-inline text-primary${
                                     errors.name && touched.name ? " is-invalid" : ""
                                 }`}
                                 aria-invalid={errors.name && touched.name}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                            />
+                            /></strong>
                         </div>
                         <ErrorMessage className="text-danger" component="div" name="name"/>
-                        <div className="form-group">
-                            <label className="form-control-label" htmlFor="_sharedWith">
-                                sharedWith
-                            </label>
-                            <input
-                                name="sharedWith"
-                                id="_sharedWith"
-                                value={values.sharedWith ?? ""}
-                                type="text"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.sharedWith && touched.sharedWith ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.sharedWith && touched.sharedWith}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="sharedWith"
-                        />
-
                         {status && status.msg && (
                             <div
                                 className={`alert ${
@@ -124,7 +88,7 @@ export const Form: FunctionComponent<Props> = ({library}) => {
 
                         <button
                             type="submit"
-                            className="btn btn-success"
+                            className="float-end float-lg-none btn btn-success ms-2 mt-3"
                             disabled={isSubmitting}
                         >
                             Submit
@@ -132,14 +96,10 @@ export const Form: FunctionComponent<Props> = ({library}) => {
                     </form>
                 )}
             </Formik>
+            <br/>
             <Link href="/libraries">
                 <a className="btn btn-primary">Back to list</a>
             </Link>
-            {library && (
-                <button className="btn btn-danger" onClick={handleDelete}>
-                    <a>Delete</a>
-                </button>
-            )}
         </div>
     );
 };

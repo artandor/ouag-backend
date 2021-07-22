@@ -33,8 +33,8 @@ export const List: FunctionComponent<Props> = ({media_objects}) => {
                 </div>
                 {media_objects &&
                 media_objects.length !== 0 &&
-                media_objects.map((media_object) => (
-                    <div className="col">
+                media_objects.map((media_object, index) => (
+                    <div key={index} className="col">
                         <Link href={media_object["@id"]}>
                             <div className="card bg-light mb-3">
                                 <div className="card-body">

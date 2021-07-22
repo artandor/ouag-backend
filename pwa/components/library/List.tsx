@@ -31,8 +31,8 @@ export const List: FunctionComponent<Props> = ({libraries}) => {
                 </div>
                 {libraries &&
                 libraries.length !== 0 &&
-                libraries.map((library) => (
-                    <div className="col">
+                libraries.map((library, index) => (
+                    <div key={index} className="col">
                         <Link href={library["@id"]}>
                             <div className="card bg-light mb-3">
                                 <div className="card-body">

@@ -6,25 +6,25 @@ import {Library} from "../../types/Library";
 // @ts-ignore
 import emptyLibImage from "../../public/img/empty_library.webp";
 import {List} from "../mediaobject/List";
+import {User} from "../../types/User";
 
 interface Props {
     library: Library;
+    deleteCollaborator;
 }
 
-export const Show: FunctionComponent<Props> = ({library}) => {
+export const Show: FunctionComponent<Props> = ({library, deleteCollaborator}) => {
     let [medias, setMedias] = useState({});
     const [errorMessage, setError] = useState(null);
     const router = useRouter();
-    {
-        library != undefined &&
-        useEffect(() => {
-            fetch(library["@id"] + "/media_objects")
-                .then((value) => {
-                    setMedias(value)
-                })
-                .catch(() => null);
-        }, [])
-    }
+
+    useEffect(() => {
+        fetch(router.asPath + "/media_objects")
+            .then((value) => {
+                setMedias(value)
+            })
+            .catch(() => null);
+    }, [])
 
     const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this item?")) return;
@@ -32,6 +32,24 @@ export const Show: FunctionComponent<Props> = ({library}) => {
         try {
             await fetch(library["@id"], {method: "DELETE"});
             await router.push("/libraries");
+        } catch (error) {
+            setError("Error when deleting the resource.");
+            console.error(errorMessage);
+        }
+    };
+
+    const handleCollaboratorDelete = async (collaborator: User) => {
+        if (!window.confirm("Are you sure you want to remove this user's access to the library?")) return;
+        try {
+            library["sharedWith"] = library["sharedWith"].filter(o => {
+                return o !== collaborator
+            });
+            let bodyMap = library["sharedWith"].map((entry, index) => {
+                return entry["@id"]
+            })
+            await fetch(library["@id"], {body: JSON.stringify({"sharedWith": bodyMap}), method: "PUT"},);
+            deleteCollaborator(library);
+            return;
         } catch (error) {
             setError("Error when deleting the resource.");
             console.error(errorMessage);
@@ -69,27 +87,22 @@ export const Show: FunctionComponent<Props> = ({library}) => {
                                     <button type="button" className="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
-                                {library["sharedWith"] && library["sharedWith"].length > 0 &&
                                 <div className="modal-body">
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th className="text-center">Username</th>
-                                            <th className="text-center">Delete</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {library["sharedWith"].map((collaborator) => {
+                                    {library["sharedWith"] && library["sharedWith"].length > 0 &&
+                                    <ul className="list-group">
+                                        {library["sharedWith"].map((collaborator, index) => {
                                             return (
-                                                <tr>
-                                                    <td className="text-center">{collaborator.displayName}</td>
-                                                    <td className="text-center">Bouton delete à mettre en place</td>
-                                                </tr>);
+                                                <li key={index}
+                                                    className="list-group-item d-flex justify-content-between align-items-center">
+                                                    {collaborator.displayName}
+                                                    <i className="bi bi-trash"
+                                                       onClick={() => handleCollaboratorDelete(collaborator)}
+                                                       data-bs-dismiss="modal"></i>
+                                                </li>);
                                         })}
-                                        </tbody>
-                                    </table>
-                                </div>}
+                                    </ul>
+                                    }
+                                </div>
                                 <div className="modal-body">
                                     <form>
                                         <div className="form-group">
