@@ -7,7 +7,7 @@ import router from "next/router";
 import ContainerLayout from "../../../layouts/container";
 
 export default function GiftShowPage() {
-    const {t} = useTranslation('users');
+    const {t} = useTranslation('gifts');
     let [gift, setGift] = useState({})
 
     useEffect(() => {

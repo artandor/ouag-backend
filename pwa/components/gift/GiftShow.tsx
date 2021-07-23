@@ -27,6 +27,12 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
     return (
         <div>
             <h1>{gift["name"]}</h1>
+            <Link href="/gifts">
+                <a className="btn btn-primary"><i className="bi bi-arrow-left"></i> Back to list</a>
+            </Link>
+            <Link href={router.asPath + "/invites"}>
+                <a className="btn btn-success float-end">Next <i className="bi bi-arrow-right"></i></a>
+            </Link>
             <table className="table table-responsive table-striped table-hover">
                 <thead>
                 <tr>
@@ -70,9 +76,6 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
                     {error}
                 </div>
             )}
-            <Link href="/gifts">
-                <a className="btn btn-primary">Back to list</a>
-            </Link>{" "}
             <Link href={`${gift["@id"]}/edit`}>
                 <a className="btn btn-warning">Edit</a>
             </Link>

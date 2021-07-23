@@ -49,7 +49,7 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
             <Link href={"/gifts/create"}>
                 <a className="btn btn-primary my-2">{t('giftCreation')}</a>
             </Link>
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-3">
+            <div className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 mb-3">
                 {gifts &&
                 gifts.length !== 0 &&
                 gifts.map((gift) => (
@@ -77,7 +77,12 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
                                                 {t(`state.${gift.state}`)}</span>
                                         </h4>
                                     </div>
-                                    <p className="card-text">{t('recapAttention', {count: gift.recurrence})} {t('recapMediaAmount', {count: gift.mediaAmount})}</p>
+                                    <div className="d-flex justify-content-between">
+                                        <p className="card-text">{t('recapAttention', {count: gift.recurrence})} {t('recapMediaAmount', {count: gift.mediaAmount})}</p>
+                                        <p className="badge rounded-pill bg-primary" style={{maxHeight: "1.4rem"}}>
+                                            <i className="bi bi-people-fill"></i> {gift.invites.length}
+                                        </p>
+                                    </div>
                                     <div className="text-center text-bold"><strong>
                                         {gift.state == 'published' ?
                                             <label htmlFor="giftProgress">{t('distributionPercentage')}</label> :

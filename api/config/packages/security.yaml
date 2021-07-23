@@ -58,4 +58,4 @@ security:
         - { path: ^/authentication_token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/authentication_token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users/verify, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+          #- { path: ^/, roles: IS_AUTHENTICATED_FULLY }
