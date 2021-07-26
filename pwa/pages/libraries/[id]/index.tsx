@@ -23,13 +23,20 @@ export default function LibraryShowPage() {
         })
     }
 
+    function addCollaborator(library: Library) {
+        setLibrary(prevLibrary => {
+            return {...prevLibrary, ...library};
+        })
+    }
+
     return (
         <div>
             <Head>
                 <title>{library["name"]}</title>
             </Head>
             <ContainerLayout>
-                {library["sharedWith"] && <Show library={library} deleteCollaborator={deleteCollaborator}/>}
+                {library["sharedWith"] &&
+                <Show library={library} deleteCollaborator={deleteCollaborator} addCollaborator={addCollaborator}/>}
             </ContainerLayout>
         </div>
     );

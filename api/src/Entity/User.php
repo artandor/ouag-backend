@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\GetCurrentUserController;
 use App\Controller\UserVerifyController;
 use App\Repository\UserRepository;
@@ -28,7 +29,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 #[ApiResource(
     collectionOperations: [
-    'get' => ['security' => "is_granted('ROLE_ADMIN')"],
+    'get' => ['normalization_context' => ['groups' => ['user_public_read']],
+        'security' => "is_granted('ROLE_USER')"],
     'post',
     'userVerify' => [
         'method' => 'GET',
@@ -75,6 +77,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[UniqueEntity('displayName')]
 #[ApiFilter(OrderFilter::class, properties: ['createdAt' => 'DESC', 'updatedAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['active'])]
+#[ApiFilter(SearchFilter::class, properties: ['displayName' => 'partial'])]
 class User implements UserInterface
 {
     /**
@@ -95,7 +98,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['user_read', 'user_write', 'library_read'])]
+    #[Groups(['user_read', 'user_write', 'library_read', 'user_public_read'])]
     #[NotBlank]
     private ?string $displayName;
 
