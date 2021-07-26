@@ -4,11 +4,19 @@ import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 import InviteForm from "./InviteForm";
 import {GiftInvite} from "../../types/GiftInvite";
+import useTranslation from "next-translate/useTranslation";
 
-export default function InviteList({invites, addInvite, deleteInvite}) {
+interface InviteListProps {
+    invites: GiftInvite[],
+    addInvite: Function,
+    deleteInvite: Function,
+}
+
+export default function InviteList({invites, addInvite, deleteInvite}: InviteListProps) {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [selectedInvite, setSelectedInvite] = useState({})
+    const [selectedInvite, setSelectedInvite] = useState(null)
+    const {t} = useTranslation('gifts');
 
     const handleClose = () => {
         return setShowModal(false);
@@ -39,11 +47,10 @@ export default function InviteList({invites, addInvite, deleteInvite}) {
                 </div>
             )}
 
-            <Button variant="secondary" onClick={() => {
-                setSelectedInvite(new GiftInvite())
-                setShowModal(true);
+            <Button variant="secondary" className="my-2" onClick={() => {
+                setShowModal(true)
             }}>
-                <i className="bi bi-journal-plus"></i> Add a recipient
+                <i className="bi bi-journal-plus"></i> {t('invite.addButton')}
             </Button>
 
             <Modal show={showModal} onHide={handleClose}>
@@ -69,7 +76,7 @@ export default function InviteList({invites, addInvite, deleteInvite}) {
                                 }}><small
                                     className="text-muted"><i className="bi bi-trash"></i></small></button>
                             </div>
-                            <p className="mb-1">Your Nickname : {invite["creatorNickname"]}</p>
+                            <p className="mb-1">{t('invite.yourNickname')} : {invite["creatorNickname"]}</p>
                             <small className="text-muted">{invite["comment"]}</small>
                         </li>
                     );

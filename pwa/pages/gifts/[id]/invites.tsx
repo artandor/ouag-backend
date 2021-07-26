@@ -9,7 +9,7 @@ import InviteList from "../../../components/invite/InviteList";
 import {GiftInvite} from "../../../types/GiftInvite";
 
 export default function GiftInvitesPage() {
-    const {t} = useTranslation('users');
+    const {t} = useTranslation('gifts');
     let [gift, setGift] = useState({})
     const router = useRouter()
 
@@ -49,11 +49,13 @@ export default function GiftInvitesPage() {
                 </Head>
             </div>
             <ContainerLayout>
-                <button className="btn btn-primary" onClick={router.back}><i className="bi bi-arrow-left"></i> Back
+                <button className="btn btn-primary" onClick={router.back}><i
+                    className="bi bi-arrow-left"></i> {t('shared:backButton')}
                 </button>
                 {gift["invites"] && gift["invites"].length > 0 &&
                 <Link href={router.asPath + "/invites"}>
-                    <a className="btn btn-success float-end">Next <i className="bi bi-arrow-right"></i></a>
+                    <a className="btn btn-success float-end">{t('shared:nextButton')} <i
+                        className="bi bi-arrow-right"></i></a>
                 </Link>}
                 <div>
                     {gift["invites"] &&

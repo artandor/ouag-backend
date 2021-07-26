@@ -63,7 +63,7 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                                 id="_email"
                                 value={values.email ?? ""}
                                 type="email"
-                                placeholder={t('forms.fields.email.placeholder')}
+                                placeholder={t('form.invite.email.placeholder')}
                                 className={`form-control${
                                     errors.email && touched.email ? " is-invalid" : ""
                                 }`}
@@ -85,7 +85,7 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                                 name="creatorNickname"
                                 id="_creatorNickname"
                                 value={values.creatorNickname ?? ""}
-                                placeholder={t('forms.fields.creatorNickname.placeholder')}
+                                placeholder={t('form.invite.creatorNickname.placeholder')}
                                 className={`form-control${
                                     errors.creatorNickname && touched.creatorNickname
                                         ? " is-invalid"
@@ -108,7 +108,7 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                                 name="receiverNickname"
                                 id="_receiverNickname"
                                 value={values.receiverNickname ?? ""}
-                                placeholder={t('forms.fields.receiverNickname.placeholder')}
+                                placeholder={t('form.invite.receiverNickname.placeholder')}
                                 className={`form-control${
                                     errors.receiverNickname && touched.receiverNickname
                                         ? " is-invalid"
@@ -131,7 +131,7 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                                 name="comment"
                                 id="_comment"
                                 value={values.comment ?? ""}
-                                placeholder={t('forms.fields.comment.placeholder')}
+                                placeholder={t('form.invite.comment.placeholder')}
                                 className={`form-control${
                                     errors.comment && touched.comment
                                         ? " is-invalid"
@@ -164,7 +164,7 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                             disabled={isSubmitting}
                             data-bs-dismiss={status && status.isValid ? "modal" : ""}
                         >
-                            {invite ? t('forms.invite.updateButton') : t('forms.invite.createButton')}
+                            {invite ? t('shared:editButton') : t('shared:createButton')}
                         </button>
                     </form>
                 )}
