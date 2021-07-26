@@ -1,9 +1,11 @@
 import {FunctionComponent} from "react";
 import Link from "next/link";
+import Image from 'next/image'
 import {Gift} from "../../types/Gift";
 import {useRouter} from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import {getDaysBetweenDates} from "../../utils/common";
+import giftImage from '../../public/img/predict-perfect-gift_900x600.jpg'
 
 interface Props {
     gifts: Gift[];
@@ -59,8 +61,8 @@ export const GiftList: FunctionComponent<Props> = ({gifts}) => {
                                 <div className="card-img-top">
                                     {new Date(gift.startAt) <= todayDate ?
                                         // TODO : Replace this by the current media object that is gifted
-                                        <img
-                                            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.cmu.edu%2Fnews%2Fstories%2Farchives%2F2017%2Fnovember%2Fimages%2Fpredict-perfect-gift_900x600-min.jpg&f=1&nofb=1"
+                                        <Image
+                                            src={giftImage}
                                             alt="Cover of this gift" className={"img-fluid"}/> :
                                         <div style={{height: "26vh"}}
                                              className="d-flex align-items-center justify-content-center alert-primary">
