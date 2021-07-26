@@ -55,7 +55,7 @@ export default function InviteList({invites, addInvite, deleteInvite}: InviteLis
 
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add a recipient</Modal.Title>
+                    <Modal.Title>{t('invite.addButton')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <InviteForm addInvite={handleAddInvite} invite={selectedInvite}/>

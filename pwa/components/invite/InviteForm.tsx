@@ -162,7 +162,6 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                             type="submit"
                             className="btn btn-primary float-end"
                             disabled={isSubmitting}
-                            data-bs-dismiss={status && status.isValid ? "modal" : ""}
                         >
                             {invite ? t('shared:editButton') : t('shared:createButton')}
                         </button>
