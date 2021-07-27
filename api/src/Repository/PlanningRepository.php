@@ -25,6 +25,7 @@ class PlanningRepository extends ServiceEntityRepository
     {
         return Criteria::create()
             ->andWhere(Criteria::expr()->lte('plannedAt', new DateTimeImmutable()))
+            ->andWhere(Criteria::expr()->neq('media', null))
             ->orderBy(['plannedAt' => 'DESC'])
             ->setMaxResults(1);
     }

@@ -35,10 +35,10 @@ final class MediaObjectNormalizer implements ContextAwareNormalizerInterface, No
 
             $commandContentUrl = $this->s3Client->getCommand('GetObject', [
                 'Bucket' => 'ouag-private',
-                'Key' => 'medias/' . $object->getLibrary()->getId() . '/' . $object->getContent(),
+                'Key' => 'media/' . $object->getLibrary()->getId() . '/' . $object->getContent(),
             ]);
 
-            $object->setContent((string)$this->s3Client->createPresignedRequest($commandContentUrl, new \DateTime('+10 minute'))->getUri());
+            $object->setContent((string)$this->s3Client->createPresignedRequest($commandContentUrl, new \DateTime('+20 minute'))->getUri());
         }
 
         return $this->normalizer->normalize($object, $format, $context);

@@ -1,0 +1,4 @@
+.blur {
+    filter: blur(30px);
+    margin: 30px;
+}

@@ -43,31 +43,31 @@ class MediaObject
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read'])]
     private ?string $title;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read'])]
     private bool $nsfw;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update'])]
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read'])]
     private ?string $comment;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['media_object_read'])]
+    #[Groups(['media_object_read', 'gift_read'])]
     private string $type;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['media_object_read', 'media_object_create'])]
+    #[Groups(['media_object_read', 'media_object_create', 'gift_read'])]
     #[ApiProperty(openapiContext: ['description' => 'Use this property to add a string (link, text, ...) as a media'])]
     private ?string $content;
 
@@ -79,8 +79,7 @@ class MediaObject
     #[Groups(['media_object_create'])]
     #[File(
         maxSize: '100M',
-        mimeTypes: ['image/png', 'image/jpg', 'image/gif', 'video/mp4'],
-        mimeTypesMessage: "Please upload a valid type file (.jpg, .png, .gif, .mp4)",
+        mimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'video/mp4']
     )]
     public $file;
 
@@ -95,7 +94,7 @@ class MediaObject
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="mediaObjects")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['media_object_read'])]
+    #[Groups(['media_object_read', 'gift_read'])]
     private ?User $owner;
 
     /**

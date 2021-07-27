@@ -222,7 +222,7 @@ class Gift
     private ?string $state;
 
     #[Groups(['gift_read'])]
-    public function getActualMedia(): ?MediaObject
+    public function getActualPlanning(): ?Planning
     {
         /** @var Planning|bool|null $actualPlanning */
         $actualPlanning = $this->getPlannings()->matching(
@@ -232,7 +232,7 @@ class Gift
             return null;
         }
 
-        return $actualPlanning->getMedia();
+        return $actualPlanning;
     }
 
     #[Groups(['gift_read'])]
