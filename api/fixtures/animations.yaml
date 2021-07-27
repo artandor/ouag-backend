@@ -1,7 +1,7 @@
 App\Entity\Animation:
     animation_1:
         name: Fireworks
-        lottieLink: https://lottiefiles.com/3287-fireworks
+        lottieLink: https://assets2.lottiefiles.com/datafiles/068H91NVUJLGN4p/data.json
     animation_{2..50}:
         name: <word()>
         lottieLink: <url()>

@@ -37,24 +37,15 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {isConnected ? <li className="nav-item">
+                            <Link href={"/gifts/received"}>
+                                <a className={`nav-link${router.pathname == '/gifts/received' ? " active" : ""}`}>{t('receiveGiftLink')}</a>
+                            </Link>
+                        </li> : null}
+                        {isConnected ? <li className="nav-item">
                             <Link href={"/gifts"}>
                                 <a className={`nav-link${router.pathname == '/gifts' ? " active" : ""}`}>{t('createGiftLink')}</a>
                             </Link>
                         </li> : null}
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr className="dropdown-divider"/>
-                                </li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
                     </ul>
                     <div className="navbar-nav">
                         {isConnected ?
