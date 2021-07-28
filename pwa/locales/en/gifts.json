@@ -25,6 +25,14 @@
     "destPriceLabel": "Price increased by {{count}}% per addressee",
     "text4": "You'll receive a confirmation email when they claim the gift on the site."
   },
+  "receiver": {
+    "mediaObject": {
+      "title": "Title",
+      "comment": "Comment",
+      "nsfwNotice": "This media seems to be not safe for work. Confirm that you want to see it now ?",
+      "from": "From"
+    }
+  },
   "form": {
     "name": {
       "label": "I want to create a gift named",

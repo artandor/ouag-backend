@@ -16,3 +16,9 @@
     font-weight: 900;
     text-align: center;
 }
+
+.blur {
+    filter: blur(30px);
+    margin: 30px;
+}
+
