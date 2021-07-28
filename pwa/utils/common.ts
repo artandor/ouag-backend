@@ -7,6 +7,7 @@ export function dateToFormString(date: Date): string {
 }
 
 export function getUserIdFromJwt() {
+    if (!localStorage.getItem('token')) throw Error('Token does not exist in localstorage.')
     const result = parseJwt(localStorage.getItem('token'))
     return result['userId']
 }

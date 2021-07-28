@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {fetch} from "../../utils/dataAccess";
 import {Gift} from "../../types/Gift";
+import useTranslation from "next-translate/useTranslation";
 
 interface Props {
     gift: Gift;
@@ -11,6 +12,7 @@ interface Props {
 export const GiftShow: FunctionComponent<Props> = ({gift}) => {
     const [error, setError] = useState(null);
     const router = useRouter();
+    const {t} = useTranslation('gifts')
 
     const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this item?")) return;
@@ -27,6 +29,12 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
     return (
         <div>
             <h1>{gift["name"]}</h1>
+            <Link href="/gifts">
+                <a className="btn btn-primary"><i className="bi bi-arrow-left"></i> {t('shared:backButton')}</a>
+            </Link>
+            <Link href={router.asPath + "/invites"}>
+                <a className="btn btn-success float-end">{t('shared:nextButton')} <i className="bi bi-arrow-right"></i></a>
+            </Link>
             <table className="table table-responsive table-striped table-hover">
                 <thead>
                 <tr>
@@ -70,9 +78,6 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
                     {error}
                 </div>
             )}
-            <Link href="/gifts">
-                <a className="btn btn-primary">Back to list</a>
-            </Link>{" "}
             <Link href={`${gift["@id"]}/edit`}>
                 <a className="btn btn-warning">Edit</a>
             </Link>

@@ -4,10 +4,10 @@ import Head from "next/head";
 import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
 import router from "next/router";
-import ContainerLayout from "../../../layouts/container";
+import ContainerLayout from "../../../layouts/ContainerLayout";
 
 export default function GiftShowPage() {
-    const {t} = useTranslation('users');
+    const {t} = useTranslation('gifts');
     let [gift, setGift] = useState({})
 
     useEffect(() => {

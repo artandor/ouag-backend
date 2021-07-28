@@ -1,4 +1,4 @@
-import ContainerLayout from "../../layouts/container";
+import ContainerLayout from "../../layouts/ContainerLayout";
 import Head from "next/head"
 import LoginForm from "../../components/user/LoginForm";
 import router from "next/router";

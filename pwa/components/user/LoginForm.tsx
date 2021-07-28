@@ -24,7 +24,6 @@ export default function LoginForm() {
                     return errors;
                 }}
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
-                    console.log(values)
                     try {
                         authProvider.login({username: values['email'], password: values['plainPassword']})
                             .then(() => {

@@ -1,6 +1,6 @@
 import {GiftForm} from "../../components/gift/GiftForm";
 import Head from "next/head";
-import ContainerLayout from "../../layouts/container";
+import ContainerLayout from "../../layouts/ContainerLayout";
 import useTranslation from "next-translate/useTranslation";
 
 export default function GiftCreatePage() {

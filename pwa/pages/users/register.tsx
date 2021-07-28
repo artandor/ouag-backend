@@ -1,4 +1,4 @@
-import ContainerLayout from "../../layouts/container";
+import ContainerLayout from "../../layouts/ContainerLayout";
 import Head from 'next/head'
 import {Form} from "../../components/user/Form";
 import useTranslation from 'next-translate/useTranslation'

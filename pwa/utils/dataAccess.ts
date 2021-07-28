@@ -39,7 +39,6 @@ export const fetch = async (id: string, init: RequestInit = {}, router = routerS
                     .then(async () => {
                         init.headers["Authorization"] = `Bearer ${localStorage.getItem('token')}`;
                         resp = await isomorphicFetch(ENTRYPOINT + id, init)
-                        console.log(resp)
                     })
                     .catch((e) => {
                         router.push('/users/login')
@@ -77,7 +76,8 @@ export const normalize = (data: any) => {
     // Flatten nested documents
     return mapValues(data, (value) =>
         Array.isArray(value)
-            ? value.map((v) => get(v, "@id", v))
+            ? value.map((v) => normalize(v))
+            : value instanceof Object ? normalize(value)
             : get(value, "@id", value)
     );
 };
