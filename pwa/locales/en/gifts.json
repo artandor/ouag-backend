@@ -1,9 +1,11 @@
 {
-  "listTitle": "Gifts you created",
+  "createdTitle": "Gifts you created",
+  "receivedTitle": "Gifts you received",
   "giftCreation": "Create a Gift",
   "starting": "Start",
   "distributionPercentage": "Distributed",
   "fillPercentage": "Media filled",
+  "emptyList": "You don't have any gift yet ! If you received a code by email, click on the button above.",
   "recapAttention": {
     "one": "An attention every day",
     "other": "An attention every {{count}} days"

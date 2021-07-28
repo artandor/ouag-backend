@@ -1,4 +1,4 @@
-import ContainerLayout from "../../../../layouts/container";
+import ContainerLayout from "../../../../layouts/ContainerLayout";
 import {fetch} from "../../../../utils/dataAccess";
 import {useEffect, useRef, useState} from "react";
 import router from "next/router";
@@ -22,16 +22,17 @@ export default function ReceivedGiftDetailPage() {
             <ContainerLayout>
                 {gift && gift['actualPlanning'] && (
                     <div className="row text-center">
-                        <lottie-player
+                        {(gift['actualPlanning']['animation'] || gift['defaultAnimation']) && <lottie-player
                             id="firstLottie"
                             ref={ref}
                             autoplay={true}
                             loop={false}
                             count={2}
                             mode="normal"
-                            src={gift['actualPlanning']['animation']['lottieLink']}
+                            src={gift['actualPlanning']['animation'] ? gift['actualPlanning']['animation']['lottieLink']
+                                : gift['defaultAnimation'] ? gift['defaultAnimation']['lottieLink'] : null}
                             style={{maxHeight: "80vh", position: "fixed", top: "0", left: "0"}}
-                        />
+                        />}
                         <MediaObjectShow media={gift['actualPlanning']['media']}/>
                     </div>
                 )}
