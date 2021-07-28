@@ -18,9 +18,7 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
             <Formik
                 initialValues={invite ?? new GiftInvite()}
                 validate={(values) => {
-                    const errors = {};
-                    // add your validation logic here
-                    return errors;
+                    return {};
                 }}
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
                     const isCreation = !values["@id"];
@@ -35,7 +33,6 @@ export default function InviteForm({invite, addInvite}: InviteFormProps) {
                         });
                         addInvite(result)
                     } catch (error) {
-                        console.log(error)
                         setStatus({
                             isValid: false,
                             msg: `${error.defaultErrorMsg}`,

@@ -35,7 +35,6 @@ export default function InviteList({invites, addInvite, deleteInvite}: InviteLis
             deleteInvite(invite)
         } catch (error) {
             setError("Error when deleting the resource.");
-            console.error(error);
         }
     }
 
