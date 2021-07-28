@@ -1,7 +1,7 @@
 import {GiftForm} from "../../../components/gift/GiftForm";
 import {fetch} from "../../../utils/dataAccess";
 import Head from "next/head";
-import ContainerLayout from "../../../layouts/container";
+import ContainerLayout from "../../../layouts/ContainerLayout";
 import useTranslation from "next-translate/useTranslation";
 import {useEffect, useState} from "react";
 import router from "next/router";

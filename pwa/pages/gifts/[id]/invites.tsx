@@ -4,7 +4,7 @@ import Link from "next/link"
 import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
 import {useRouter} from "next/router";
-import ContainerLayout from "../../../layouts/container";
+import ContainerLayout from "../../../layouts/ContainerLayout";
 import InviteList from "../../../components/invite/InviteList";
 import {GiftInvite} from "../../../types/GiftInvite";
 

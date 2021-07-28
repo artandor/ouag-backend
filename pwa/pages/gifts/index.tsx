@@ -3,7 +3,7 @@ import {fetch} from "../../utils/dataAccess";
 import Head from "next/head";
 import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
-import ContainerLayout from "../../layouts/container";
+import ContainerLayout from "../../layouts/ContainerLayout";
 import {getUserIdFromJwt} from "../../utils/common";
 import {useRouter} from "next/router";
 
