@@ -25,6 +25,9 @@
     "destPriceLabel": "Prix augmenté de {{count}}% par receveur",
     "text4": "Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans l'application."
   },
+  "receiver": {
+    "mediaObject": {}
+  },
   "invite": {
     "addButton": "Ajouter un destinataire"
   },

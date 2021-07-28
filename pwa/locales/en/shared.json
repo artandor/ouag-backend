@@ -8,6 +8,8 @@
   "registerButton": "Register",
   "submitButton": "Submit",
   "createButton": "Create",
+  "confirmButton": "Confirm",
+  "downloadButton": "Download",
   "nextButton": "Next",
   "edit": "Edit",
   "editButton": "Edit",

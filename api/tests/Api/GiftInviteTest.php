@@ -77,7 +77,6 @@ class GiftInviteTest extends CustomApiTestCase
         $response = $this->createClientWithCredentials()->request('GET', $giftIri);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Gift::class);
         $this->assertCount(11, $response->toArray()['invites']);
     }
 
@@ -105,9 +104,8 @@ class GiftInviteTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Gift::class);
         $this->assertJsonContains([
-            'receivers' => [$this->findIriBy(User::class, ['email' => 'user@example.com'])]
+            'receivers' => [['@id' => $this->findIriBy(User::class, ['email' => 'user@example.com']), 'displayName' => "awtandow"]]
         ]);
     }
 

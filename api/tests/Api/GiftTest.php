@@ -26,7 +26,6 @@ class GiftTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Gift::class);
         $this->assertJsonContains([
             'name' => 'Birthday moma',
             'startAt' => '2021-05-16T00:00:00+00:00',
@@ -60,7 +59,6 @@ class GiftTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Gift::class);
         $this->assertJsonContains([
             'name' => 'Test Automatic Filling',
             'startAt' => '2021-05-16T00:00:00+00:00',
@@ -98,7 +96,6 @@ class GiftTest extends CustomApiTestCase
         $client->request('GET', '/gifts');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceCollectionJsonSchema(Gift::class);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context' => '/contexts/Gift',
@@ -123,7 +120,6 @@ class GiftTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceCollectionJsonSchema(Gift::class);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context' => '/contexts/Gift',
@@ -148,7 +144,6 @@ class GiftTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceCollectionJsonSchema(Gift::class);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context' => '/contexts/Gift',
