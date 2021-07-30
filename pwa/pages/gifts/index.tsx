@@ -71,7 +71,7 @@ export default function GiftListPage() {
                         </div>
                     </div>
                 </div>
-                <GiftList gifts={collection["hydra:member"]}/>
+                <GiftList gifts={collection["hydra:member"]} creatorMode={true}/>
             </ContainerLayout>
         </div>
     );

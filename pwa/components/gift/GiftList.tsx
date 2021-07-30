@@ -9,7 +9,7 @@ import giftImage from '../../public/img/predict-perfect-gift_900x600.jpg'
 
 interface Props {
     gifts: Gift[],
-    receiverMode?: boolean,
+    creatorMode?: boolean,
 }
 
 export const GiftList: FunctionComponent<Props> = ({gifts, creatorMode = false}) => {

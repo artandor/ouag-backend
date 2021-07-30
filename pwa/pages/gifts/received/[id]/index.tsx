@@ -22,7 +22,7 @@ export default function ReceivedGiftDetailPage() {
             <ContainerLayout>
                 {gift && gift['actualPlanning'] && (
                     <div className="row text-center">
-                        {(gift['actualPlanning']['animation'] || gift['defaultAnimation']) && <lottie-player
+                        <lottie-player
                             id="firstLottie"
                             ref={ref}
                             autoplay={true}
@@ -32,7 +32,7 @@ export default function ReceivedGiftDetailPage() {
                             src={gift['actualPlanning']['animation'] ? gift['actualPlanning']['animation']['lottieLink']
                                 : gift['defaultAnimation'] ? gift['defaultAnimation']['lottieLink'] : null}
                             style={{maxHeight: "80vh", position: "fixed", top: "0", left: "0"}}
-                        />}
+                        />
                         <MediaObjectShow media={gift['actualPlanning']['media']}/>
                     </div>
                 )}
