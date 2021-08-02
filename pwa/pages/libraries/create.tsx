@@ -1,16 +1,17 @@
-import {NextComponentType, NextPageContext} from "next";
 import {Form} from "../../components/library/Form";
 import Head from "next/head";
+import useTranslation from "next-translate/useTranslation";
 
-const Page: NextComponentType<NextPageContext> = () => (
-    <div>
+
+export default function CreatePage() {
+    const {t} = useTranslation('libraries');
+    return (
         <div>
-            <Head>
-                <title>Create Library </title>
-            </Head>
-        </div>
-        <Form/>
-    </div>
-);
-
-export default Page;
+            <div>
+                <Head>
+                    <title>{t("libraryCreate.title")}</title>
+                </Head>
+            </div>
+            <Form/>
+        </div>);
+}

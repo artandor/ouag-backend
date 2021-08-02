@@ -57,7 +57,7 @@ export default function Navbar() {
                         </li>
                         <li className="nav-item">
                             <Link href="/libraries">
-                                <a className={`${router.pathname == '/libraries' ? "active" : ""} nav-link`}>Libraries</a>
+                                <a className={`${router.pathname == '/libraries' ? "active" : ""} nav-link`}>{t('accessLibraries')}</a>
                             </Link>
                         </li>
                     </ul>

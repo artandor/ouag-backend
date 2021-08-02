@@ -17,17 +17,13 @@ export default function LibraryShowPage() {
             .catch(() => null);
     }, [])
 
-    function deleteCollaborator(library: Library) {
+    //Change the state of the Library
+    function updateCollaborator(library: Library) {
         setLibrary(prevLibrary => {
             return {...prevLibrary, ...library};
         })
     }
 
-    function addCollaborator(library: Library) {
-        setLibrary(prevLibrary => {
-            return {...prevLibrary, ...library};
-        })
-    }
 
     return (
         <div>
@@ -36,7 +32,7 @@ export default function LibraryShowPage() {
             </Head>
             <ContainerLayout>
                 {library["sharedWith"] &&
-                <Show library={library} deleteCollaborator={deleteCollaborator} addCollaborator={addCollaborator}/>}
+                <Show library={library} updateCollaborator={updateCollaborator}/>}
             </ContainerLayout>
         </div>
     );

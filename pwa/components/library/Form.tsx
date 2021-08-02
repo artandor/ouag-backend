@@ -4,18 +4,20 @@ import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {fetch} from "../../utils/dataAccess";
 import {Library} from "../../types/Library";
+import useTranslation from "next-translate/useTranslation";
 
 interface Props {
     library?: Library;
 }
 
 export const Form: FunctionComponent<Props> = ({library}) => {
+    const {t} = useTranslation('libraries');
     const [error, setError] = useState(null);
     const router = useRouter();
 
     return (
         <div>
-            <h1>{library ? `Edit Library ${library["name"]}` : `Create Library`}</h1>
+            <h1>{library ? (t("editLibrary.edit") + ` ${library["name"]}`) : t("editLibrary.create")}</h1>
             <Formik
                 initialValues={library ? {...library} : new Library()}
                 validate={(values) => {
@@ -26,15 +28,15 @@ export const Form: FunctionComponent<Props> = ({library}) => {
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
                     const isCreation = !values["@id"];
                     try {
-                        await fetch(isCreation ? "/libraries" : values["@id"], {
+                        const result = await fetch(isCreation ? "/libraries" : values["@id"], {
                             method: isCreation ? "POST" : "PUT",
-                            body: JSON.stringify(values),
+                            body: JSON.stringify({"name": values.name}),
                         });
                         setStatus({
                             isValid: true,
                             msg: `Element ${isCreation ? "created" : "updated"}.`,
                         });
-                        router.push("/libraries");
+                        router.push(result['@id']);
                     } catch (error) {
                         setStatus({
                             isValid: false,
@@ -58,7 +60,7 @@ export const Form: FunctionComponent<Props> = ({library}) => {
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label className="form-control-label" htmlFor="_name">
-                                name
+                                {t("editLibrary.name")}
                             </label>
                             <strong><input
                                 name="name"
@@ -91,14 +93,14 @@ export const Form: FunctionComponent<Props> = ({library}) => {
                             className="float-end float-lg-none btn btn-success ms-2 mt-3"
                             disabled={isSubmitting}
                         >
-                            Submit
+                            {t("libraryPage.submitButton")}
                         </button>
                     </form>
                 )}
             </Formik>
             <br/>
             <Link href="/libraries">
-                <a className="btn btn-primary">Back to list</a>
+                <a className="btn btn-primary">{t("editLibrary.back")}</a>
             </Link>
         </div>
     );

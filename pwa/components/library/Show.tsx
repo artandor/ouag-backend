@@ -11,23 +11,25 @@ import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from "lodash";
+import useTranslation from "next-translate/useTranslation";
 
 interface Props {
     library: Library;
-    deleteCollaborator: any;
-    addCollaborator: any;
+    updateCollaborator: any;
 }
 
-export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, addCollaborator}) => {
+export const Show: FunctionComponent<Props> = ({library, updateCollaborator}) => {
+    const {t} = useTranslation('libraries');
     let [medias, setMedias] = useState({});
-    const [errorMessage, setError] = useState(null);
+    const [errorMessage, setError] = useState({});
     const router = useRouter();
-    let [query, setQuery] = useState();
+    let [query, setQuery] = useState({});
     let [options, setOptions] = useState([]);
     let [_cache] = useState({});
     let [isLoading, setIsLoading] = useState(false);
     let [collab, setCollab] = useState({})
 
+    //Getting all medias in the Library
     useEffect(() => {
         fetch(router.asPath + "/media_objects")
             .then((value) => {
@@ -36,57 +38,59 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
             .catch(() => null);
     }, [])
 
+    //Handle delete of the Library
     const handleDelete = async () => {
-        if (!window.confirm("Are you sure you want to delete this item?")) return;
-
+        if (!window.confirm(t("libraryPage.deleteLibrary"))) return;
         try {
             await fetch(library["@id"], {method: "DELETE"});
             await router.push("/libraries");
         } catch (error) {
-            setError("Error when deleting the resource.");
+            setError(t("libraryPage.errorDelete"));
             console.error(errorMessage);
         }
     };
 
+    //Handle delete of a user's access to the Library
     const handleCollaboratorDelete = async (collaborator: User) => {
-        if (!window.confirm("Are you sure you want to remove this user's access to the library?")) return;
+        if (!window.confirm(t("libraryPage.deleteCollaborator"))) return;
         try {
             library["sharedWith"] = library["sharedWith"].filter(o => {
                 return o !== collaborator
             });
-            let bodyMap = library["sharedWith"].map((entry, index) => {
+            let bodyMap = library["sharedWith"].map((entry) => {
                 return entry["@id"]
             })
             await fetch(library["@id"], {body: JSON.stringify({"sharedWith": bodyMap}), method: "PUT"},);
-            deleteCollaborator(library);
-            return;
+            updateCollaborator(library);
         } catch (error) {
-            setError("Error when deleting the resource.");
+            setError(t("libraryPage.errorDeleteCollaborator"));
             console.error(errorMessage);
         }
     };
 
+    //On submit, if the user isn't already in the sharedWith, add it.
+    //First in DB, then on display
     const handleSubmit = async (collaborator: User) => {
-        try {
-            console.log(collaborator)
-            library["sharedWith"].push(collaborator)
-            let bodyMap = library["sharedWith"].map((entry, index) => {
-                return entry["@id"]
-            })
-            await fetch(library["@id"], {body: JSON.stringify({"sharedWith": bodyMap}), method: "PUT"},);
-            addCollaborator(library);
-            return;
-        } catch (error) {
-            setError("Error when adding the resource.");
-            console.error(errorMessage);
+        const variable = library["sharedWith"].find(existingCollaborator => existingCollaborator["displayName"] === collaborator["displayName"])
+        if (collaborator["displayName"] && !variable) {
+            try {
+                library["sharedWith"].push(collaborator)
+                let bodyMap = library["sharedWith"].map((entry, index) => {
+                    return entry["@id"]
+                })
+                await fetch(library["@id"], {body: JSON.stringify({"sharedWith": bodyMap}), method: "PUT"},);
+                updateCollaborator(library);
+            } catch (error) {
+                setError(t("libraryPage.errorAddCollaborator"));
+                console.error(errorMessage);
+            }
         }
     }
 
+    //Get a list of Users
     function makeAndHandleRequest(query) {
         return fetch(`/users?displayName=${query}`)
             .then((resp) => {
-                console.log(query)
-                console.log(resp)
                 /* eslint-disable-line camelcase */
                 const options = (resp["hydra:member"].map(i => ({
                     ["@id"]: i["@id"],
@@ -97,6 +101,13 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
             });
     }
 
+    //Set collab var at selected value
+    function handleSelected(selected) {
+        setCollab(selected[0])
+    }
+
+    //Set the query var with the user's input, then call handleSearch
+    //only if query's length > 3 and no input change for at least 1 second
     const handleInputChange = query => {
         setQuery(query);
         if (query.length >= 3) {
@@ -104,6 +115,7 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
         }
     };
 
+    //Will call the function to get all users with a username which contains query
     const handleSearch = query => {
         setIsLoading(true);
         makeAndHandleRequest(query).then(resp => {
@@ -120,18 +132,18 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
                     <h1 className="text-center">{library["name"]}</h1>
                     <List media_objects={medias["hydra:member"]}/>
                     <Link href="/libraries">
-                        <a className="btn btn-primary">Back to list</a>
-                    </Link>{" "}
+                        <a className="btn btn-primary">{t("editLibrary.back")}</a>
+                    </Link>
                     <Link href={`${library["@id"]}/edit`}>
-                        <a className="btn btn-warning">Edit</a>
+                        <a className="btn btn-warning">{t("editLibrary.edit")}</a>
                     </Link>
                     <button className="btn btn-danger" onClick={handleDelete}>
-                        <a>Delete</a>
+                        <a>{t("libraryPage.deleteButton")}</a>
                     </button>
 
                     <button type="button" className="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#shareWithModal">
-                        Share library
+                        {t("libraryPage.shareLibraryButton")}
                     </button>
 
                     <div className="modal fade" id="shareWithModal" aria-labelledby="shareWithModalLabel"
@@ -139,8 +151,8 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
                         <div className="modal-dialog">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title" id="shareWithModalLabel">Share library with another
-                                        user</h5>
+                                    <h5 className="modal-title" id="shareWithModalLabel">
+                                        {t("libraryPage.shareLibraryTitle")}</h5>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -164,7 +176,8 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
                                     <form>
                                         <div className="form-group">
                                             <label htmlFor="recipient-name"
-                                                   className="col-form-label">Username:</label>
+                                                   className="col-form-label">
+                                                {t("libraryPage.username")}:</label>
                                             <AsyncTypeahead
                                                 isLoading={isLoading}
                                                 options={options}
@@ -174,10 +187,11 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
                                                 maxResults={30}
                                                 minLength={3}
                                                 onInputChange={handleInputChange}
+                                                onChange={handleSelected}
                                                 onSearch={handleSearch}
                                                 onSubmit={handleSubmit}
                                                 paginate
-                                                placeholder="Search for a user..."
+                                                placeholder={t("libraryPage.placeholder")}
                                                 renderMenuItemChildren={option => (
                                                     <div key={option.id}>
                                                         <span
@@ -190,13 +204,15 @@ export const Show: FunctionComponent<Props> = ({library, deleteCollaborator, add
                                         <button
                                             type="button"
                                             className="btn btn-success"
-                                            onClick={() => handleSubmit(collab)}
-                                        >Submit
+                                            onClick={() => collab && handleSubmit(collab)}
+                                        >
+                                            {t("libraryPage.submitButton")}
                                         </button>
                                     </form>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close
+                                    <button type="button" className="btn btn-secondary"
+                                            data-bs-dismiss="modal">{t("libraryPage.closeModalButton")}
                                     </button>
                                 </div>
                             </div>

@@ -1,10 +1,30 @@
 {
   "librariesPage": {
     "title": "Libraries",
-    "create": "Add library"
+    "create": "Add a library"
   },
-  "mediasPage": {
-    "title": "Media",
-    "create": "Add media"
+  "libraryCreate": {
+    "title": "New library"
+  },
+  "libraryPage": {
+    "create": "Add a media",
+    "deleteLibrary": "Are you sure you want to delete this library?",
+    "errorDelete": "Error when deleting the library.",
+    "deleteCollaborator": "Are you sure you want to remove this user's access to the library?",
+    "errorDeleteCollaborator": "Error when deleting this user's access.",
+    "errorAddCollaborator": "Error when adding this user access to the library.",
+    "shareLibraryButton": "Share library",
+    "shareLibraryTitle": "Share library with another user",
+    "deleteButton": "Delete",
+    "username": "Username",
+    "submitButton": "Submit",
+    "closeModalButton": "Close",
+    "placeholder": "Search for a user..."
+  },
+  "editLibrary": {
+    "edit": "Edit library",
+    "create": "Create library",
+    "back": "Back to list",
+    "name": "Library's name"
   }
 }

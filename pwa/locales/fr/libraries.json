@@ -1,10 +1,30 @@
 {
   "librariesPage": {
-    "title": "Libraries",
-    "create": "Add library"
+    "title": "Bibliothèques",
+    "create": "Ajouter une bibliothèque"
   },
-  "mediasPage": {
-    "title": "Media",
-    "create": "Add media"
+  "libraryCreate": {
+    "title": "Nouvelle bibliothèque"
+  },
+  "libraryPage": {
+    "create": "Ajouter un média",
+    "deleteLibrary": "Êtes-vous sûr(e) de vouloir supprimer cette bibliothèque?",
+    "errorDelete": "Erreur lors de la suppression de la bibliothèque.",
+    "deleteCollaborator": "Êtes-vous sûr(e) de vouloir révoquer l'accès de cet utilisateur à la bibliothèque?",
+    "errorDeleteCollaborator": "Erreur lors de la suppression de l'accès.",
+    "errorAddCollaborator": "Erreur lors de l'ajout de l'accès d'un utilisateur à la bibliothèque",
+    "shareLibraryButton": "Partager",
+    "shareLibraryTitle": "Partager la bibliothèque avec un autre utilisateur",
+    "deleteButton": "Supprimer",
+    "username": "Nom d'utilisateur",
+    "submitButton": "Valider",
+    "closeModalButton": "Fermer",
+    "placeholder": "Recherche d'un utilisateur"
+  },
+  "editLibrary": {
+    "edit": "Modifier la bibliothèque",
+    "create": "Créer une bibliothèque",
+    "back": "Retour à la liste",
+    "name": "Nom de la bibliothèque"
   }
 }

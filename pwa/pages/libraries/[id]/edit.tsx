@@ -1,16 +1,20 @@
-import {NextComponentType, NextPageContext} from "next";
 import {Form} from "../../../components/library/Form";
-import {Library} from "../../../types/Library";
 import {fetch} from "../../../utils/dataAccess";
 import Head from "next/head";
+import router from "next/router";
+import {useEffect, useState} from "react";
+import ContainerLayout from "../../../layouts/container";
 
-interface Props {
-    library: Library;
-}
+export default function LibraryEditPage() {
+    let [library, setLibrary] = useState()
 
-const Page: NextComponentType<NextPageContext, Props, Props> = ({
-                                                                    library,
-                                                                }) => {
+    useEffect(() => {
+        fetch(router.asPath.replace("/edit", ""))
+            .then((libData) => {
+                setLibrary(libData)
+            })
+            .catch(() => null);
+    }, [])
     return (
         <div>
             <div>
@@ -18,15 +22,9 @@ const Page: NextComponentType<NextPageContext, Props, Props> = ({
                     <title>{library && `Edit Library ${library["@id"]}`}</title>
                 </Head>
             </div>
-            <Form library={library}/>
+            <ContainerLayout>
+                {library ? <Form library={library}/> : null}
+            </ContainerLayout>
         </div>
     );
 };
-
-Page.getInitialProps = async ({asPath}: NextPageContext) => {
-    const library = await fetch(asPath.replace("/edit", ""));
-
-    return {library};
-};
-
-export default Page;

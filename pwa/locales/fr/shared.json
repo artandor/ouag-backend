@@ -12,5 +12,6 @@
   "editButton": "Modifier",
   "deleteButton": "Supprimer",
   "backButton": "Retour",
-  "customizeButton": "Customize"
+  "customizeButton": "Customize",
+  "accessLibraries": "Bibliothèques"
 }

@@ -39,7 +39,6 @@ export const fetch = async (id: string, init: RequestInit = {}, router = routerS
                     .then(async () => {
                         init.headers["Authorization"] = `Bearer ${localStorage.getItem('token')}`;
                         resp = await isomorphicFetch(ENTRYPOINT + id, init)
-                        console.log(resp)
                     })
                     .catch((e) => {
                         router.push('/users/login')

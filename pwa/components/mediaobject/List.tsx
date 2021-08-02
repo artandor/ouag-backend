@@ -27,7 +27,7 @@ export const List: FunctionComponent<Props> = ({media_objects}) => {
                                 <Image className="img-fluid img-thumbnail" src={iconPlus} height="" width=""
                                        layout="responsive"/>
                             </div>
-                            <div className="card-footer text-center text-truncate">{t('mediasPage.create')}</div>
+                            <div className="card-footer text-center text-truncate">{t('libraryPage.create')}</div>
                         </div>
                     </Link>
                 </div>
