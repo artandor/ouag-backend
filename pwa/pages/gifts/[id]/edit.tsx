@@ -8,7 +8,7 @@ import router from "next/router";
 
 export default function GiftEditPage() {
     const {t} = useTranslation('users');
-    let [gift, setGift] = useState()
+    let [gift, setGift] = useState({})
 
     useEffect(() => {
         fetch(router.asPath.replace("/edit", ""))
