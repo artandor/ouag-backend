@@ -201,10 +201,10 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                                         </div>
                                         <div className="modal-body">
                                             <p><Trans i18nKey='gifts:form.fillingMethod.help.manual'
-                                                      components={[<strong/>]}/></p>
+                                                      components={[<strong key="0"/>]}/></p>
                                             <hr/>
                                             <p><Trans i18nKey='gifts:form.fillingMethod.help.automatic'
-                                                      components={[<strong/>]}/></p>
+                                                      components={[<strong key="0"/>]}/></p>
                                         </div>
                                     </div>
                                 </div>

@@ -19,11 +19,11 @@ export default function GiftInvitesPage() {
                 setGift(giftData)
             })
             .catch(() => null);
-    }, [])
+    }, [router])
 
     function addInvite(invite: GiftInvite) {
         let existingInviteIndex = gift["invites"].findIndex((element) => {
-            return element["@id"] == invite["@id"];
+            return element["@id"] === invite["@id"];
         });
         existingInviteIndex !== -1 ? gift["invites"][existingInviteIndex] = invite : gift["invites"].push(invite);
         setGift(prevGift => {

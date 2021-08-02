@@ -24,6 +24,7 @@ export const GiftList: FunctionComponent<Props> = ({gifts, creatorMode = false})
                 <div className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 mb-3">
                     {gifts.map((gift) => (
                         <Link
+                            passHref={true}
                             href={`${(creatorMode ? gift["@id"] : `/gifts/received${gift["@id"].replace('/gifts', "")}`)}`}
                             key={gift['@id']}>
                             <div className="col">

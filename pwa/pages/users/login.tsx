@@ -14,7 +14,7 @@ function LoginPage() {
             </Head>
             <div>
                 <div className="col-12 text-center">
-                    <Image src="/img/big-logo.png" width={200} height={163}/>
+                    <Image alt={"Logo"} src="/img/big-logo.png" width={200} height={163}/>
                 </div>
                 <LoginForm/>
                 <button className='btn btn-light col-12'

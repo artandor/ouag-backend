@@ -2,12 +2,10 @@ import {GiftShow} from "../../../components/gift/GiftShow";
 import {fetch} from "../../../utils/dataAccess";
 import Head from "next/head";
 import {useEffect, useState} from "react";
-import useTranslation from "next-translate/useTranslation";
 import router from "next/router";
 import ContainerLayout from "../../../layouts/ContainerLayout";
 
 export default function GiftShowPage() {
-    const {t} = useTranslation('gifts');
     let [gift, setGift] = useState({})
 
     useEffect(() => {

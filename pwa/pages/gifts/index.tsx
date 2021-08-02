@@ -27,7 +27,7 @@ export default function GiftListPage() {
             console.error(e);
             router.push('/users/login')
         }
-    }, [])
+    }, [router])
 
     return (
         <div>
