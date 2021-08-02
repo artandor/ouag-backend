@@ -171,4 +171,20 @@ class GiftInviteTest extends CustomApiTestCase
 
         $this->assertResponseStatusCodeSame(404);
     }
+
+    public function testClaimGiftFromInviteNotPublished()
+    {
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => '123469']],
+        ]);
+        $this->assertResponseStatusCodeSame(409);
+    }
+
+    public function testClaimGiftFromInviteAlreadyClaimed()
+    {
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => '147852']],
+        ]);
+        $this->assertResponseStatusCodeSame(409);
+    }
 }

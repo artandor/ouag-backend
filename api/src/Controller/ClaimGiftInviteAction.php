@@ -35,7 +35,7 @@ final class ClaimGiftInviteAction
             throw new NotFoundHttpException('Wrong code for invite or you are not logged in with the email that received the gift.');
         }
 
-        if ($invite->getGift()->getState() != "published" || $invite->getClaimed()) {
+        if ($invite->getGift()->getState() != "published" || $invite->getClaimed() === true) {
             throw new ConflictHttpException('This gift has already been claimed or hasn\'t been published yet.');
         }
 

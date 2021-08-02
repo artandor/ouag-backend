@@ -17,12 +17,14 @@ App\Entity\Gift:
         startAt: <(new DateTime("2035-05-19"))>
         recurrence: 1
         mediaAmount: 30
+        state: published
         owner: '@user_5'
     gift_owned_named_en:
         name: Super gift 3
         startAt: <(new DateTime("2035-05-19"))>
         recurrence: 1
         mediaAmount: 30
+        state: published
         owner: '@user_6'
     gift_not_owned_named:
         name: Super gift not owned
@@ -49,3 +51,10 @@ App\Entity\Gift:
         mediaAmount: <numberBetween(1, 14)>
         owner: '@user_2'
         receivers: [ '@user_1' ]
+    gift_owned_published:
+        name: Super gift published
+        startAt: <(new DateTime("2035-05-19"))>
+        recurrence: 1
+        mediaAmount: 30
+        state: published
+        owner: '@user_1'

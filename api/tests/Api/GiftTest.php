@@ -101,7 +101,7 @@ class GiftTest extends CustomApiTestCase
             '@context' => '/contexts/Gift',
             '@id' => '/gifts',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 27,
+            'hydra:totalItems' => 28,
         ]);
     }
 
@@ -125,7 +125,7 @@ class GiftTest extends CustomApiTestCase
             '@context' => '/contexts/Gift',
             '@id' => '/gifts',
             '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 12,
+            'hydra:totalItems' => 13,
         ]);
     }
 
@@ -317,7 +317,7 @@ class GiftTest extends CustomApiTestCase
 
         $this->assertQueuedEmailCount(10);
         $email = $this->getMailerMessage(0);
-        $this->assertEmailHtmlBodyContains($email, '123456');
+        $this->assertEmailHtmlBodyContains($email, '123987');
         $this->assertEmailHtmlBodyContains($email, 'Enjoy your gift ! And don\'t forget to say thank you to');
     }
 }
