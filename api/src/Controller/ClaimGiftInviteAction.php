@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Services\UserMailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Security;
 
@@ -34,11 +35,9 @@ final class ClaimGiftInviteAction
             throw new NotFoundHttpException('Wrong code for invite or you are not logged in with the email that received the gift.');
         }
 
-        // TODO : Add this part when workflows are released
-        /*
         if ($invite->getGift()->getState() != "published" || $invite->getClaimed()) {
             throw new ConflictHttpException('This gift has already been claimed or hasn\'t been published yet.');
-        }*/
+        }
 
         $invite->setClaimed(true);
         $invite->getGift()->addReceiver($user);

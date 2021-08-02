@@ -142,13 +142,13 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                                 <input
                                     name="startAt"
                                     id="_startAt"
-                                    value={values.startAt ? dateToFormString(new Date(values.startAt)) : dateToFormString(new Date())}
-                                    type="date"
                                     min={dateToFormString(new Date())}
+                                    value={values.startAt ? dateToFormString(new Date(values.startAt)) : ""}
+                                    type="date"
                                     className={`form-control-inline text-primary${
                                         errors.startAt && touched.startAt ? " is-invalid" : ""
                                     }`}
-                                    aria-invalid={errors.startAt && touched.startAt}
+                                    aria-invalid={typeof errors.startAt != 'undefined' && typeof touched.startAt != 'undefined'}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
