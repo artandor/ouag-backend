@@ -4,7 +4,11 @@
 namespace App\Serializer;
 
 use App\Entity\MediaObject;
-use Aws\S3\S3Client;
+use ArrayObject;
+use AsyncAws\S3\Input\GetObjectRequest;
+use AsyncAws\S3\S3Client;
+use DateTimeImmutable;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -24,21 +28,21 @@ final class MediaObjectNormalizer implements ContextAwareNormalizerInterface, No
      * @param mixed $object
      * @param string|null $format
      * @param array<string> $context
-     * @return array[]|string|int|float|bool|\ArrayObject|null
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @return array[]|string|int|float|bool|ArrayObject|null
+     * @throws ExceptionInterface
      */
-    public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
     {
         $context[self::ALREADY_CALLED] = true;
 
         if (null != $object->getSize()) {
 
-            $commandContentUrl = $this->s3Client->getCommand('GetObject', [
-                'Bucket' => 'ouag-private',
+            $commandContentUrl = new GetObjectRequest([
+                'Bucket' => $_ENV['AWS_S3_BUCKET_NAME'],
                 'Key' => 'media/' . $object->getLibrary()->getId() . '/' . $object->getContent(),
             ]);
 
-            $object->setContent((string)$this->s3Client->createPresignedRequest($commandContentUrl, new \DateTime('+20 minute'))->getUri());
+            $object->setContent($this->s3Client->presign($commandContentUrl, new DateTimeImmutable('+20 minute')));
         }
 
         return $this->normalizer->normalize($object, $format, $context);
