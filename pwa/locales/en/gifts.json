@@ -29,6 +29,7 @@
     "text4": "You'll receive a confirmation email when they claim the gift on the site."
   },
   "receiver": {
+    "noMediaToday": "Oops, it seems there are no gift for you today !",
     "mediaObject": {
       "title": "Title",
       "comment": "Comment",

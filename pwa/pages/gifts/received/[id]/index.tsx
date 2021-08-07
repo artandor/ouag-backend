@@ -4,10 +4,12 @@ import {useEffect, useRef, useState} from "react";
 import router from "next/router";
 import MediaObjectShow from "../../../../components/media_object/MediaObjectShow";
 import Head from "next/head"
+import useTranslation from "next-translate/useTranslation";
 
 export default function ReceivedGiftDetailPage() {
     const ref = useRef(null);
     const [gift, setGift] = useState({})
+    const {t} = useTranslation('gifts')
 
     useEffect(() => {
         import("@lottiefiles/lottie-player");
@@ -43,7 +45,7 @@ export default function ReceivedGiftDetailPage() {
                     <div className="row text-center">
                         <h1>{gift['name']}</h1>
                         <p className="h2 mt-3">¯\_(ツ)_/¯</p>
-                        <p>Oops, il semblerait qu'il n'y ait pas de cadeau pour vous aujourd'hui !</p>
+                        <p>{t('receiver.noMediaToday')}</p>
                     </div>
                 )}
             </ContainerLayout>

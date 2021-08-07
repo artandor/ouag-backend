@@ -26,6 +26,7 @@
     "text4": "Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans l'application."
   },
   "receiver": {
+    "noMediaToday": "Oops, il semblerait qu'il n'y ait pas de cadeau pour vous aujourd'hui !",
     "mediaObject": {}
   },
   "invite": {
