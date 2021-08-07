@@ -2,6 +2,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    height: 2rem;
 }
 
 .form-control-inline {

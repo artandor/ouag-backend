@@ -4,6 +4,7 @@ import LoginForm from "../../components/user/LoginForm";
 import router from "next/router";
 import Image from "next/image"
 import useTranslation from 'next-translate/useTranslation'
+import bigLogo from '/public/img/big-logo.png'
 
 function LoginPage() {
     const {t} = useTranslation('users');
@@ -14,7 +15,7 @@ function LoginPage() {
             </Head>
             <div>
                 <div className="col-12 text-center">
-                    <Image alt={"Logo"} src="/img/big-logo.png" width={200} height={163}/>
+                    <Image alt="Logo" src={bigLogo} width={200} height={163}/>
                 </div>
                 <LoginForm/>
                 <button className='btn btn-light col-12'

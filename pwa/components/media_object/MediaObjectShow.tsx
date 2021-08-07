@@ -8,15 +8,14 @@ interface MediaObjectShowProps {
 }
 
 export default function MediaObjectShow({media}: MediaObjectShowProps) {
-    //TODO : Ask @vasilvestre if it's ok to duplicate state to make the component autonomous
     const [nsfw, setNsfw] = useState(media.nsfw)
     const {t} = useTranslation('gifts')
 
     return (
-        <div className="col-12">
+        <div className="col-12 mb-4">
             <h1>{t('receiver.mediaObject.title')} : {media['title']}</h1>
             <blockquote className="blockquote">
-                <p>{t('receiver.mediaObject.comment')} : {media['comment']}</p>
+                {media['comment'] && <p>{t('receiver.mediaObject.comment')} : {media['comment']}</p>}
             </blockquote>
             {nsfw &&
             <>
@@ -34,8 +33,9 @@ export default function MediaObjectShow({media}: MediaObjectShowProps) {
                 </figcaption>
             </figure>
             <div className="d-inline-flex">
-                <a style={{zIndex: 100}} className="btn btn-success" href={media.content} download={media.title}><i
-                    className="bi bi-download"></i> {t('shared:downloadButton')}</a>
+                <a style={{zIndex: 100}} className="btn btn-success" href={media.content} target="_blank"
+                   download={media.title}>
+                    <i className="bi bi-download"></i> {t('shared:downloadButton')}</a>
             </div>
         </div>
     )
