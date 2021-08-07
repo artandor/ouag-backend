@@ -44,7 +44,7 @@ class Animation
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['animation_read', 'animation_write'])]
+    #[Groups(['animation_read', 'animation_write', 'gift_read'])]
     private string $lottieLink;
 
     /**

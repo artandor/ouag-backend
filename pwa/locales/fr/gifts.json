@@ -25,6 +25,10 @@
     "destPriceLabel": "Prix augmenté de {{count}}% par receveur",
     "text4": "Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans l'application."
   },
+  "receiver": {
+    "noMediaToday": "Oops, il semblerait qu'il n'y ait pas de cadeau pour vous aujourd'hui !",
+    "mediaObject": {}
+  },
   "invite": {
     "addButton": "Ajouter un destinataire"
   },
@@ -51,6 +55,11 @@
         "manual": "In <0>manual mode</0>, for each day of your gift you'll have to associate a media.",
         "automatic": "In <0>automatic mode</0>, we will use your current libraries to plan your image, then you can modify them. If you have no libraries it will do nothing."
       }
+    },
+    "token": {
+      "label": "Code",
+      "placeholder": "The code you received by email",
+      "error": "Code must be a 6 digit number."
     },
     "invite": {
       "email": {

@@ -5,6 +5,21 @@ App\Entity\GiftInvite:
         receiverNickname: Marcoleptic
         comment: <paragraph()>
         token: 123456
+        gift: '@gift_owned_published'
+    gift_invite_claimed:
+        email: '@user_1->email'
+        creatorNickname: <firstName()>
+        receiverNickname: <firstName()>
+        comment: <paragraph()>
+        token: 147852
+        claimed: true
+        gift: '@gift_owned_published'
+    gift_invite_not_published:
+        email: '@user_1->email'
+        creatorNickname: <firstName()>
+        receiverNickname: Marcoleptic
+        comment: <paragraph()>
+        token: 123469
         gift: '@gift_owned_named'
     gift_invite_my_gift_fr:
         email: '@user_5->email'
@@ -25,17 +40,19 @@ App\Entity\GiftInvite:
         creatorNickname: <firstName()>
         receiverNickname: <firstName()>
         comment: <paragraph()>
+        token: <numberBetween(100000, 999999)>
         gift: '@gift_owned_named'
     gift_invite_owned_{11..20}:
         email: <email()>
         creatorNickname: <firstName()>
         receiverNickname: <firstName()>
         comment: <paragraph()>
-        token: 123456
+        token: 123987
         gift: '@gift_owned_ordered'
     gift_invite_not_owned_{1..10}:
         email: <email()>
         creatorNickname: <firstName()>
         receiverNickname: <firstName()>
         comment: <paragraph()>
+        token: <numberBetween(100000, 999999)>
         gift: '@gift_not_owned_named'

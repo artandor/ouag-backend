@@ -102,7 +102,7 @@ class AnimationTest extends CustomApiTestCase
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             'name' => 'Fireworks',
-            'lottieLink' => 'https://lottiefiles.com/3287-fireworks'
+            'lottieLink' => 'https://assets2.lottiefiles.com/datafiles/068H91NVUJLGN4p/data.json'
         ]);
     }
 

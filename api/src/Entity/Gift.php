@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
@@ -114,6 +115,7 @@ use Symfony\Component\Validator\Constraints\Positive;
     normalizationContext: ['groups' => ['gift_read']],
     security: "is_granted('ROLE_USER')",
 )]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['updatedAt' => 'DESC', 'startAt' => 'ASC'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: [
     'owner' => 'exact',
     'receivers' => 'exact',
@@ -222,7 +224,7 @@ class Gift
     private ?string $state;
 
     #[Groups(['gift_read'])]
-    public function getActualMedia(): ?MediaObject
+    public function getActualPlanning(): ?Planning
     {
         /** @var Planning|bool|null $actualPlanning */
         $actualPlanning = $this->getPlannings()->matching(
@@ -232,7 +234,7 @@ class Gift
             return null;
         }
 
-        return $actualPlanning->getMedia();
+        return $actualPlanning;
     }
 
     #[Groups(['gift_read'])]
@@ -331,7 +333,7 @@ class Gift
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): self
+    public function setOwner(User $owner): self
     {
         $this->owner = $owner;
 

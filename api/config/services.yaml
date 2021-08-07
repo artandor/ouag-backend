@@ -42,15 +42,12 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    Aws\S3\S3Client:
+    AsyncAws\S3\S3Client:
         arguments:
-            -   version: latest
-                region: '%env(AWS_S3_REGION)%'
+            -   region: '%env(AWS_S3_REGION)%'
                 endpoint: '%env(AWS_S3_BASE_URL)%'
-                use_path_style_endpoint: true
-                credentials:
-                    key: '%env(AWS_S3_KEY)%'
-                    secret: '%env(AWS_S3_SECRET_KEY)%'
+                accessKeyId: '%env(AWS_S3_KEY)%'
+                accessKeySecret: '%env(AWS_S3_SECRET_KEY)%'
 
     App\Doctrine\OwnerUserExtension:
         tags:

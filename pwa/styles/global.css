@@ -2,6 +2,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    height: 2rem;
 }
 
 .form-control-inline {
@@ -16,3 +17,9 @@
     font-weight: 900;
     text-align: center;
 }
+
+.blur {
+    filter: blur(30px);
+    margin: 30px;
+}
+

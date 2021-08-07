@@ -56,26 +56,26 @@ class Planning
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    #[Groups(['planning_read'])]
+    #[Groups(['planning_read', 'gift_read'])]
     private ?DateTimeInterface $plannedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=MediaObject::class)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    #[Groups(['planning_write', 'planning_read'])]
+    #[Groups(['planning_write', 'planning_read', 'gift_read'])]
     private ?MediaObject $media;
 
     /**
      * @ORM\ManyToOne(targetEntity=Animation::class)
      */
-    #[Groups(['planning_write', 'planning_read'])]
+    #[Groups(['planning_write', 'planning_read', 'gift_read'])]
     private ?Animation $animation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['planning_write', 'planning_read'])]
+    #[Groups(['planning_write', 'planning_read', 'gift_read'])]
     private ?string $comment;
 
     /**

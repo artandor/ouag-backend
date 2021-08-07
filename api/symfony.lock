@@ -16,6 +16,12 @@
     "api-platform/schema-generator": {
         "version": "v3.0.0"
     },
+    "async-aws/core": {
+        "version": "1.11.0"
+    },
+    "async-aws/s3": {
+        "version": "1.9.1"
+    },
     "aws/aws-sdk-php": {
         "version": "3.179.1"
     },
@@ -200,8 +206,8 @@
     "league/flysystem": {
         "version": "2.0.5"
     },
-    "league/flysystem-aws-s3-v3": {
-        "version": "2.0.5"
+    "league/flysystem-async-aws-s3": {
+        "version": "2.0.6"
     },
     "league/flysystem-bundle": {
         "version": "1.0",

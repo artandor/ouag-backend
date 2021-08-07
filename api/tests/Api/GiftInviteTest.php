@@ -77,7 +77,6 @@ class GiftInviteTest extends CustomApiTestCase
         $response = $this->createClientWithCredentials()->request('GET', $giftIri);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Gift::class);
         $this->assertCount(11, $response->toArray()['invites']);
     }
 
@@ -105,9 +104,8 @@ class GiftInviteTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesResourceItemJsonSchema(Gift::class);
         $this->assertJsonContains([
-            'receivers' => [$this->findIriBy(User::class, ['email' => 'user@example.com'])]
+            'receivers' => [['@id' => $this->findIriBy(User::class, ['email' => 'user@example.com']), 'displayName' => "awtandow"]]
         ]);
     }
 
@@ -172,5 +170,21 @@ class GiftInviteTest extends CustomApiTestCase
         ]);
 
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testClaimGiftFromInviteNotPublished()
+    {
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => '123469']],
+        ]);
+        $this->assertResponseStatusCodeSame(409);
+    }
+
+    public function testClaimGiftFromInviteAlreadyClaimed()
+    {
+        self::createClientWithCredentials()->request('GET', '/gifts/claim', [
+            'extra' => ['parameters' => ['token' => '147852']],
+        ]);
+        $this->assertResponseStatusCodeSame(409);
     }
 }

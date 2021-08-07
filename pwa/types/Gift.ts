@@ -1,3 +1,5 @@
+import {Planning} from "./Planning";
+
 export class Gift {
     public "@id"?: string;
 
@@ -8,12 +10,12 @@ export class Gift {
         public recurrence?: number,
         public mediaAmount?: number,
         public completionPercentage?: number,
-        public defaultAnimation?: string,
+        public defaultAnimation?: any,
         public fillingMethod?: string,
         public receivers?: string[],
         public invites?: any,
         public state?: string,
-        public actualMedia?: string
+        public actualPlanning?: Planning
     ) {
         this["@id"] = _id;
     }
