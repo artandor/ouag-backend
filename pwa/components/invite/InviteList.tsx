@@ -8,8 +8,8 @@ import useTranslation from "next-translate/useTranslation";
 
 interface InviteListProps {
     invites: GiftInvite[],
-    addInvite: Function,
-    deleteInvite: Function,
+    addInvite?: Function,
+    deleteInvite?: Function,
 }
 
 export default function InviteList({invites, addInvite, deleteInvite}: InviteListProps) {
@@ -46,20 +46,25 @@ export default function InviteList({invites, addInvite, deleteInvite}: InviteLis
                 </div>
             )}
 
-            <Button variant="secondary" className="my-2" onClick={() => {
-                setShowModal(true)
-            }}>
-                <i className="bi bi-journal-plus"></i> {t('invite.addButton')}
-            </Button>
+            {addInvite &&
+            <>
+                <Button variant="secondary" className="my-2" onClick={() => {
+                    setShowModal(true)
+                }}>
+                    <i className="bi bi-journal-plus"></i> {t('invite.addButton')}
+                </Button>
 
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{t('invite.addButton')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <InviteForm addInvite={handleAddInvite} invite={selectedInvite}/>
-                </Modal.Body>
-            </Modal>
+                <Modal show={showModal} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{t('invite.addButton')}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <InviteForm addInvite={handleAddInvite} invite={selectedInvite}/>
+                    </Modal.Body>
+                </Modal>
+            </>
+            }
+
             <ul className={"list-group"}>
                 {invites.length > 0 ? invites.map((invite) => {
                     return (
@@ -69,11 +74,14 @@ export default function InviteList({invites, addInvite, deleteInvite}: InviteLis
                         }}>
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{invite["receiverNickname"]} / {invite["email"]}</h5>
-                                <button className="btn btn-link" onClick={async (e) => {
-                                    e.stopPropagation()
-                                    await handleDelete(invite);
-                                }}><small
-                                    className="text-muted"><i className="bi bi-trash"></i></small></button>
+                                {deleteInvite &&
+                                <>
+                                    <button className="btn btn-link" onClick={async (e) => {
+                                        e.stopPropagation()
+                                        await handleDelete(invite);
+                                    }}><small
+                                        className="text-muted"><i className="bi bi-trash"></i></small></button>
+                                </>}
                             </div>
                             <p className="mb-1">{t('invite.yourNickname')} : {invite["creatorNickname"]}</p>
                             <small className="text-muted">{invite["comment"]}</small>

@@ -38,8 +38,12 @@
     }
   },
   "invite": {
+    "pageTitle": "Invites for :",
     "addButton": "Add a recipient",
     "yourNickname": "Your Nickname"
+  },
+  "recap": {
+    "pageTitle": "Recap for : "
   },
   "form": {
     "name": {
