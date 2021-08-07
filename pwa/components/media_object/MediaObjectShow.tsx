@@ -34,7 +34,7 @@ export default function MediaObjectShow({media}: MediaObjectShowProps) {
             </figure>
             <div className="d-inline-flex">
                 <a style={{zIndex: 100}} className="btn btn-success" href={media.content} target="_blank"
-                   download={media.title}>
+                   rel="noreferrer" download={media.title}>
                     <i className="bi bi-download"></i> {t('shared:downloadButton')}</a>
             </div>
         </div>
