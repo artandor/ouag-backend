@@ -43,31 +43,48 @@ export default function SummaryPage() {
                 </Head>
             </div>
             <ContainerLayout>
-                <button className="btn btn-primary" onClick={router.back}><i
-                    className="bi bi-arrow-left"></i> {t('shared:backButton')}
+                <button className="btn btn-primary" onClick={router.back}>
+                    <i className="bi bi-arrow-left"/> {t('shared:backButton')}
                 </button>
-                <div>
-                    <h1>{t('recap.pageTitle')} {gift['name']}</h1>
-                    <div className="row">
-                        <div className="col">
-                            <div>{gift['mediaAmount']} souvenirs</div>
-                            <div>1 every {gift['recurrence']}</div>
-                        </div>
-                        <div className="col">
-                            {/* TODO: Change this to get the price from Stripe API when it's setup */}
-                            {unitPrice} € par souvenir
-                        </div>
-                    </div>
-                    <div className="row">
-                        <p>Total par destinataire : {gift['mediaAmount'] * unitPrice}</p>
-                    </div>
-                    <div className="row">
-                        <div className="col">{gift['invites'] && gift['invites'].length} destinataires</div>
-                        <div className="col">Total
-                            : {gift['invites'] && gift['mediaAmount'] * unitPrice * gift['invites'].length} €
-                        </div>
-                    </div>
-                    <Button variant={"success"} onClick={orderGiftRequest}>Send Gift</Button>
+                <Button variant={"success"} className="float-end" onClick={orderGiftRequest}>Send Gift</Button>
+                <div className="my-4">
+                    <h1 className="mb-3">{t('recap.pageTitle')}</h1>
+                    <p>{t('recap.note')}</p>
+
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">{t('recap.item')}</th>
+                            <th scope="col">{t('recap.quantity')}</th>
+                            <th scope="col">{t('recap.unitPrice')}</th>
+                            <th scope="col">{t('recap.total')}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">{t('recap.memories')}</th>
+                            <td>{gift['mediaAmount']}</td>
+                            <td>{unitPrice}</td>
+                            <td>{gift['mediaAmount'] * unitPrice} €</td>
+                        </tr>
+                        <tr>
+                            <td scope="row" colSpan={2}/>
+                            <th>Total per dest</th>
+                            <td>{gift['invites'] && gift['mediaAmount'] * unitPrice} €</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Recipients</th>
+                            <td>{gift['invites'] && gift['invites'].length}</td>
+                            <td>{t('recap.recipientPriceLabel1')}<br/>{t('recap.recipientPriceLabel2')}</td>
+                            <td>{gift['invites'] && gift['mediaAmount'] * unitPrice * (gift['invites'].length - 1)} €</td>
+                        </tr>
+                        <tr>
+                            <td scope="row" colSpan={2}/>
+                            <th>{t('recap.totalHT')}</th>
+                            <td>{gift['invites'] && gift['mediaAmount'] * unitPrice * gift['invites'].length} €</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </ContainerLayout>
         </div>
