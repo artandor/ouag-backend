@@ -78,9 +78,11 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
                     {error}
                 </div>
             )}
+            {gift['state'] == 'draft' &&
             <Link href={`${gift["@id"]}/edit`}>
                 <a className="btn btn-warning">Edit</a>
             </Link>
+            }
             <button className="btn btn-danger" onClick={handleDelete}>
                 <a>Delete</a>
             </button>

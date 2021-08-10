@@ -38,8 +38,21 @@
     }
   },
   "invite": {
+    "pageTitle": "Invites for :",
     "addButton": "Add a recipient",
     "yourNickname": "Your Nickname"
+  },
+  "recap": {
+    "pageTitle": "Recap of your order",
+    "note": "Note that the current screen is a preview, but you can send your gift for free by hitting the Send button",
+    "item": "Item",
+    "quantity": "Quantity",
+    "unitPrice": "€ / unit",
+    "total": "Total",
+    "totalHT": "Total excluding tax",
+    "memories": "Memories",
+    "recipientPriceLabel1": "+ 100% for each",
+    "recipientPriceLabel2": "recipient after the first"
   },
   "form": {
     "name": {

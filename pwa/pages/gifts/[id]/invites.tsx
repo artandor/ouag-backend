@@ -49,17 +49,25 @@ export default function GiftInvitesPage() {
                 </Head>
             </div>
             <ContainerLayout>
-                <button className="btn btn-primary" onClick={router.back}><i
-                    className="bi bi-arrow-left"></i> {t('shared:backButton')}
-                </button>
-                {gift["invites"] && gift["invites"].length > 0 &&
-                <Link href={router.asPath + "/invites"}>
-                    <a className="btn btn-success float-end">{t('shared:nextButton')} <i
-                        className="bi bi-arrow-right"></i></a>
-                </Link>}
+                <div>
+                    <h1>{t('invite.pageTitle')} {gift['name']}</h1>
+                </div>
+                <div className="d-flex justify-content-between mb-3">
+                    <button className="btn btn-primary" onClick={router.back}><i
+                        className="bi bi-arrow-left"></i> {t('shared:backButton')}
+                    </button>
+                    {gift["invites"] && gift["invites"].length > 0 &&
+                    <Link href={router.asPath.replace('/invites', '/summary')}>
+                        <a className="btn btn-success">{t('shared:nextButton')} <i
+                            className="bi bi-arrow-right"></i></a>
+                    </Link>
+                    }
+                </div>
+
                 <div>
                     {gift["invites"] &&
-                    <InviteList invites={gift["invites"]} addInvite={addInvite} deleteInvite={deleteInvite}/>}
+                    <InviteList invites={gift["invites"]} addInvite={gift['state'] == 'draft' && addInvite}
+                                deleteInvite={gift['state'] == 'draft' && deleteInvite}/>}
                 </div>
             </ContainerLayout>
         </div>
