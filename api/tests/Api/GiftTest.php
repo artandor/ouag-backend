@@ -3,6 +3,7 @@
 namespace App\Tests\Api;
 
 use App\Entity\Gift;
+use App\Entity\Library;
 use App\Entity\MediaObject;
 use App\Entity\Planning;
 use App\Entity\User;
@@ -41,7 +42,7 @@ class GiftTest extends CustomApiTestCase
         $this->assertEquals(10, $gift->getPlannings()->count());
     }
 
-    public function testCreateAutomaticGift(): void
+    public function testCreateAutomaticGiftWithoutLibrary(): void
     {
         $client = self::createClientWithCredentials($this->getToken([
             'email' => 'activeuser@example.com',
@@ -54,7 +55,7 @@ class GiftTest extends CustomApiTestCase
                 'startAt' => '16-05-2021',
                 'recurrence' => 2,
                 'mediaAmount' => 15,
-                'fillingMethod' => 'automatic',
+                'fillingMethod' => 'automatic'
             ]
         ]);
 
@@ -64,7 +65,7 @@ class GiftTest extends CustomApiTestCase
             'startAt' => '2021-05-16T00:00:00+00:00',
             'recurrence' => 2,
             'mediaAmount' => 15,
-            'fillingMethod' => 'automatic',
+            'fillingMethod' => 'automatic'
         ]);
 
         // Asserts that plannings were generated on Gift creation
@@ -74,19 +75,80 @@ class GiftTest extends CustomApiTestCase
         $this->assertEquals(15, $gift->getPlannings()->count());
 
         // Asserts that plannings are filled with MediaObjects from user libraries, then their MediaObject is null when there are no more available MediaObjects
-        $firstEmptyPlanning = $gift->getPlannings()->get(10);
-        $lastFilledPlanning = $gift->getPlannings()->get(9);
-        $firstFilledPlanning = $gift->getPlannings()->get(1);
+        $firstEmptyPlanning = $gift->getPlannings()->get(11);
+        $lastFilledPlanning = $gift->getPlannings()->get(10);
+        $firstFilledPlanning = $gift->getPlannings()->get(0);
 
-        if ($lastFilledPlanning instanceof Planning) {
-            $this->assertNotNull($lastFilledPlanning->getMedia());
-            if ($firstFilledPlanning instanceof Planning) {
-                $this->assertNotEquals($firstFilledPlanning->getMedia(), $lastFilledPlanning->getMedia());
+        $this->assertInstanceOf(Planning::class, $lastFilledPlanning);
+        $this->assertNotNull($lastFilledPlanning->getMedia());
+        $this->assertInstanceOf(Planning::class, $firstFilledPlanning);
+        $mediasFromPlannings = [];
+        foreach ($gift->getPlannings() as $planning) {
+            if ($planning->getMedia()) {
+                array_push($mediasFromPlannings, $planning->getMedia()->getId());
             }
         }
-        if ($firstEmptyPlanning instanceof Planning) {
-            $this->assertNull($firstEmptyPlanning->getMedia());
+        $this->assertEquals($mediasFromPlannings, array_unique($mediasFromPlannings));
+        $this->assertInstanceOf(Planning::class, $firstEmptyPlanning);
+        $this->assertNull($firstEmptyPlanning->getMedia());
+
+    }
+
+    public function testCreateAutomaticGiftWithLibrary(): void
+    {
+        $client = self::createClientWithCredentials($this->getToken([
+            'email' => 'activeuser@example.com',
+            'password' => 'seCrEt',
+        ]));
+
+        $lib1 = $this->findIriBy(Library::class, ["name" => 'Lib of user 5']);
+        $lib2 = $this->findIriBy(Library::class, ["name" => 'Second lib of user 5']);
+
+        $client->request('POST', '/gifts', [
+            'json' => [
+                'name' => 'Test Automatic Filling With Library',
+                'startAt' => '16-05-2021',
+                'recurrence' => 2,
+                'mediaAmount' => 15,
+                'fillingMethod' => 'automatic',
+                'selectedLibraries' => [$lib1]
+            ]
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'name' => 'Test Automatic Filling With Library',
+            'startAt' => '2021-05-16T00:00:00+00:00',
+            'recurrence' => 2,
+            'mediaAmount' => 15,
+            'fillingMethod' => 'automatic',
+            'selectedLibraries' => [$lib1]
+        ]);
+
+        // Asserts that plannings were generated on Gift creation
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Test Automatic Filling With Library']);
+
+        $this->assertEquals(15, $gift->getPlannings()->count());
+
+        // Asserts that plannings are filled with MediaObjects from user selected libraries, then their MediaObject is null when there are no more available MediaObjects
+        $firstEmptyPlanning = $gift->getPlannings()->get(10);
+        $lastFilledPlanning = $gift->getPlannings()->get(9);
+
+        // récupérer la library du media du planning et comparer
+        $this->assertInstanceOf(Planning::class, $lastFilledPlanning);
+        $this->assertNotNull($lastFilledPlanning->getMedia());
+        $mediasFromPlannings = [];
+        foreach ($gift->getPlannings() as $planning) {
+            if ($planning->getMedia()) {
+                array_push($mediasFromPlannings, $planning->getMedia()->getId());
+                $this->assertNotEquals($this->findIriBy(Library::class, ["id" => $planning->getMedia()->getLibrary()->getId()]), $lib2);
+            }
         }
+        $this->assertEquals($mediasFromPlannings, array_unique($mediasFromPlannings));
+        $this->assertInstanceOf(Planning::class, $firstEmptyPlanning);
+        $this->assertNull($firstEmptyPlanning->getMedia());
     }
 
     public function testGetAllGiftsImConcernedWith(): void
