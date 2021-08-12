@@ -19,3 +19,6 @@ App\Entity\Library:
     libraries_14:
         name: 'Lib of user 5'
         owner: '@user_5'
+    libraries_15:
+        name: 'Second lib of user 5'
+        owner: '@user_5'
