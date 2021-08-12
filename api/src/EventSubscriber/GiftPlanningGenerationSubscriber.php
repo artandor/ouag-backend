@@ -35,15 +35,34 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
         }
 
         $this->em->transactional(function ($em) use ($gift) {
-            $totalMediasOwner = $gift->getOwner()->getMediaObjects();
-            $totalMediasOwnerArray = $totalMediasOwner->toArray();
-            shuffle($totalMediasOwnerArray);
-            $totalMediasOwnerCount = $totalMediasOwner->count();
+            $listLibraries = $gift->getSelectedLibraries();
+            if ($gift->getFillingMethod() === "automatic") {
+                if (!$listLibraries->isEmpty()) {
+                    $totalMediasSelectedLibrariesArray = [];
+                    foreach ($listLibraries as $library) {
+                        $totalMediasSelectedLibrariesArray = array_merge($totalMediasSelectedLibrariesArray, $library->getMediaObjects()->toArray());
+                    }
+                    shuffle($totalMediasSelectedLibrariesArray);
+                } else {
+                    $totalMediasOwner = $gift->getOwner()->getMediaObjects();
+                    $totalMediasOwnerArray = $totalMediasOwner->toArray();
+                    shuffle($totalMediasOwnerArray);
+                    $totalMediasOwnerCount = $totalMediasOwner->count();
+                }
+            }
 
             for ($i = 0; $i < $gift->getMediaAmount(); $i++) {
                 $planning = new Planning();
-                if ($gift->getFillingMethod() === "automatic" && $i < $totalMediasOwnerCount) {
-                    $planning->setMedia($totalMediasOwnerArray[$i]);
+                if ($gift->getFillingMethod() === "automatic") {
+                    if (!$listLibraries->isEmpty()) {
+                        if ($i < sizeof($totalMediasSelectedLibrariesArray)) {
+                            $planning->setMedia($totalMediasSelectedLibrariesArray[$i]);
+                        }
+                    } else {
+                        if ($i < $totalMediasOwnerCount) {
+                            $planning->setMedia($totalMediasOwnerArray[$i]);
+                        }
+                    }
                 }
                 $planning->setGift($gift);
                 $planning->setPosition($i);
