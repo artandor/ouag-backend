@@ -75,8 +75,9 @@ class GiftTest extends CustomApiTestCase
         $this->assertEquals(15, $gift->getPlannings()->count());
 
         // Asserts that plannings are filled with MediaObjects from user libraries, then their MediaObject is null when there are no more available MediaObjects
-        $firstEmptyPlanning = $gift->getPlannings()->get(11);
-        $lastFilledPlanning = $gift->getPlannings()->get(10);
+        $mediasTotal = $gift->getOwner()->getMediaObjects()->count();
+        $firstEmptyPlanning = $gift->getPlannings()->get($mediasTotal);
+        $lastFilledPlanning = $gift->getPlannings()->get($mediasTotal - 1);
         $firstFilledPlanning = $gift->getPlannings()->get(0);
 
         $this->assertInstanceOf(Planning::class, $lastFilledPlanning);
@@ -133,8 +134,12 @@ class GiftTest extends CustomApiTestCase
         $this->assertEquals(15, $gift->getPlannings()->count());
 
         // Asserts that plannings are filled with MediaObjects from user selected libraries, then their MediaObject is null when there are no more available MediaObjects
-        $firstEmptyPlanning = $gift->getPlannings()->get(10);
-        $lastFilledPlanning = $gift->getPlannings()->get(9);
+        $mediasTotal = 0;
+        foreach ($gift->getSelectedLibraries() as $library) {
+            $mediasTotal += $library->getMediaObjects()->count();
+        }
+        $firstEmptyPlanning = $gift->getPlannings()->get($mediasTotal);
+        $lastFilledPlanning = $gift->getPlannings()->get($mediasTotal - 1);
 
         // récupérer la library du media du planning et comparer
         $this->assertInstanceOf(Planning::class, $lastFilledPlanning);
