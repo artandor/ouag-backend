@@ -35,33 +35,12 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
         }
 
         $this->em->transactional(function ($em) use ($gift) {
-            $listLibraries = $gift->getSelectedLibraries();
-            if ($gift->getFillingMethod() === "automatic") {
-                if (!$listLibraries->isEmpty()) {
-                    $totalMediasSelectedLibrariesArray = [];
-                    foreach ($listLibraries as $library) {
-                        $totalMediasSelectedLibrariesArray = array_merge($totalMediasSelectedLibrariesArray, $library->getMediaObjects()->toArray());
-                    }
-                    shuffle($totalMediasSelectedLibrariesArray);
-                } else {
-                    $totalMediasOwner = $gift->getOwner()->getMediaObjects();
-                    $totalMediasOwnerArray = $totalMediasOwner->toArray();
-                    shuffle($totalMediasOwnerArray);
-                    $totalMediasOwnerCount = $totalMediasOwner->count();
-                }
-            }
-
+            $randomizeMediaArray = $this->randomizeGiftMedias($gift);
             for ($i = 0; $i < $gift->getMediaAmount(); $i++) {
                 $planning = new Planning();
                 if ($gift->getFillingMethod() === "automatic") {
-                    if (!$listLibraries->isEmpty()) {
-                        if ($i < sizeof($totalMediasSelectedLibrariesArray)) {
-                            $planning->setMedia($totalMediasSelectedLibrariesArray[$i]);
-                        }
-                    } else {
-                        if ($i < $totalMediasOwnerCount) {
-                            $planning->setMedia($totalMediasOwnerArray[$i]);
-                        }
+                    if ($i < sizeof($randomizeMediaArray)) {
+                        $planning->setMedia($randomizeMediaArray[$i]);
                     }
                 }
                 $planning->setGift($gift);
@@ -69,6 +48,24 @@ class GiftPlanningGenerationSubscriber implements EventSubscriber
                 $em->persist($planning);
             }
         });
+    }
+
+    public function randomizeGiftMedias(Gift $gift): array
+    {
+        $randomizeMediaArray = [];
+        if ($gift->getFillingMethod() === "automatic") {
+            $listLibraries = $gift->getSelectedLibraries();
+            if (!$listLibraries->isEmpty()) {
+                foreach ($listLibraries as $library) {
+                    $randomizeMediaArray = array_merge($randomizeMediaArray, $library->getMediaObjects()->toArray());
+                }
+            } else {
+                $totalMedias = $gift->getOwner()->getMediaObjects();
+                $randomizeMediaArray = $totalMedias->toArray();
+            }
+            shuffle($randomizeMediaArray);
+        }
+        return $randomizeMediaArray;
     }
 
     public function onFlush(OnFlushEventArgs $args): void
