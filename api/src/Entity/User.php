@@ -95,7 +95,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['user_read', 'user_write', 'gift_read'])]
+    #[Groups(['user_read', 'user_write', 'gift_read', 'planning_read'])]
     #[NotBlank]
     private ?string $displayName;
 
