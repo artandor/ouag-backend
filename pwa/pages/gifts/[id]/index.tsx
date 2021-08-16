@@ -29,7 +29,7 @@ export default function GiftShowPage() {
                 setPlannings(planningData)
             })
             .catch((err) => console.error(err));
-    }, [])
+    }, [router])
 
 
     return (
