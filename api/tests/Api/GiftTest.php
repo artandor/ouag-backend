@@ -156,42 +156,6 @@ class GiftTest extends CustomApiTestCase
         $this->assertNull($firstEmptyPlanning->getMedia());
     }
 
-    public function testSelectedLibraryIsUpdateAtLibraryDelete(): void
-    {
-        $client = self::createClientWithCredentials($this->getToken([
-            'email' => 'activeuser@example.com',
-            'password' => 'seCrEt',
-        ]));
-
-        $lib1 = $this->findIriBy(Library::class, ["name" => 'Lib of user 5']);
-        $client->request('POST', '/gifts', [
-            'json' => [
-                'name' => 'Test Automatic Filling With Library',
-                'startAt' => '16-05-2021',
-                'recurrence' => 2,
-                'mediaAmount' => 15,
-                'fillingMethod' => 'automatic',
-                'selectedLibraries' => [$lib1]
-            ]
-        ]);
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains([
-            'name' => 'Test Automatic Filling With Library',
-            'startAt' => '2021-05-16T00:00:00+00:00',
-            'recurrence' => 2,
-            'mediaAmount' => 15,
-            'fillingMethod' => 'automatic',
-            'selectedLibraries' => [$lib1]
-        ]);
-
-        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
-            ->findOneBy(['name' => 'Test Automatic Filling With Library']);
-        $this->assertNotNull($gift);
-        $client->request('DELETE', $lib1);
-        /** @var Gift $gift */
-        $this->assertEquals([], $gift->getSelectedLibraries());
-    }
-
     public function testGetAllGiftsImConcernedWith(): void
     {
         $client = self::createClientWithCredentials();
