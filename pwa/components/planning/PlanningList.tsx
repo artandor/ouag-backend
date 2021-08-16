@@ -2,6 +2,7 @@ import {Planning} from "../../types/Planning";
 import MediaContentLayout from "../media_object/MediaContentLayout";
 import {Gift} from "../../types/Gift";
 import {useRouter} from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 interface PlanningListProps {
     plannings: Planning[],
@@ -12,6 +13,7 @@ interface PlanningListProps {
 
 function PlanningList({plannings, gift, selectedPlanning, selectPlanning}: PlanningListProps) {
     const router = useRouter()
+    const {t} = useTranslation('gifts')
 
     const renderListItem = planning => {
         const datePlanned = new Date(gift.startAt);
@@ -19,11 +21,12 @@ function PlanningList({plannings, gift, selectedPlanning, selectPlanning}: Plann
 
         return (
             <div className="col-6 col-md-3 my-3" key={planning['@id']} ref={planning['ref']}
-                 onClick={() => selectPlanning(planning)}>
-                <div className={`card h-100 ${planning === selectedPlanning && "border-primary"}`}>
+                 onClick={() => selectPlanning && selectPlanning(planning)}>
+                <div
+                    className={`card h-100 ${(selectedPlanning && planning === selectedPlanning) && "border-primary"}`}>
                     <div style={{maxHeight: "15vh", overflow: "hidden"}} className="m-3">
                         {planning.media ? <MediaContentLayout media={planning.media}/> :
-                            <p className="text-center mt-4">No media planned for this day</p>}
+                            <p className="text-center mt-4">{t('fields.emptyMedia')}</p>}
                     </div>
                     <div className="card-body">
                         <h5 className="card-title text-center">{planning.media && planning.media.title}</h5>
@@ -32,9 +35,9 @@ function PlanningList({plannings, gift, selectedPlanning, selectPlanning}: Plann
                         }
                     </div>
                     <div
-                        className={`card-footer ${planning === selectedPlanning ? "bg-primary text-white" : "text-muted"}`}>
-                        <p className="card-text"><small>Planned
-                            for {datePlanned.toLocaleDateString(router.locale, {
+                        className={`card-footer ${(selectedPlanning && planning === selectedPlanning) ? "bg-primary text-white" : "text-muted"}`}>
+                        <p className="card-text">
+                            <small>{t('fields.plannedFor')} {datePlanned.toLocaleDateString(router.locale, {
                                 day: 'numeric',
                                 month: 'short',
                                 year: 'numeric',

@@ -25,7 +25,7 @@ export default function GiftEditPage() {
                 </Head>
             </div>
             <ContainerLayout>
-                {gift ? <GiftForm gift={gift}/> : null}
+                {gift && gift['@id'] ? <GiftForm gift={gift}/> : null}
             </ContainerLayout>
         </div>
     );

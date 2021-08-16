@@ -34,9 +34,8 @@ final class MediaObjectNormalizer implements ContextAwareNormalizerInterface, No
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
     {
         $context[self::ALREADY_CALLED] = true;
-
-        if (null != $object->getSize()) {
-
+        // If content is a file (has size), and is not already a signed url, sign it.
+        if (null != $object->getSize() && !filter_var($object->getContent(), FILTER_VALIDATE_URL)) {
             $commandContentUrl = new GetObjectRequest([
                 'Bucket' => $_ENV['AWS_S3_BUCKET_NAME'],
                 'Key' => 'media/' . $object->getLibrary()->getId() . '/' . $object->getContent(),
