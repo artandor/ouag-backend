@@ -44,7 +44,7 @@ export default function GiftShowPage() {
                 setLibraries(libraryData)
             })
             .catch((err) => console.error(err));
-    }, [])
+    }, [router])
 
     useEffect(() => {
         selectedLibrary['@id'] && fetch(selectedLibrary['@id'] + '/media_objects')
