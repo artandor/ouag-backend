@@ -27,8 +27,7 @@ final class GiftWorkflowOrder
             throw new PreconditionFailedHttpException('Cannot checkout gift with no invites');
         }
 
-        // TODO: Put this in env
-        Stripe::setApiKey('sk_test_51HSrrZAiM7b1xbOcAtDviO2RuX6cCkQDTJqdalyuCGKrsqewkfoxmkFVefwoxQlPVAOmzj4K9MZinPClpcBUXhT400XDXYlJfD');
+        Stripe::setApiKey($_ENV['STRIPE_API_KEY']);
 
         try {
             // TODO : add the name of the gift to the invoice
@@ -37,11 +36,15 @@ final class GiftWorkflowOrder
                 'payment_method_types' => [
                     'card',
                 ],
-                // TODO : Add line for recipients
                 'line_items' => [
                     [
-                        'price' => 'price_1JP68KAiM7b1xbOcw0deBFmT',
-                        'quantity' => $data->getMediaAmount(),
+                        'price' => $_SERVER['APP_ENV'] == 'prod' ? 'price_1JPSZ2AiM7b1xbOcea0UHuSj' : 'price_1JP68KAiM7b1xbOcw0deBFmT',
+                        'quantity' => $data->getMediaAmount() * count($data->getInvites()),
+                        /* Add this when TVA kicks in
+                        'tax_rates' => $_SERVER['APP_ENV'] == 'prod' ?
+                            ['txr_1JPTPFAiM7b1xbOcew6c4qrB']
+                            : ['txr_1JPRhiAiM7b1xbOcBbibHmLZ']
+                        */
                     ]
                 ],
                 'mode' => 'payment',
@@ -49,7 +52,6 @@ final class GiftWorkflowOrder
                 'cancel_url' => $_ENV['FRONT_DOMAIN'] . '/checkout/failure',
                 'allow_promotion_codes' => true,
                 'metadata' => [
-                    'description' => $data->getName(),
                     'gift_id' => $data->getId(),
                 ],
             ]);

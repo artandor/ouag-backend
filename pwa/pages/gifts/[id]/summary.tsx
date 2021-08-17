@@ -76,7 +76,7 @@ export default function SummaryPage() {
                         </tr>
                         <tr>
                             <td scope="row" colSpan={2}/>
-                            <th>{t('recap.totalHT')}</th>
+                            <th>{t('recap.total')}</th>
                             <td>{gift['invites'] && gift['mediaAmount'] * unitPrice * gift['invites'].length} €</td>
                         </tr>
                         </tbody>

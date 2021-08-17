@@ -9,7 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
-use App\Controller\GiftCheckoutEndpoint;
+use App\Controller\StripeController;
 use App\Controller\GiftWorkflowOrder;
 use App\Controller\GiftWorkflowPublish;
 use App\Repository\GiftRepository;

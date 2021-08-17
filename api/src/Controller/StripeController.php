@@ -18,7 +18,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 use UnexpectedValueException;
 
 
-class GiftCheckoutEndpoint extends AbstractController
+class StripeController extends AbstractController
 {
     public function __construct(private WorkflowInterface $giftPublishingStateMachine,)
     {
@@ -27,12 +27,11 @@ class GiftCheckoutEndpoint extends AbstractController
     /**
      * @Route("/stripe/webhook", methods={"POST"})
      */
-    public function index(Request $request, EntityManagerInterface $em, GiftRepository $giftRepository, LoggerInterface $logger): JsonResponse
+    public function webhook(Request $request, EntityManagerInterface $em, GiftRepository $giftRepository, LoggerInterface $logger): JsonResponse
     {
         try {
-            $endpoint_secret = 'whsec_RbBfvcQlFEuD1lkPji03rxpG5osrfbIw';
+            $endpoint_secret = $_ENV['STRIPE_WEBHOOK_SECRET'];
             $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-            $event = null;
             try {
                 $event = Webhook::constructEvent($request->getContent(), $sig_header, $endpoint_secret);
             } catch (UnexpectedValueException $e) {
