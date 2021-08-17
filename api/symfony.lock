@@ -364,6 +364,9 @@
             "config/packages/stof_doctrine_extensions.yaml"
         ]
     },
+    "stripe/stripe-php": {
+        "version": "v7.93.0"
+    },
     "symfony/amqp-messenger": {
         "version": "v5.2.7"
     },

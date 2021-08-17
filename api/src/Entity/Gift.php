@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
+use App\Controller\GiftCheckoutEndpoint;
 use App\Controller\GiftWorkflowOrder;
 use App\Controller\GiftWorkflowPublish;
 use App\Repository\GiftRepository;
@@ -28,89 +29,83 @@ use Symfony\Component\Validator\Constraints\Positive;
  */
 #[ApiResource(
     collectionOperations: [
-    'get',
-    'post',
-    'claim_gift_invite' => [
-        'method' => 'GET',
-        'path' => 'gifts/claim',
-        'security' => "is_granted('ROLE_USER')",
-        'controller' => ClaimGiftInviteAction::class,
-        'pagination_enabled' => false,
-        'openapi_context' => [
-            'summary' => 'Claim a gift using an Invite token',
-            'description' => 'Claim a gift using an Invite token',
-            'parameters' => ['token' => ['name' => 'token', 'type' => 'string', 'in' => 'query']],
-            'responses' => [
-                '200' => [
-                    'content' => [
-                        'application/json+ld' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/Gift.jsonld-gift_read',
+        'get',
+        'post',
+        'claim_gift_invite' => [
+            'method' => 'GET',
+            'path' => 'gifts/claim',
+            'security' => "is_granted('ROLE_USER')",
+            'controller' => ClaimGiftInviteAction::class,
+            'pagination_enabled' => false,
+            'openapi_context' => [
+                'summary' => 'Claim a gift using an Invite token',
+                'description' => 'Claim a gift using an Invite token',
+                'parameters' => ['token' => ['name' => 'token', 'type' => 'string', 'in' => 'query']],
+                'responses' => [
+                    '200' => [
+                        'content' => [
+                            'application/json+ld' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/Gift.jsonld-gift_read',
+                                ],
                             ],
-                        ],
-                        'application/json' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/Gift-gift_read',
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/Gift-gift_read',
+                                ],
                             ],
-                        ],
+                        ]
                     ]
                 ]
             ]
-        ]
+        ],
     ],
-],
     itemOperations: [
-    'get' => ['security' => "is_granted('ROLE_ADMIN') or (object.getOwner() == user or object.getReceivers().contains(user))"],
-    'put' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
-    'delete' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
-    'post_new_invite' => [
-        'method' => 'POST',
-        'security' => "is_granted('ROLE_USER') and object.getOwner() == user",
-        'path' => 'gifts/{id}/invites',
-        'controller' => CreateGiftInviteAction::class,
-        'normalization_context' => ['groups' => ['gift_invite_read']],
-        'openapi_context' => [
-            'summary' => 'Create a GiftInvite inside a Gift',
-            'description' => 'Create an invite and add it to the gift found from the {id}',
-            'requestBody' => ['content' => [
-                'application/json' => [
-                    'schema' => [
-                        '$ref' => '#/components/schemas/GiftInvite-gift_invite_write',
+        'get' => ['security' => "is_granted('ROLE_ADMIN') or (object.getOwner() == user or object.getReceivers().contains(user))"],
+        'put' => ['security' => "is_granted('ROLE_ADMIN') or (object.getOwner() == user and object.getState() == 'draft')"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
+        'post_new_invite' => [
+            'method' => 'POST',
+            'security' => "is_granted('ROLE_USER') and object.getOwner() == user",
+            'path' => 'gifts/{id}/invites',
+            'controller' => CreateGiftInviteAction::class,
+            'normalization_context' => ['groups' => ['gift_invite_read']],
+            'openapi_context' => [
+                'summary' => 'Create a GiftInvite inside a Gift',
+                'description' => 'Create an invite and add it to the gift found from the {id}',
+                'requestBody' => ['content' => [
+                    'application/json' => [
+                        'schema' => [
+                            '$ref' => '#/components/schemas/GiftInvite-gift_invite_write',
+                        ]
                     ]
-                ]
-            ]],
-            'responses' => [
-                '201' => [
-                    'description' => 'The Gift Invite created',
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/GiftInvite-gift_invite_read',
+                ]],
+                'responses' => [
+                    '201' => [
+                        'description' => 'The Gift Invite created',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/GiftInvite-gift_invite_read',
+                                ],
                             ],
-                        ],
-                        'application/json+ld' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/GiftInvite.jsonld-gift_invite_read',
+                            'application/json+ld' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/GiftInvite.jsonld-gift_invite_read',
+                                ],
                             ],
                         ],
                     ],
-                ],
+                ]
             ]
+        ],
+        'gift_order' => [
+            'method' => 'PUT',
+            'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
+            'path' => 'gifts/{id}/order',
+            'controller' => GiftWorkflowOrder::class,
         ]
     ],
-    'gift_order' => [
-        'method' => 'PUT',
-        'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
-        'path' => 'gifts/{id}/order',
-        'controller' => GiftWorkflowOrder::class,
-    ],
-    'gift_publish' => [
-        'method' => 'PUT',
-        'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
-        'path' => 'gifts/{id}/publish',
-        'controller' => GiftWorkflowPublish::class,
-    ],
-],
     denormalizationContext: ['groups' => ['gift_write']],
     normalizationContext: ['groups' => ['gift_read']],
     security: "is_granted('ROLE_USER')",
@@ -222,6 +217,9 @@ class Gift
      */
     #[Groups(['gift_read'])]
     private ?string $state;
+
+    #[Groups(['gift_read'])]
+    private ?string $checkoutUrl = null;
 
     #[Groups(['gift_read'])]
     public function getActualPlanning(): ?Planning
@@ -470,5 +468,21 @@ class Gift
         $this->state = $state;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCheckoutUrl(): ?string
+    {
+        return $this->checkoutUrl;
+    }
+
+    /**
+     * @param string|null $checkoutUrl
+     */
+    public function setCheckoutUrl(?string $checkoutUrl): void
+    {
+        $this->checkoutUrl = $checkoutUrl;
     }
 }

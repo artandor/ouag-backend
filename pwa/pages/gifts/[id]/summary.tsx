@@ -23,16 +23,12 @@ export default function SummaryPage() {
 
     function orderGiftRequest() {
         fetch(router.asPath.replace('summary', 'order'), {method: 'PUT', body: JSON.stringify({})})
-            .then(() => publishGiftRequest())
-            .then(() => {
+            .then((giftData) => {
                 console.log('Gift successfully published');
-                router.push('/gifts')
+                if (window) window.location.assign(giftData['checkoutUrl'])
             })
+            // Handle if total is < .50 €
             .catch((e) => console.log('An error occured while publishing gift.'))
-    }
-
-    async function publishGiftRequest() {
-        return fetch(router.asPath.replace('summary', 'publish'), {method: 'PUT', body: JSON.stringify({})})
     }
 
     return (
