@@ -16,6 +16,9 @@
     ],
     "rgx:^/gifts/*": [
       "gifts"
+    ],
+    "rgx:^/checkout/*": [
+      "checkout"
     ]
   }
 }

@@ -30,7 +30,6 @@ final class GiftWorkflowOrder
         Stripe::setApiKey($_ENV['STRIPE_API_KEY']);
 
         try {
-            // TODO : add the name of the gift to the invoice
             $checkoutSession = Session::create([
                 'customer_email' => $data->getOwner()->getEmail(),
                 'payment_method_types' => [

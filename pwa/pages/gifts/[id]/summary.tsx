@@ -45,7 +45,6 @@ export default function SummaryPage() {
                 <Button variant={"success"} className="float-end" onClick={orderGiftRequest}>Send Gift</Button>
                 <div className="my-4">
                     <h1 className="mb-3">{t('recap.pageTitle')}</h1>
-                    <p>{t('recap.note')}</p>
 
                     <table className="table">
                         <thead>
@@ -69,7 +68,7 @@ export default function SummaryPage() {
                             <td>{gift['invites'] && gift['mediaAmount'] * unitPrice} €</td>
                         </tr>
                         <tr>
-                            <th scope="row">Recipients</th>
+                            <th scope="row">{t('recap.recipient')}</th>
                             <td>{gift['invites'] && gift['invites'].length}</td>
                             <td>{t('recap.recipientPriceLabel1')}<br/>{t('recap.recipientPriceLabel2')}</td>
                             <td>{gift['invites'] && gift['mediaAmount'] * unitPrice * (gift['invites'].length - 1)} €</td>
@@ -81,6 +80,7 @@ export default function SummaryPage() {
                         </tr>
                         </tbody>
                     </table>
+                    <p className="text-end">{t('recap.nonApplicableVat')}</p>
                 </div>
             </ContainerLayout>
         </div>

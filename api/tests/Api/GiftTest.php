@@ -7,6 +7,7 @@ use App\Entity\MediaObject;
 use App\Entity\Planning;
 use App\Entity\User;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use Symfony\Component\Workflow\Workflow;
 
 class GiftTest extends CustomApiTestCase
 {
@@ -280,14 +281,13 @@ class GiftTest extends CustomApiTestCase
 
     public function testOrderGiftGeneratePlannedAtData()
     {
-        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
-        self::createClientWithCredentials()->request('PUT', $iri . '/order', ['json' => []]);
-
-        $this->assertResponseIsSuccessful();
-
         /** @var Gift $gift */
         $gift = static::$container->get('doctrine')->getRepository(Gift::class)
             ->findOneBy(['name' => 'Super gift']);
+
+        /** @var Workflow $workflow */
+        $workflow = static::$container->get('state_machine.gift_publishing');
+        $workflow->apply($gift, 'checkout');
 
         /** @var Planning $planning */
         $planning = static::$container->get('doctrine')->getRepository(Planning::class)
@@ -295,25 +295,15 @@ class GiftTest extends CustomApiTestCase
         $this->assertNotNull($planning->getPlannedAt());
     }
 
-    public function testOrderGiftSwitchesStateToOrdered()
-    {
-        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift']);
-        $response = self::createClientWithCredentials()->request('PUT', $iri . '/order', ['json' => []]);
-
-        $this->assertResponseIsSuccessful();
-        $json = $response->toArray();
-        $this->assertEquals(Gift::STATE_ORDERED, $json['state']);
-    }
-
     public function testPublishingGiftSwitchesStateToPublishedAndSendsInvites()
     {
-        $client = self::createClientWithCredentials();
-        $iri = $this->findIriBy(Gift::class, ['name' => 'Super gift ordered']);
-        $response = $client->request('PUT', $iri . '/publish', ['json' => []]);
+        /** @var Gift $gift */
+        $gift = static::$container->get('doctrine')->getRepository(Gift::class)
+            ->findOneBy(['name' => 'Super gift ordered']);
 
-        $this->assertResponseIsSuccessful();
-        $json = $response->toArray();
-        $this->assertEquals(Gift::STATE_PUBLISHED, $json['state']);
+        /** @var Workflow $workflow */
+        $workflow = static::$container->get('state_machine.gift_publishing');
+        $workflow->apply($gift, 'publish');
 
         $this->assertQueuedEmailCount(10);
         $email = $this->getMailerMessage(0);
