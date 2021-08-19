@@ -26,7 +26,7 @@ export default function MediaObjectShow({media}: MediaObjectShowProps) {
                     </button>
                 </div>
             </>}
-            <MediaContentLayout media={media} nsfw={nsfw}/>
+            <MediaContentLayout media={media} nsfw={nsfw} autoplay={true}/>
             <figure className="mt-4">
                 <figcaption className="blockquote-footer">
                     {t('receiver.mediaObject.from')} <cite title="Media owner">{media['owner']['displayName']}</cite>

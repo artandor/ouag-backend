@@ -2,11 +2,17 @@
   "createdTitle": "Gifts you created",
   "receivedTitle": "Gifts you received",
   "giftCreation": "Create a Gift",
+  "planningsTitle": "Plannings",
   "starting": "Start",
   "distributionPercentage": "Distributed",
   "fillPercentage": "Media filled",
   "emptyList": "You don't have any gift yet ! If you received a code by email, click on the button above.",
   "claimGiftButton": "Claim a gift",
+  "fields": {
+    "name": "Name",
+    "plannedFor": "Planned for",
+    "emptyMedia": "No media planned for this day"
+  },
   "recapAttention": {
     "one": "An attention every day",
     "other": "An attention every {{count}} days"

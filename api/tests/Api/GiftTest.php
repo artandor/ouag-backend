@@ -258,7 +258,10 @@ class GiftTest extends CustomApiTestCase
         $client->request('GET', $planningIri);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+            'media' => [
+                '@id' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+                'title' => 'owned media',
+            ],
         ]);
     }
 
@@ -304,7 +307,10 @@ class GiftTest extends CustomApiTestCase
         $client->request('GET', $planningIri);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
-            'media' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+            'media' => [
+                '@id' => $this->findIriBy(MediaObject::class, ['title' => 'owned media']),
+                'title' => 'owned media',
+            ],
         ]);
     }
 

@@ -1,5 +1,4 @@
 import {FunctionComponent, useState} from "react";
-import Link from "next/link";
 import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {fetch} from "../../utils/dataAccess";
@@ -222,10 +221,9 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                             )}
                         </div>
                         <div className="text-center">
-                            <Link href="/gifts">
-                                <a className="float-start float-lg-none btn btn-primary mt-3">
-                                    <i className="bi bi-backspace"></i>{" "}{t('shared:backButton')}</a>
-                            </Link>
+                            <button className="btn btn-primary mt-3" type="button" onClick={router.back}><i
+                                className="bi bi-arrow-left"></i> {t('shared:backButton')}
+                            </button>
 
                             <button
                                 type="submit"
