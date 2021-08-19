@@ -161,7 +161,6 @@ class Gift
     #[Groups(['gift_write', 'gift_read'])]
     private ?int $mediaAmount;
 
-
     /**
      * @ORM\OneToMany(targetEntity=Planning::class, mappedBy="gift", orphanRemoval=true)
      */
@@ -193,6 +192,14 @@ class Gift
      */
     #[Groups(['gift_write', 'gift_read'])]
     private ?string $fillingMethod;
+
+    /**
+     * Libraries associated to gift, will be used to fill plannings with media from those libraries only
+     * @ORM\ManyToMany(targetEntity=Library::class)
+     * @ORM\JoinTable(name="gift_selected_libraries")
+     */
+    #[Groups(['gift_write', 'gift_read'])]
+    private ?Collection $selectedLibraries;
 
     /**
      * @Gedmo\Timestampable(on="update")
@@ -260,6 +267,7 @@ class Gift
         $this->invites = new ArrayCollection();
         $this->state = self::STATE_DRAFT;
         $this->fillingMethod = null;
+        $this->selectedLibraries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -425,6 +433,29 @@ class Gift
     public function removeReceiver(User $receiver): self
     {
         $this->receivers->removeElement($receiver);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Library[]
+     */
+    public function getSelectedLibraries(): Collection
+    {
+        return $this->selectedLibraries;
+    }
+
+    public function addSelectedLibrary(Library $selectedLibraries): self
+    {
+        if (!$this->selectedLibraries->contains($selectedLibraries)) {
+            $this->selectedLibraries[] = $selectedLibraries;
+        }
+        return $this;
+    }
+
+    public function removeSelectedLibrary(Library $selectedLibraries): self
+    {
+        $this->selectedLibraries->removeElement($selectedLibraries);
 
         return $this;
     }
