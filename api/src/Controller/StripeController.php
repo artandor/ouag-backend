@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Repository\GiftRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,14 +39,15 @@ class StripeController extends AbstractController
                 throw new BadRequestHttpException('Invalid signature from Stripe event');
             }
 
-            if ($_SERVER['APP_ENV'] === 'prod' && $event->data->object->livemode == 'false') {
+            $eventData = $event->data->toArray();
+            if ($_SERVER['APP_ENV'] === 'prod' && $eventData['object']['livemode'] == 'false') {
                 throw new ConflictHttpException('The API is in production mode while Stripe is in test mode.');
             }
 
             switch ($event->type) {
                 // Events where gift was paid and should be published
                 case 'checkout.session.completed':
-                    $session = $event->data->object;
+                    $session = $eventData['object'];
                     $gift = $this->getGiftFromEvent($event, $giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'checkout')) {
                         $logger->error("Could not checkout gift due to incorrect initial state.");
@@ -56,7 +56,7 @@ class StripeController extends AbstractController
                     $this->giftPublishingStateMachine->apply($gift, 'checkout');
 
 
-                    if ($session->payment_status === 'paid') {
+                    if ($session['payment_status'] === 'paid') {
                         if (!$this->giftPublishingStateMachine->can($gift, 'publish')) {
                             $logger->error("Could not publish gift due to incorrect initial state.");
                             $em->flush();
