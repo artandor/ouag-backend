@@ -1,0 +1,71 @@
+name: app
+
+type: php:8.0
+
+variables:
+    env:
+        AWS_S3_BASE_URL: https://s3.eu-west-3.amazonaws.com
+        AWS_S3_BUCKET_NAME: ouag-private
+        AWS_S3_REGION: eu-west-3
+        FRONT_DOMAIN: https://app.once-upon-a-gift.com
+        CORS_ALLOW_ORIGIN: ^https?://(app.once\-upon\-a\-gift.com)$
+        # AWS_S3_KEY=
+        # AWS_S3_SECRET_KEY=
+        # STRIPE_API_KEY=
+        # STRIPE_WEBHOOK_SECRET=
+    php:
+        # uncomment on PHP 7.4+
+        opcache.preload: /app/config/preload.php
+
+relationships:
+    database: "api-database:postgresql"
+
+runtime:
+    extensions:
+        - apcu
+        - mbstring
+        - sodium
+        - ctype
+        - iconv
+        - pdo_pgsql
+
+build:
+    flavor: none
+
+disk: 512
+
+web:
+    locations:
+        "/":
+            root: "public"
+            expires: 1h
+            passthru: "/index.php"
+
+workers:
+    messenger:
+        # PHP background workers usually don't require much CPU. See
+        # https://symfony.com/doc/current/cloud/cookbooks/resources_allocation.html
+        # for more information
+        size: XS
+        resources:
+            base_memory: 64 # Keep in sync with the `memory-limit` flag value
+            memory_ratio: 128
+        commands:
+            # Don't forget to update your receiver name(s)
+            start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume async
+
+mounts:
+    "/var": { source: local, source_path: var }
+
+hooks:
+    build: |
+        set -x -e
+
+        curl -fs https://get.symfony.com/cloud/configurator | (>&2 bash)
+
+        (>&2 symfony-build)
+
+    deploy: |
+        set -x -e
+
+        (>&2 symfony-deploy)
