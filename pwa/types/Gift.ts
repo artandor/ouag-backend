@@ -15,7 +15,8 @@ export class Gift {
         public receivers?: string[],
         public invites?: any,
         public state?: string,
-        public actualPlanning?: Planning
+        public actualPlanning?: Planning,
+        public checkoutUrl?: string,
     ) {
         this["@id"] = _id;
     }

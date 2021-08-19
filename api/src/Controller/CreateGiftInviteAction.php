@@ -13,8 +13,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class CreateGiftInviteAction
 {
-
-
     public function __construct(private SerializerInterface $serializer, private ValidatorInterface $validator, private EntityManagerInterface $entityManager)
     {
     }

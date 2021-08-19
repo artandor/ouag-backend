@@ -23,7 +23,6 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                 initialValues={gift ? {...gift} : new Gift()}
                 validate={(values) => {
                     const errors = {};
-                    // add your validation logic here
                     return errors;
                 }}
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
@@ -89,7 +88,7 @@ export const GiftForm: FunctionComponent<Props> = ({gift}) => {
                                     value={values.mediaAmount ?? ""}
                                     type="number"
                                     placeholder="30"
-                                    min="2"
+                                    min="3"
                                     max="730"
                                     className={`form-control-inline text-primary${
                                         errors.mediaAmount && touched.mediaAmount ? " is-invalid" : ""

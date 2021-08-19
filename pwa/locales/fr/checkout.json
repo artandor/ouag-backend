@@ -1,0 +1,11 @@
+{
+  "success": {
+    "title": "Your order was handled successfully.",
+    "confirmationEmail": "You'll receive a confirmation e-mail shortly, and your recipients will receive their invitations.",
+    "footer": "If you need any help, please contact"
+  },
+  "failure": {
+    "title": "Your order encountered an issue. Please retry later.",
+    "footer": "If you need any help, please contact"
+  }
+}

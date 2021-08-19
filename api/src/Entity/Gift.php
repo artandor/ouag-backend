@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
@@ -61,7 +62,7 @@ use Symfony\Component\Validator\Constraints\Positive;
     ],
     itemOperations: [
         'get' => ['security' => "is_granted('ROLE_ADMIN') or (object.getOwner() == user or object.getReceivers().contains(user))"],
-        'put' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
+        'put' => ['security' => "is_granted('ROLE_ADMIN') or (object.getOwner() == user and object.getState() == 'draft')"],
         'delete' => ['security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user"],
         'post_new_invite' => [
             'method' => 'POST',
@@ -103,13 +104,7 @@ use Symfony\Component\Validator\Constraints\Positive;
             'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
             'path' => 'gifts/{id}/order',
             'controller' => GiftWorkflowOrder::class,
-        ],
-        'gift_publish' => [
-            'method' => 'PUT',
-            'security' => "is_granted('ROLE_ADMIN') or object.getOwner() == user",
-            'path' => 'gifts/{id}/publish',
-            'controller' => GiftWorkflowPublish::class,
-        ],
+        ]
     ],
     denormalizationContext: ['groups' => ['gift_write']],
     normalizationContext: ['groups' => ['gift_read']],
@@ -162,6 +157,7 @@ class Gift
     #[Positive]
     #[NotNull]
     #[NotBlank]
+    #[GreaterThanOrEqual(3)]
     #[Groups(['gift_write', 'gift_read'])]
     private ?int $mediaAmount;
 
@@ -229,6 +225,9 @@ class Gift
      */
     #[Groups(['gift_read'])]
     private ?string $state;
+
+    #[Groups(['gift_read'])]
+    private ?string $checkoutUrl = null;
 
     #[Groups(['gift_read'])]
     public function getActualPlanning(): ?Planning
@@ -499,6 +498,18 @@ class Gift
     public function setState(string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getCheckoutUrl(): ?string
+    {
+        return $this->checkoutUrl;
+    }
+
+    public function setCheckoutUrl(?string $checkoutUrl): self
+    {
+        $this->checkoutUrl = $checkoutUrl;
 
         return $this;
     }

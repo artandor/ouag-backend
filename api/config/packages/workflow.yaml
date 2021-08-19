@@ -21,4 +21,7 @@ framework:
                 publish:
                     from: !php/const App\Entity\Gift::STATE_ORDERED
                     to: !php/const App\Entity\Gift::STATE_PUBLISHED
+                cancel:
+                    from: !php/const App\Entity\Gift::STATE_ORDERED
+                    to: !php/const App\Entity\Gift::STATE_DRAFT
 

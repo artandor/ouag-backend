@@ -50,13 +50,14 @@
   },
   "recap": {
     "pageTitle": "Recap of your order",
-    "note": "Note that the current screen is a preview, but you can send your gift for free by hitting the Send button",
     "item": "Item",
     "quantity": "Quantity",
     "unitPrice": "€ / unit",
     "total": "Total",
     "totalHT": "Total excluding tax",
+    "nonApplicableVat": "Non applicable VAT according to article 293-B of CGI",
     "memories": "Memories",
+    "recipient": "Recipients",
     "recipientPriceLabel1": "+ 100% for each",
     "recipientPriceLabel2": "recipient after the first"
   },

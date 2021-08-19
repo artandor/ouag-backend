@@ -73,7 +73,7 @@ export default function InviteList({invites, addInvite, deleteInvite}: InviteLis
                             setShowModal(true)
                         }}>
                             <div className="d-flex w-100 justify-content-between">
-                                <h5 className="mb-1">{invite["receiverNickname"]} / {invite["email"]}</h5>
+                                <h5 className="mb-1">{invite["receiverNickname"] && invite["receiverNickname"].concat(" / ")}{invite["email"]}</h5>
                                 {deleteInvite &&
                                 <>
                                     <button className="btn btn-link" onClick={async (e) => {

@@ -35,7 +35,7 @@ export default function LoginForm() {
                                     .then((res) => {
                                         console.log(res);
                                         setCookie('NEXT_LOCALE', res["preferredLanguage"], {path: '/'})
-                                        router.push("/users/profile", "/users/profile", {locale: res["preferredLanguage"]});
+                                        router.push("/gifts/received", "/gifts/received", {locale: res["preferredLanguage"]});
                                     })
                             })
                             .catch((error) => {

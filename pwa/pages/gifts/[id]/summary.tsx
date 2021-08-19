@@ -23,16 +23,12 @@ export default function SummaryPage() {
 
     function orderGiftRequest() {
         fetch(router.asPath.replace('summary', 'order'), {method: 'PUT', body: JSON.stringify({})})
-            .then(() => publishGiftRequest())
-            .then(() => {
+            .then((giftData) => {
                 console.log('Gift successfully published');
-                router.push('/gifts')
+                if (window) window.location.assign(giftData['checkoutUrl'])
             })
+            // Handle if total is < .50 €
             .catch((e) => console.log('An error occured while publishing gift.'))
-    }
-
-    async function publishGiftRequest() {
-        return fetch(router.asPath.replace('summary', 'publish'), {method: 'PUT', body: JSON.stringify({})})
     }
 
     return (
@@ -49,7 +45,6 @@ export default function SummaryPage() {
                 <Button variant={"success"} className="float-end" onClick={orderGiftRequest}>Send Gift</Button>
                 <div className="my-4">
                     <h1 className="mb-3">{t('recap.pageTitle')}</h1>
-                    <p>{t('recap.note')}</p>
 
                     <table className="table">
                         <thead>
@@ -73,18 +68,19 @@ export default function SummaryPage() {
                             <td>{gift['invites'] && gift['mediaAmount'] * unitPrice} €</td>
                         </tr>
                         <tr>
-                            <th scope="row">Recipients</th>
+                            <th scope="row">{t('recap.recipient')}</th>
                             <td>{gift['invites'] && gift['invites'].length}</td>
                             <td>{t('recap.recipientPriceLabel1')}<br/>{t('recap.recipientPriceLabel2')}</td>
                             <td>{gift['invites'] && gift['mediaAmount'] * unitPrice * (gift['invites'].length - 1)} €</td>
                         </tr>
                         <tr>
                             <td scope="row" colSpan={2}/>
-                            <th>{t('recap.totalHT')}</th>
+                            <th>{t('recap.total')}</th>
                             <td>{gift['invites'] && gift['mediaAmount'] * unitPrice * gift['invites'].length} €</td>
                         </tr>
                         </tbody>
                     </table>
+                    <p className="text-end">{t('recap.nonApplicableVat')}</p>
                 </div>
             </ContainerLayout>
         </div>
