@@ -9,7 +9,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\ClaimGiftInviteAction;
 use App\Controller\CreateGiftInviteAction;
-use App\Controller\StripeController;
 use App\Controller\GiftWorkflowOrder;
 use App\Controller\GiftWorkflowPublish;
 use App\Repository\GiftRepository;
@@ -470,19 +469,15 @@ class Gift
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCheckoutUrl(): ?string
     {
         return $this->checkoutUrl;
     }
 
-    /**
-     * @param string|null $checkoutUrl
-     */
-    public function setCheckoutUrl(?string $checkoutUrl): void
+    public function setCheckoutUrl(?string $checkoutUrl): self
     {
         $this->checkoutUrl = $checkoutUrl;
+
+        return $this;
     }
 }

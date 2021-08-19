@@ -10,6 +10,7 @@ use Stripe\Webhook;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -86,12 +87,10 @@ class StripeController extends AbstractController
                     // TODO : Send an email to tell the customer his order failed.
                     break;
             }
-
-
         } catch (UnexpectedValueException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        return new JsonResponse("ok", 200);
+        return new JsonResponse("ok", Response::HTTP_OK);
     }
 
     private function getGiftFromEvent($event, GiftRepository $giftRepository)
