@@ -43,31 +43,31 @@ class MediaObject
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read'])]
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read', 'planning_read'])]
     private ?string $title;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read'])]
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read', 'planning_read'])]
     private bool $nsfw;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read'])]
+    #[Groups(['media_object_read', 'media_object_create', 'media_object_update', 'gift_read', 'planning_read'])]
     private ?string $comment;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['media_object_read', 'gift_read'])]
+    #[Groups(['media_object_read', 'gift_read', 'planning_read'])]
     private string $type;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['media_object_read', 'media_object_create', 'gift_read'])]
+    #[Groups(['media_object_read', 'media_object_create', 'gift_read', 'planning_read'])]
     #[ApiProperty(openapiContext: ['description' => 'Use this property to add a string (link, text, ...) as a media'])]
     private ?string $content;
 
@@ -94,7 +94,7 @@ class MediaObject
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="mediaObjects")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['media_object_read', 'gift_read'])]
+    #[Groups(['media_object_read', 'gift_read', 'planning_read'])]
     private ?User $owner;
 
     /**

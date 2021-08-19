@@ -32,16 +32,10 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
             <Link href="/gifts">
                 <a className="btn btn-primary"><i className="bi bi-arrow-left"></i> {t('shared:backButton')}</a>
             </Link>
-            <Link href={router.asPath + "/invites"}>
+            <Link href={router.asPath + "/plannings"}>
                 <a className="btn btn-success float-end">{t('shared:nextButton')} <i className="bi bi-arrow-right"></i></a>
             </Link>
-            <table className="table table-responsive table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
+            <table className="table table-responsive table-striped table-hover mt-3">
                 <tbody>
                 <tr>
                     <th scope="row">name</th>
@@ -62,14 +56,6 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
                 <tr>
                     <th scope="row">mediaAmount</th>
                     <td>{gift["mediaAmount"]}</td>
-                </tr>
-                <tr>
-                    <th scope="row">fillingMethod</th>
-                    <td>{gift["fillingMethod"]}</td>
-                </tr>
-                <tr>
-                    <th scope="row">state</th>
-                    <td>{gift["state"]}</td>
                 </tr>
                 </tbody>
             </table>

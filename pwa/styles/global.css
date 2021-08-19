@@ -23,3 +23,11 @@
     margin: 30px;
 }
 
+.horizontal-scroll {
+    overflow-x: auto;
+}
+
+.card-group.horizontal-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+}

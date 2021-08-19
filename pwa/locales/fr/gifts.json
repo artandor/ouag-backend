@@ -4,6 +4,7 @@
   "starting": "Start",
   "distributionPercentage": "Distributed",
   "fillPercentage": "Media filled",
+  "fields": {},
   "recapAttention": {
     "one": "An attention every day",
     "other": "An attention every {{count}} days"
