@@ -20,14 +20,15 @@ use UnexpectedValueException;
 
 class StripeController extends AbstractController
 {
-    public function __construct(private WorkflowInterface $giftPublishingStateMachine,)
+    public function __construct(private WorkflowInterface $giftPublishingStateMachine, private EntityManagerInterface $em,
+                                private GiftRepository    $giftRepository, private LoggerInterface $logger)
     {
     }
 
     /**
      * @Route("/stripe/webhook", methods={"POST"})
      */
-    public function webhook(Request $request, EntityManagerInterface $em, GiftRepository $giftRepository, LoggerInterface $logger): JsonResponse
+    public function webhook(Request $request,): JsonResponse
     {
         try {
             $endpoint_secret = $_ENV['STRIPE_WEBHOOK_SECRET'];
@@ -49,9 +50,9 @@ class StripeController extends AbstractController
                 // Events where gift was paid and should be published
                 case 'checkout.session.completed':
                     $session = $eventData['object'];
-                    $gift = $this->getGiftFromEvent($event, $giftRepository);
+                    $gift = $this->getGiftFromEvent($event, $this->giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'checkout')) {
-                        $logger->error("Could not checkout gift due to incorrect initial state.");
+                        $this->logger->error("Could not checkout gift due to incorrect initial state.");
                         break;
                     }
                     $this->giftPublishingStateMachine->apply($gift, 'checkout');
@@ -59,31 +60,31 @@ class StripeController extends AbstractController
 
                     if ($session['payment_status'] === 'paid') {
                         if (!$this->giftPublishingStateMachine->can($gift, 'publish')) {
-                            $logger->error("Could not publish gift due to incorrect initial state.");
-                            $em->flush();
+                            $this->logger->error("Could not publish gift due to incorrect initial state.");
+                            $this->em->flush();
                             break;
                         }
                         $this->giftPublishingStateMachine->apply($gift, 'publish');
                     }
-                    $em->flush();
+                    $this->em->flush();
                     break;
                 case 'checkout.session.async_payment_succeeded':
-                    $gift = $this->getGiftFromEvent($event, $giftRepository);
+                    $gift = $this->getGiftFromEvent($event, $this->giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'publish')) {
-                        $logger->error("Could not publish gift due to incorrect initial state.");
+                        $this->logger->error("Could not publish gift due to incorrect initial state.");
                         break;
                     }
                     $this->giftPublishingStateMachine->apply($gift, 'publish');
-                    $em->flush();
+                    $this->em->flush();
                     break;
                 case 'checkout.session.async_payment_failed':
-                    $gift = $this->getGiftFromEvent($event, $giftRepository);
+                    $gift = $this->getGiftFromEvent($event, $this->giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'cancel')) {
-                        $logger->error("Could not cancel gift due to incorrect initial state.");
+                        $this->logger->error("Could not cancel gift due to incorrect initial state.");
                         break;
                     }
                     $this->giftPublishingStateMachine->apply($gift, 'cancel');
-                    $em->flush();
+                    $this->em->flush();
                     // TODO : Send an email to tell the customer his order failed.
                     break;
             }

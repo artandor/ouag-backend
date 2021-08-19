@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
@@ -156,6 +157,7 @@ class Gift
     #[Positive]
     #[NotNull]
     #[NotBlank]
+    #[GreaterThanOrEqual(3)]
     #[Groups(['gift_write', 'gift_read'])]
     private ?int $mediaAmount;
 
