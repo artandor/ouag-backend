@@ -52,7 +52,7 @@ class StripeController extends AbstractController
                     $session = $eventData['object'];
                     $gift = $this->getGiftFromEvent($event, $this->giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'checkout')) {
-                        $this->logger->error("Could not checkout gift due to incorrect initial state.");
+                        $this->logger->error("Could not checkout gift " . $gift->getId() . " due to incorrect initial state " . $gift->getState());
                         break;
                     }
                     $this->giftPublishingStateMachine->apply($gift, 'checkout');
@@ -60,7 +60,7 @@ class StripeController extends AbstractController
 
                     if ($session['payment_status'] === 'paid') {
                         if (!$this->giftPublishingStateMachine->can($gift, 'publish')) {
-                            $this->logger->error("Could not publish gift due to incorrect initial state.");
+                            $this->logger->error("Could not publish gift " . $gift->getId() . " due to incorrect initial state " . $gift->getState());
                             $this->em->flush();
                             break;
                         }
@@ -71,7 +71,7 @@ class StripeController extends AbstractController
                 case 'checkout.session.async_payment_succeeded':
                     $gift = $this->getGiftFromEvent($event, $this->giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'publish')) {
-                        $this->logger->error("Could not publish gift due to incorrect initial state.");
+                        $this->logger->error("Could not publish gift " . $gift->getId() . " due to incorrect initial state " . $gift->getState());
                         break;
                     }
                     $this->giftPublishingStateMachine->apply($gift, 'publish');
@@ -80,7 +80,7 @@ class StripeController extends AbstractController
                 case 'checkout.session.async_payment_failed':
                     $gift = $this->getGiftFromEvent($event, $this->giftRepository);
                     if (!$this->giftPublishingStateMachine->can($gift, 'cancel')) {
-                        $this->logger->error("Could not cancel gift due to incorrect initial state.");
+                        $this->logger->error("Could not cancel gift " . $gift->getId() . " due to incorrect initial state" . $gift->getState());
                         break;
                     }
                     $this->giftPublishingStateMachine->apply($gift, 'cancel');
