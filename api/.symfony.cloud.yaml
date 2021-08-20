@@ -56,7 +56,7 @@ workers:
 
 mounts:
     "/var": { source: local, source_path: var }
-    "/config": { source: local, source_path: config }
+    "/config/jwt": { source: local, source_path: config/jwt }
 
 hooks:
     build: |
