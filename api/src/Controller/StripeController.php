@@ -42,7 +42,7 @@ class StripeController extends AbstractController
             }
 
             $eventData = $event->data->toArray();
-            if ($_SERVER['APP_ENV'] === 'prod' && $eventData['object']['livemode'] == 'false') {
+            if ($_SERVER['APP_ENV'] === 'prod' && $eventData['object']['livemode'] == false) {
                 $this->logger->critical("App is in env " . $_SERVER['APP_ENV'] . " but received livemode " . $eventData['object']['livemode'] . " from stripe.");
                 throw new ConflictHttpException('The API is in production mode while Stripe is in test mode.');
             }
