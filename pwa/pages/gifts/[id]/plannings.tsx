@@ -9,6 +9,9 @@ import {Planning} from "../../../types/Planning";
 import LibraryInlineList from "../../../components/library/LibraryInlineList";
 import MediaCardList from "../../../components/media_object/MediaCardList";
 import useTranslation from "next-translate/useTranslation";
+import Modal from "react-bootstrap/Modal"
+import Button from "react-bootstrap/Button"
+import MediaObjectForm from "../../../components/media_object/MediaObjectForm";
 
 export default function GiftShowPage() {
     const {t} = useTranslation('gifts')
@@ -22,6 +25,11 @@ export default function GiftShowPage() {
 
     const [selectedPlanning, setSelectedPlanning] = useState(null)
     const [selectedMedia, setSelectedMedia] = useState(null)
+
+    const [showAddMediaObjectModal, setShowAddMediaObjectModal] = useState(false);
+
+    const handleClose = () => setShowAddMediaObjectModal(false);
+    const handleShow = () => setShowAddMediaObjectModal(true);
 
 
     useEffect(() => {
@@ -96,12 +104,32 @@ export default function GiftShowPage() {
                 {plannings['hydra:totalItems'] > 0 && gift &&
                 <PlanningList plannings={plannings['hydra:member']} gift={gift} selectedPlanning={selectedPlanning}
                               selectPlanning={setSelectedPlanning}/>}
-                <div className="my-4">
-                    {libraries && libraries['hydra:member'] &&
-                    <LibraryInlineList libraries={libraries['hydra:member']}
-                                       selectedLibrary={selectedLibrary}
-                                       setSelectedLibrary={setSelectedLibrary}/>
-                    }
+                <div className="my-4 row">
+                    <div className={'col-9'}>
+                        {libraries && libraries['hydra:member'] &&
+                        <LibraryInlineList libraries={libraries['hydra:member']}
+                                           selectedLibrary={selectedLibrary}
+                                           setSelectedLibrary={setSelectedLibrary}/>
+                        }
+                    </div>
+
+                    <div className={'col-3 text-end'}>
+                        {selectedLibrary['@id'] &&
+                        <Button variant="primary" onClick={handleShow}>
+                            <i className="bi bi-camera"/> Add a media
+                        </Button>
+                        }
+                    </div>
+
+                    <Modal show={showAddMediaObjectModal} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Modal heading</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <MediaObjectForm libraryIri={selectedLibrary['@id']}
+                                             addMediaObject={() => console.log('ouais ouais j\'add des trucs tkt')}/>
+                        </Modal.Body>
+                    </Modal>
                 </div>
                 {selectedLibraryMedia['hydra:member'] && selectedLibraryMedia['hydra:member'].length > 0 &&
                 <MediaCardList mediaObjects={selectedLibraryMedia['hydra:member']} selectedMedia={selectedMedia}
