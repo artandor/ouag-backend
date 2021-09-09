@@ -108,6 +108,23 @@
         "label": "Note",
         "placeholder": "Some kind words, a joke, anything you want to say before the person receives your awesome gift."
       }
+    },
+    "mediaObject": {
+      "title": {
+        "label": "Title",
+        "placeholder": "Beach august 2020"
+      },
+      "file": {
+        "label": "Add a file"
+      },
+      "contentText": {
+        "label": "Add a text memory",
+        "placeholder": "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=1bc480a43a9841d3"
+      },
+      "comment": {
+        "label": "Comment",
+        "placeholder": "Those were the best holidays ever for me !"
+      }
     }
   }
 }

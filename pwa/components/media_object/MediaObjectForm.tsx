@@ -8,9 +8,10 @@ interface MediaObjectFormProps {
     libraryIri: string,
     mediaObject?: MediaObject
     addMediaObject: Function
+    isText?: boolean
 }
 
-function MediaObjectForm({libraryIri, mediaObject, addMediaObject}: MediaObjectFormProps) {
+function MediaObjectForm({libraryIri, mediaObject, addMediaObject, isText}: MediaObjectFormProps) {
     const {t} = useTranslation('gifts')
     const router = useRouter()
 
@@ -38,7 +39,7 @@ function MediaObjectForm({libraryIri, mediaObject, addMediaObject}: MediaObjectF
                             isValid: true,
                             msg: `Element ${isCreation ? "created" : "updated"}.`,
                         });
-                        // addMediaObject(result)
+                        addMediaObject(result)
                     } catch (error) {
                         setStatus({
                             isValid: false,
@@ -81,31 +82,59 @@ function MediaObjectForm({libraryIri, mediaObject, addMediaObject}: MediaObjectF
                             component="div"
                             name="title"
                         />
-
-                        <div className="form-group my-2">
-                            <label htmlFor="_file">{t('form.mediaObject.file.label')}</label>
-                            <input
+                        {!isText &&
+                        <>
+                            <div className="form-group my-2">
+                                <label htmlFor="_file">{t('form.mediaObject.file.label')}</label>
+                                <input
+                                    name="file"
+                                    id="_file"
+                                    type="file"
+                                    placeholder={t('form.mediaObject.file.placeholder')}
+                                    className={`form-control${
+                                        errors.file && touched.file ? " is-invalid" : ""
+                                    }`}
+                                    aria-invalid={errors.file && touched.file}
+                                    onBlur={handleBlur}
+                                    onChange={(event) => {
+                                        setFieldValue("file", event.currentTarget.files[0]);
+                                    }}
+                                />
+                            </div>
+                            <ErrorMessage
+                                className="text-danger"
+                                component="div"
                                 name="file"
-                                id="_file"
-                                type="file"
-                                placeholder={t('form.mediaObject.file.placeholder')}
-                                className={`form-control${
-                                    errors.file && touched.file ? " is-invalid" : ""
-                                }`}
-                                aria-invalid={errors.file && touched.file}
-                                onBlur={handleBlur}
-                                required={true}
-                                onChange={(event) => {
-                                    setFieldValue("file", event.currentTarget.files[0]);
-                                }}
                             />
-                        </div>
-                        <ErrorMessage
-                            className="text-danger"
-                            component="div"
-                            name="file"
-                        />
+                        </>
+                        }
 
+                        {
+                            isText &&
+                            <>
+                                <div className="form-group my-2">
+                                    <label htmlFor="_content">{t('form.mediaObject.contentText.label')}</label>
+                                    <input
+                                        name="content"
+                                        id="_content"
+                                        value={values.content ?? ""}
+                                        placeholder={t('form.mediaObject.contentText.placeholder')}
+                                        className={`form-control${
+                                            errors.content && touched.content ? " is-invalid" : ""
+                                        }`}
+                                        aria-invalid={errors.content && touched.content}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                                <ErrorMessage
+                                    className="text-danger"
+                                    component="div"
+                                    name="content"
+                                />
+                            </>
+
+                        }
                         <div className="form-group my-2">
                             <label htmlFor="_comment">{t('form.mediaObject.comment.label')}</label>
                             <input

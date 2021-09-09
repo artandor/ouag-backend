@@ -11,6 +11,7 @@ import MediaCardList from "../../../components/media_object/MediaCardList";
 import useTranslation from "next-translate/useTranslation";
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
+import ButtonGroup from "react-bootstrap/ButtonGroup"
 import MediaObjectForm from "../../../components/media_object/MediaObjectForm";
 
 export default function GiftShowPage() {
@@ -27,9 +28,13 @@ export default function GiftShowPage() {
     const [selectedMedia, setSelectedMedia] = useState(null)
 
     const [showAddMediaObjectModal, setShowAddMediaObjectModal] = useState(false);
+    const [newMediaObjectIsText, setNewMediaObjectIsText] = useState(false);
 
     const handleClose = () => setShowAddMediaObjectModal(false);
-    const handleShow = () => setShowAddMediaObjectModal(true);
+    const handleShow = (isText: boolean) => {
+        setNewMediaObjectIsText(isText)
+        setShowAddMediaObjectModal(true);
+    };
 
 
     useEffect(() => {
@@ -113,11 +118,17 @@ export default function GiftShowPage() {
                         }
                     </div>
 
+
                     <div className={'col-3 text-end'}>
                         {selectedLibrary['@id'] &&
-                        <Button variant="primary" onClick={handleShow}>
-                            <i className="bi bi-camera"/> Add a media
-                        </Button>
+                        <ButtonGroup aria-label="Basic example">
+                            <Button variant="primary" onClick={() => handleShow(false)}>
+                                <i className="bi bi-camera"/> Add a media
+                            </Button>
+                            <Button variant="secondary" onClick={() => handleShow(true)}>
+                                <i className="bi bi-card-text"/> Add a text
+                            </Button>
+                        </ButtonGroup>
                         }
                     </div>
 
@@ -127,7 +138,15 @@ export default function GiftShowPage() {
                         </Modal.Header>
                         <Modal.Body>
                             <MediaObjectForm libraryIri={selectedLibrary['@id']}
-                                             addMediaObject={() => console.log('ouais ouais j\'add des trucs tkt')}/>
+                                             addMediaObject={(media) => {
+                                                 selectedLibraryMedia['hydra:member'].push(media)
+                                                 setSelectedLibraryMedia(prevMediaList => {
+                                                     return {...prevMediaList, ...selectedLibraryMedia};
+                                                 })
+                                                 setShowAddMediaObjectModal(false)
+                                             }}
+                                             isText={newMediaObjectIsText}
+                            />
                         </Modal.Body>
                     </Modal>
                 </div>
