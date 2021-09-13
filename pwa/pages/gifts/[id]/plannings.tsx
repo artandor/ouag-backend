@@ -103,7 +103,7 @@ export default function GiftShowPage() {
                     className="bi bi-arrow-left"></i> {t('shared:backButton')}
                 </button>
                 <Link href={router.asPath.replace('/plannings', '/invites')}>
-                    <a className="btn btn-success float-end">{t('shared:nextButton')} <i
+                    <a className="btn btn-success float-end">{t('invitesTitle')} <i
                         className="bi bi-arrow-right"></i></a>
                 </Link>
                 {plannings['hydra:totalItems'] > 0 && gift &&
