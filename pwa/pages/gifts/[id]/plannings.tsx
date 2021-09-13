@@ -9,6 +9,10 @@ import {Planning} from "../../../types/Planning";
 import LibraryInlineList from "../../../components/library/LibraryInlineList";
 import MediaCardList from "../../../components/media_object/MediaCardList";
 import useTranslation from "next-translate/useTranslation";
+import Modal from "react-bootstrap/Modal"
+import Button from "react-bootstrap/Button"
+import ButtonGroup from "react-bootstrap/ButtonGroup"
+import MediaObjectForm from "../../../components/media_object/MediaObjectForm";
 
 export default function GiftShowPage() {
     const {t} = useTranslation('gifts')
@@ -22,6 +26,15 @@ export default function GiftShowPage() {
 
     const [selectedPlanning, setSelectedPlanning] = useState(null)
     const [selectedMedia, setSelectedMedia] = useState(null)
+
+    const [showAddMediaObjectModal, setShowAddMediaObjectModal] = useState(false);
+    const [newMediaObjectIsText, setNewMediaObjectIsText] = useState(false);
+
+    const handleClose = () => setShowAddMediaObjectModal(false);
+    const handleShow = (isText: boolean) => {
+        setNewMediaObjectIsText(isText)
+        setShowAddMediaObjectModal(true);
+    };
 
 
     useEffect(() => {
@@ -90,18 +103,52 @@ export default function GiftShowPage() {
                     className="bi bi-arrow-left"></i> {t('shared:backButton')}
                 </button>
                 <Link href={router.asPath.replace('/plannings', '/invites')}>
-                    <a className="btn btn-success float-end">{t('shared:nextButton')} <i
+                    <a className="btn btn-success float-end">{t('invitesTitle')} <i
                         className="bi bi-arrow-right"></i></a>
                 </Link>
                 {plannings['hydra:totalItems'] > 0 && gift &&
                 <PlanningList plannings={plannings['hydra:member']} gift={gift} selectedPlanning={selectedPlanning}
                               selectPlanning={setSelectedPlanning}/>}
-                <div className="my-4">
-                    {libraries && libraries['hydra:member'] &&
-                    <LibraryInlineList libraries={libraries['hydra:member']}
-                                       selectedLibrary={selectedLibrary}
-                                       setSelectedLibrary={setSelectedLibrary}/>
-                    }
+                <div className="my-4 row">
+                    <div className={'col-9'}>
+                        {libraries && libraries['hydra:member'] &&
+                        <LibraryInlineList libraries={libraries['hydra:member']}
+                                           selectedLibrary={selectedLibrary}
+                                           setSelectedLibrary={setSelectedLibrary}/>
+                        }
+                    </div>
+
+
+                    <div className={'col-3 text-end'}>
+                        {selectedLibrary['@id'] &&
+                        <ButtonGroup aria-label="Basic example">
+                            <Button variant="primary" onClick={() => handleShow(false)}>
+                                <i className="bi bi-camera"/> Add a media
+                            </Button>
+                            <Button variant="secondary" onClick={() => handleShow(true)}>
+                                <i className="bi bi-card-text"/> Add a text
+                            </Button>
+                        </ButtonGroup>
+                        }
+                    </div>
+
+                    <Modal show={showAddMediaObjectModal} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{newMediaObjectIsText ? t('form.mediaObject.modalTitleText') : t('form.mediaObject.modalTitleMedia')}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <MediaObjectForm libraryIri={selectedLibrary['@id']}
+                                             addMediaObject={(media) => {
+                                                 selectedLibraryMedia['hydra:member'].push(media)
+                                                 setSelectedLibraryMedia(prevMediaList => {
+                                                     return {...prevMediaList, ...selectedLibraryMedia};
+                                                 })
+                                                 setShowAddMediaObjectModal(false)
+                                             }}
+                                             isText={newMediaObjectIsText}
+                            />
+                        </Modal.Body>
+                    </Modal>
                 </div>
                 {selectedLibraryMedia['hydra:member'] && selectedLibraryMedia['hydra:member'].length > 0 &&
                 <MediaCardList mediaObjects={selectedLibraryMedia['hydra:member']} selectedMedia={selectedMedia}

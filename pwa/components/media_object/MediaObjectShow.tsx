@@ -13,10 +13,13 @@ export default function MediaObjectShow({media}: MediaObjectShowProps) {
 
     return (
         <div className="col-12 mb-4">
-            <h1>{t('receiver.mediaObject.title')} : {media['title']}</h1>
-            <blockquote className="blockquote">
-                {media['comment'] && <p>{t('receiver.mediaObject.comment')} : {media['comment']}</p>}
+            <h1>{media['title']}</h1>
+            {media['comment'] &&
+            <blockquote className="blockquote text-center">
+                <p>{media['comment']}</p>
+                <footer className="blockquote-footer">{media['owner']['displayName']}</footer>
             </blockquote>
+            }
             {nsfw &&
             <>
                 <p>{t('receiver.mediaObject.nsfwNotice')}</p>

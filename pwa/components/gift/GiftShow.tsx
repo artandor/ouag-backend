@@ -33,7 +33,7 @@ export const GiftShow: FunctionComponent<Props> = ({gift}) => {
                 <a className="btn btn-primary"><i className="bi bi-arrow-left"></i> {t('shared:backButton')}</a>
             </Link>
             <Link href={router.asPath + "/plannings"}>
-                <a className="btn btn-success float-end">{t('shared:nextButton')} <i className="bi bi-arrow-right"></i></a>
+                <a className="btn btn-success float-end">{t('planningsTitle')} <i className="bi bi-arrow-right"></i></a>
             </Link>
             <table className="table table-responsive table-striped table-hover mt-3">
                 <tbody>

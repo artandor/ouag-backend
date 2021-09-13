@@ -8,6 +8,7 @@ export class MediaObject {
         public comment?: string,
         public type?: string,
         public content?: string,
+        public file?: File | string,
     ) {
         this["@id"] = _id;
     }
