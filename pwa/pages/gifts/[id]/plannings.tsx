@@ -134,7 +134,7 @@ export default function GiftShowPage() {
 
                     <Modal show={showAddMediaObjectModal} onHide={handleClose}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Modal heading</Modal.Title>
+                            <Modal.Title>{newMediaObjectIsText ? t('form.mediaObject.modalTitleText') : t('form.mediaObject.modalTitleMedia')}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <MediaObjectForm libraryIri={selectedLibrary['@id']}

@@ -110,6 +110,8 @@
       }
     },
     "mediaObject": {
+      "modalTitleText": "Add a text",
+      "modalTitleMedia": "Add a media",
       "title": {
         "label": "Title",
         "placeholder": "Beach august 2020"
@@ -118,7 +120,7 @@
         "label": "Add a file"
       },
       "contentText": {
-        "label": "Add a text memory",
+        "label": "Your memory (text or link)",
         "placeholder": "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=1bc480a43a9841d3"
       },
       "comment": {
