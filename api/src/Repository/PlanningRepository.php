@@ -29,4 +29,18 @@ class PlanningRepository extends ServiceEntityRepository
             ->orderBy(['plannedAt' => 'DESC'])
             ->setMaxResults(1);
     }
+
+    /**
+     * @return Planning[] Returns an array of Planning that are planned today and their MediaObject is not null
+     */
+    public function findPlanningsOfTheDayWithMedias(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.plannedAt = :dateToday')
+            ->andWhere('p.media IS NOT NULL')
+            ->setParameter('dateToday', (new DateTimeImmutable())->format('Y-m-d'))
+            ->getQuery()
+            ->getResult();
+    }
+
 }
