@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import useTranslation from "next-translate/useTranslation";
+import {fetch} from "../../utils/dataAccess";
 
 const base64ToUint8Array = base64 => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4)
@@ -35,13 +36,21 @@ export default function NotificationsSubscriber() {
 
     const subscribeButtonOnClick = async event => {
         event.preventDefault()
-        registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
-        })
-            .then(() => setIsSubscribed(true))
-            .catch(() => setIsSubscribed(false))
-        // TODO: you should call your API to save subscription data on server in order to send web push notification from server
+        try {
+            let sub = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
+            })
+            console.log(sub)
+            await fetch('/notifications-subscribe', {
+                method: "POST",
+                body: JSON.stringify(sub)
+            })
+
+            setIsSubscribed(true);
+        } catch (e) {
+            console.error(e)
+        }
 
     }
 
