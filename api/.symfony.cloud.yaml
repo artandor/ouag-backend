@@ -12,6 +12,7 @@ variables:
         JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
         JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
         STRIPE_API_KEY: "sk_test_51HSrrZAiM7b1xbOcAtDviO2RuX6cCkQDTJqdalyuCGKrsqewkfoxmkFVefwoxQlPVAOmzj4K9MZinPClpcBUXhT400XDXYlJfD"
+        MAILTO: support@once-upon-a-gift.com
         # STRIPE_WEBHOOK_SECRET=
     php:
         # uncomment on PHP 7.4+
@@ -57,6 +58,14 @@ workers:
 mounts:
     "/var": { source: local, source_path: var }
     "/config/jwt": { source: local, source_path: config/jwt }
+
+timezone: Europe/Paris
+
+crons:
+    update_doc:
+        # every day at 9h00 AM
+        spec: 0 9 * * *
+        cmd: croncape bin/console app:send-todays-notifications
 
 hooks:
     build: |
