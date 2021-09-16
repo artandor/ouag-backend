@@ -92,6 +92,18 @@
         <source>Enjoy your gift ! And don't forget to say thank you to %creator_name%</source>
         <target>Profitez bien de votre cadeau ! Et n'oubliez pas de remercier { creator_name }</target>
       </trans-unit>
+      <trans-unit id="yJhkzFQ" resname="New gift available for you">
+        <source>New gift available for you</source>
+        <target>Nouveau cadeau disponible</target>
+      </trans-unit>
+      <trans-unit id="ZqzB0IA" resname="There's something new in ">
+        <source>There's something new in </source>
+        <target>Il y a du nouveau dans </target>
+      </trans-unit>
+      <trans-unit id="SIM8paJ" resname="See it now !">
+        <source>See it now !</source>
+        <target>Cliquez pour voir</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

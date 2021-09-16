@@ -12,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SendTodaysNotificationsCommand extends Command
 {
@@ -19,7 +20,7 @@ class SendTodaysNotificationsCommand extends Command
     protected static string $defaultDescription = 'Retrieve medias that became available today and send push notifications to concerned devices.';
 
     public function __construct(private PlanningRepository $planningRepository, private PushSubscriptionRepository $pushSubscriptionRepository,
-                                private EntityManagerInterface $em)
+                                private EntityManagerInterface $em, private TranslatorInterface $translator)
     {
         parent::__construct(self::$defaultName);
     }
@@ -56,9 +57,10 @@ class SendTodaysNotificationsCommand extends Command
                             'authToken' => $target->getAuthToken(),
                         ]),
                         json_encode([
-                            'title' => "New media available in OUAG !",
-                            'message' => "There's something new in " . $planning->getGift()->getName() . " ! See it now !",
-                            'gift_id' => $planning->getGift()->getId()
+                            'title' => $this->translator->trans('New gift available for you', [], null, $receiver->getPreferredLanguage()),
+                            'message' => $this->translator->trans("There's something new in ", [], null, $receiver->getPreferredLanguage())
+                                . $planning->getGift()->getName() . ' ! ' . $this->translator->trans("See it now !", [], null, $receiver->getPreferredLanguage()),
+                            'giftId' => $planning->getGift()->getId()
                         ])
                     );
                 }
