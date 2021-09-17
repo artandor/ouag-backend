@@ -41,7 +41,6 @@ export default function NotificationsSubscriber() {
                 userVisibleOnly: true,
                 applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY)
             })
-            console.log(sub)
             await fetch('/notifications-subscribe', {
                 method: "POST",
                 body: JSON.stringify(sub)
