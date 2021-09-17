@@ -62,10 +62,14 @@ mounts:
 timezone: Europe/Paris
 
 crons:
-    update_doc:
+    send_notifications:
         # every day at 9h00 AM
         spec: 0 9 * * *
-        cmd: croncape bin/console app:send-todays-notifications
+        cmd: |
+            # only run for the master branch, aka production
+            if [ "$SYMFONY_BRANCH" = "master" ]; then
+                croncape bin/console app:send-todays-notifications
+            fi
 
 hooks:
     build: |
