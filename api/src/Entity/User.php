@@ -156,11 +156,17 @@ class User implements UserInterface
      */
     private Collection $libraries;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PushSubscription::class, mappedBy="subscribedUser", orphanRemoval=true)
+     */
+    private Collection $pushSubscriptions;
+
     public function __construct()
     {
         $this->setActive(false);
         $this->mediaObjects = new ArrayCollection();
         $this->libraries = new ArrayCollection();
+        $this->pushSubscriptions = new ArrayCollection();
     }
 
 
@@ -386,6 +392,36 @@ class User implements UserInterface
     public function setDisplayName(string $displayName): self
     {
         $this->displayName = $displayName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PushSubscription[]
+     */
+    public function getPushSubscriptions(): Collection
+    {
+        return $this->pushSubscriptions;
+    }
+
+    public function addPushSubscription(PushSubscription $pushSubscription): self
+    {
+        if (!$this->pushSubscriptions->contains($pushSubscription)) {
+            $this->pushSubscriptions[] = $pushSubscription;
+            $pushSubscription->setSubscribedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePushSubscription(PushSubscription $pushSubscription): self
+    {
+        if ($this->pushSubscriptions->removeElement($pushSubscription)) {
+            // set the owning side to null (unless already changed)
+            if ($pushSubscription->getSubscribedUser() === $this) {
+                $pushSubscription->setSubscribedUser(null);
+            }
+        }
 
         return $this;
     }

@@ -16,5 +16,7 @@
   "editButton": "Edit",
   "deleteButton": "Delete",
   "backButton": "Back",
-  "customizeButton": "Customize"
+  "customizeButton": "Customize",
+  "notificationSubscribe": "Subscribe",
+  "notificationNotSubscribedText": "You are not subscribed to notifications with this navigator. Click here to be notified when you receive a gift."
 }

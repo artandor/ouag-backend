@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import GiftClaimForm from "../../../components/gift/GiftClaimForm";
 import {Gift} from "../../../types/Gift";
+import NotificationsSubscriber from "../../../components/common/NotificationSubscriber";
 
 export default function ReceivedGiftPage() {
     const {t} = useTranslation('gifts');
@@ -46,6 +47,8 @@ export default function ReceivedGiftPage() {
                 }}>
                     <i className="bi bi-gift"></i> {t('claimGiftButton')}
                 </Button>
+
+                <NotificationsSubscriber/>
 
                 <Modal show={showClaimModal} onHide={() => setShowClaimModal(false)}>
                     <Modal.Header closeButton>
