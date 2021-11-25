@@ -122,6 +122,9 @@ class Gift
     const STATE_ORDERED = 'ordered';
     const STATE_PUBLISHED = 'published';
 
+    const CHECKOUT_SUCCESS_URL = '/checkout/success';
+    const CHECKOUT_FAILURE_URL = '/checkout/failure';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

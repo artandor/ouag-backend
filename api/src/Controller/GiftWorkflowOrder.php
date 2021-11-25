@@ -38,18 +38,18 @@ final class GiftWorkflowOrder
                 if ($promoCode->coupon->percent_off === 100.0) {
                     if (!$this->giftPublishingStateMachine->can($data, 'checkout')) {
                         $this->logger->error("Could not checkout gift " . $data->getId() . " due to incorrect initial state " . $data->getState());
-                        $data->setCheckoutUrl($_ENV['FRONT_DOMAIN'] . '/checkout/failure');
+                        $data->setCheckoutUrl($_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_FAILURE_URL);
                         return $data;
                     }
                     $this->giftPublishingStateMachine->apply($data, 'checkout');
 
                     if (!$this->giftPublishingStateMachine->can($data, 'publish')) {
                         $this->logger->error("Could not publish gift " . $data->getId() . " due to incorrect initial state " . $data->getState());
-                        $data->setCheckoutUrl($_ENV['FRONT_DOMAIN'] . '/checkout/failure');
+                        $data->setCheckoutUrl($_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_FAILURE_URL);
                         return $data;
                     }
                     $this->giftPublishingStateMachine->apply($data, 'publish');
-                    $data->setCheckoutUrl($_ENV['FRONT_DOMAIN'] . '/checkout/success');
+                    $data->setCheckoutUrl($_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_SUCCESS_URL);
                     return $data;
                 }
             } else {
@@ -84,8 +84,8 @@ final class GiftWorkflowOrder
                     ]
                 ],
                 'mode' => 'payment',
-                'success_url' => $_ENV['FRONT_DOMAIN'] . '/checkout/success',
-                'cancel_url' => $_ENV['FRONT_DOMAIN'] . '/checkout/failure',
+                'success_url' => $_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_SUCCESS_URL,
+                'cancel_url' => $_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_FAILURE_URL,
                 'metadata' => [
                     'gift_id' => $data->getId(),
                 ],
