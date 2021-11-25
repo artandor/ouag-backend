@@ -93,7 +93,7 @@ final class GiftWorkflowOrder
             if ($promoCode) {
                 $sessionConfig['discounts'] = [
                     [
-                        'promotion_code' => $promoCode?->id,
+                        'promotion_code' => $promoCode->id,
                     ]
                 ];
             } else {

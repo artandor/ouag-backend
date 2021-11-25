@@ -1,3 +1,8 @@
+# config/packages/test/doctrine.yaml
+doctrine:
+    dbal:
+        logging: false
+
 #doctrine:
 #    dbal:
 #        # Overrides the database name in the test environment only
