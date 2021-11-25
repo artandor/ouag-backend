@@ -1,11 +1,9 @@
-import Head from "next/head";
-import {Show} from "../../components/user/Show";
 import {useEffect, useState} from "react";
-import {Form} from "../../components/user/Form";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import useTranslation from 'next-translate/useTranslation'
 import {ENTRYPOINT} from "../../config/entrypoint";
 import {useRouter} from "next/router"
+import Link from "next/link"
 
 function VerifyPage() {
     const {t} = useTranslation('users');
@@ -18,7 +16,6 @@ function VerifyPage() {
             .then((json) => {
                 if (json['@context'] === "/contexts/User" && json["@id"]) {
                     setUser(json);
-                    router.push('/users/login')
                 }
             })
             .catch((err) => {
@@ -27,14 +24,24 @@ function VerifyPage() {
     }, [])
 
     return (
+
         <ContainerLayout>
-            <div>
-                <div>
-                    <Head>
-                        <title>{t('profilePage.title')}</title>
-                    </Head>
+            <div className="row">
+                <div className="col-12 col-md-6 m-auto mt-4 vh-100 align-middle">
+                    <div className={'card text-center' + (user['email'] ? ' border-success' : ' border-danger')}>
+                        <i className={'bi' + (user['email'] ? ' bi-check text-success' : ' bi-x text-danger')}
+                           style={{fontSize: "10rem"}}/>
+                        <div className="card-body">
+                            <p className="card-text">{user['email'] ? t('verifyPage.success') : t('verifyPage.fail')}</p>
+                            {user['email'] &&
+                            <p><Link href="/users/login"><a>{t('loginPage.callToAction')}</a></Link></p>}
+                        </div>
+                        <div className="card-footer">
+                            {t('verifyPage.contact')}<br/><a
+                            href="mailto:support@once-upon-a-gift.com">support@once-upon-a-gift.com</a>
+                        </div>
+                    </div>
                 </div>
-                {user && user['email'] ? t('verifyPage.success') : t('verifyPage.fail')}
             </div>
         </ContainerLayout>
     );
