@@ -59,7 +59,9 @@ export default function SummaryPage() {
                 <button className="btn btn-primary" onClick={router.back}>
                     <i className="bi bi-arrow-left"/> {t('shared:backButton')}
                 </button>
+                {gift["state"] === 'draft' &&
                 <Button variant={"success"} className="float-end" onClick={orderGiftRequest}>Send Gift</Button>
+                }
                 <div className="my-4">
                     <h1 className="mb-3">{t('recap.pageTitle')}</h1>
 
@@ -107,7 +109,7 @@ export default function SummaryPage() {
                                     <td scope="row" colSpan={2}/>
                                     <th>{t('recap.newTotal')}</th>
                                     <td>{gift['invites'] && (gift['mediaAmount'] * unitPrice * gift['invites'].length
-                                    - (gift['mediaAmount'] * unitPrice * gift['invites'].length * promotion['percent_off'] / 100)).toFixed(2)} €
+                                        - (gift['mediaAmount'] * unitPrice * gift['invites'].length * promotion['percent_off'] / 100)).toFixed(2)} €
                                     </td>
                                 </tr>
                             </>
@@ -133,6 +135,7 @@ export default function SummaryPage() {
                         }
                         </tbody>
                     </table>
+                    {gift["state"] === 'draft' &&
                     <div className="d-flex justify-content-end">
                         <div className="col-3 me-2">
                             <input
@@ -151,6 +154,7 @@ export default function SummaryPage() {
                         </div>
                         }
                     </div>
+                    }
 
                     <p className="text-end">{t('recap.nonApplicableVat')}</p>
                 </div>
