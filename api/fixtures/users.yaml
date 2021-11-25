@@ -19,7 +19,7 @@ App\Entity\User:
         active: true
         preferredLanguage: null
     user_4:
-        displayName: miguelito
+        displayName: miguelitaunt
         email: inactiveuser@example.com
         plainPassword: seCrEt
         active: false

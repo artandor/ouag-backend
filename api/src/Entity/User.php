@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -28,18 +29,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 #[ApiResource(
     collectionOperations: [
-    'get' => ['security' => "is_granted('ROLE_ADMIN')"],
-    'post',
-    'userVerify' => [
-        'method' => 'GET',
-        'path' => '/users/verify',
-        'controller' => UserVerifyController::class,
-    ],
-    'getCurrentUser' => [
-        'method' => 'GET',
-        'path' => '/users/me',
-        'security' => "is_granted('ROLE_USER')",
-        'controller' => GetCurrentUserController::class,
+        'get' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'post' => [
+            'denormalization_context' => ['groups' => ['user_write']],
+        ],
+        'userVerify' => [
+            'method' => 'GET',
+            'path' => '/users/verify',
+            'controller' => UserVerifyController::class,
+        ],
+        'getCurrentUser' => [
+            'method' => 'GET',
+            'path' => '/users/me',
+            'security' => "is_granted('ROLE_USER')",
+            'controller' => GetCurrentUserController::class,
         'pagination_enabled' => false,
         'openapi_context' => [
             'summary' => 'Obtain data of the currently logged in user.',
@@ -65,10 +68,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     ],
 ],
     itemOperations: [
-    'get' => ['security' => "is_granted('ROLE_ADMIN')"],
-    'put' => ['security' => "is_granted('ROLE_USER') && object == user"],
-],
-    denormalizationContext: ['groups' => ['user_write']],
+        'get' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'put' => [
+            'security' => "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object == user)",
+            'denormalization_context' => ['groups' => ['user_edit']],
+        ],
+    ],
     normalizationContext: ['groups' => ['user_read']],
 )]
 #[UniqueEntity('email')]
@@ -88,14 +93,14 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    #[Groups(['user_read', 'user_write'])]
+    #[Groups(['user_read', 'user_write', 'user_edit'])]
     #[Email]
     private ?string $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['user_read', 'user_write', 'gift_read', 'planning_read'])]
+    #[Groups(['user_read', 'user_write', 'user_edit', 'gift_read', 'planning_read'])]
     #[NotBlank]
     private ?string $displayName;
 
@@ -107,7 +112,7 @@ class User implements UserInterface
 
     #[Groups(['user_write'])]
     #[Length(min: 6, max: 255)]
-    protected ?string $plainPassword;
+    protected ?string $plainPassword = null;
 
     /**
      * @ORM\Column(type="string")
@@ -143,7 +148,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean", options={"default": TRUE})
      */
-    #[Groups(['user_read'])]
+    #[Groups(['user_read', 'user_edit'])]
+    #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     private ?bool $active;
 
     /**

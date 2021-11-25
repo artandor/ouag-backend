@@ -50,7 +50,7 @@ class HashPasswordSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof User || $entity->isActive()) {
+        if (!$entity instanceof User || $entity->getPlainPassword() !== null) {
             return;
         }
         $this->encodePassword($entity);
