@@ -6,6 +6,8 @@ use App\Repository\GiftRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Stripe\Exception\SignatureVerificationException;
+use Stripe\PromotionCode;
+use Stripe\StripeClient;
 use Stripe\Webhook;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +25,31 @@ class StripeController extends AbstractController
     public function __construct(private WorkflowInterface $giftPublishingStateMachine, private EntityManagerInterface $em,
                                 private GiftRepository    $giftRepository, private LoggerInterface $logger)
     {
+    }
+
+    /**
+     * @Route("/stripe/coupon/validate", methods={"POST"})
+     */
+    public function validateCoupon(Request $request): JsonResponse
+    {
+        $promotionnalCodeToSearch = $request->toArray()['code'];
+        if (strlen($promotionnalCodeToSearch) > 0) {
+            $stripeClient = new StripeClient($_ENV['STRIPE_API_KEY']);
+
+            $promoCodes = $stripeClient->promotionCodes->all(['code' => $promotionnalCodeToSearch, 'active' => true]);
+
+            if (count($promoCodes['data']) > 0) {
+                /** @var PromotionCode $promoCode */
+                $promoCode = $promoCodes['data'][0];
+                return new JsonResponse(['percent_off' => $promoCode->coupon->percent_off,
+                    'amount_off' => $promoCode->coupon->amount_off], 200);
+            }
+
+            $this->logger->info('Couldn\'t find promotion code "' . $promotionnalCodeToSearch . '" in Stripe.');
+            return new JsonResponse('Could\'nt find promo code.', 404);
+        }
+
+        throw new BadRequestHttpException('No promotionnal code sent.');
     }
 
     /**

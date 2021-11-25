@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Services\UserMailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -16,7 +17,8 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 final class UserVerifyController
 {
-    public function __construct(private UserRepository $userRepository, private EntityManagerInterface $em, private VerifyEmailHelperInterface $helper)
+    public function __construct(private UserRepository $userRepository, private EntityManagerInterface $em
+        , private VerifyEmailHelperInterface           $helper, private UserMailerService $userMailer)
     {
     }
 
@@ -35,6 +37,9 @@ final class UserVerifyController
         try {
             $this->helper->validateEmailConfirmation($request->getUri(), strval($user->getId()), $user->getEmail());
         } catch (VerifyEmailExceptionInterface $e) {
+            if ($request->get('expires') < time()) {
+                $this->userMailer->sendValidationEmail($user);
+            }
             throw new UnprocessableEntityHttpException();
         }
         $user->setActive(true);

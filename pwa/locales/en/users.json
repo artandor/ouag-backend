@@ -1,12 +1,18 @@
 {
   "loginPage": {
-    "title": "Login"
+    "title": "Login",
+    "callToAction": "Click here to login"
   },
   "profilePage": {
     "title": "My Account"
   },
   "registerPage": {
     "title": "Create an account"
+  },
+  "verifyPage": {
+    "success": "Congrats on verifying your account.",
+    "fail": "Failed to verify your account.",
+    "contact": "Need help ? Contact us"
   },
   "forms": {
     "update": "Update your profile",
