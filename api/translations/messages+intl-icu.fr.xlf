@@ -88,10 +88,6 @@
         <source>%creator_name% has a present for you</source>
         <target>{ creator_name } a un cadeau pour vous</target>
       </trans-unit>
-      <trans-unit id="cOPhIru" resname="Enjoy your gift ! And don't forget to say thank you to %creator_name%">
-        <source>Enjoy your gift ! And don't forget to say thank you to %creator_name%</source>
-        <target>Profitez bien de votre cadeau ! Et n'oubliez pas de remercier { creator_name }</target>
-      </trans-unit>
       <trans-unit id="yJhkzFQ" resname="New gift available for you">
         <source>New gift available for you</source>
         <target>Nouveau cadeau disponible</target>
@@ -103,6 +99,34 @@
       <trans-unit id="SIM8paJ" resname="See it now !">
         <source>See it now !</source>
         <target>Cliquez pour voir</target>
+      </trans-unit>
+      <trans-unit id="gzjZCWk" resname="Go to the">
+        <source>Go to the</source>
+        <target>Allez à la</target>
+      </trans-unit>
+      <trans-unit id="dTDeK1P" resname="receive page">
+        <source>receive page</source>
+        <target>page de réception</target>
+      </trans-unit>
+      <trans-unit id="B6emiOW" resname="to claim your gift">
+        <source>to claim your gift</source>
+        <target>pour obtenir votre cadeau</target>
+      </trans-unit>
+      <trans-unit id="s1y8r4j" resname="Enjoy your gift ! And don't forget to say thank you to">
+        <source>Enjoy your gift ! And don't forget to say thank you to</source>
+        <target>Profitez de votre cadeau ! Et n'oubliez pas de remercier</target>
+      </trans-unit>
+      <trans-unit id="E0NUExF" resname="Please activate your account by clicking the following link :">
+        <source>Please activate your account by clicking the following link :</source>
+        <target>Merci d'activer votre compte en cliquant sur le lien suivant :</target>
+      </trans-unit>
+      <trans-unit id="f7Eo6HL" resname="Click Here">
+        <source>Click Here</source>
+        <target>Cliquez ici</target>
+      </trans-unit>
+      <trans-unit id="6HhdJ14" resname="Create an account with this email at">
+        <source>Create an account with this email at</source>
+        <target>Créez un compte avec cet email sur</target>
       </trans-unit>
     </body>
   </file>

@@ -31,24 +31,23 @@
 
         <h2 class="text-center">{% trans into locale %}How to retrieve your gift ?{% endtrans %}</h2>
         <div>
-            <h3>{% trans into locale %}Download the mobile app and register with this email{% endtrans %}</h3>
-            <a
-                href="https://play.google.com/store/apps/details?id=com.ouag.mobile"><img
-                    class="text-center"
-                    src="{{ email.image('@images/en_badge_web_generic.png') }}"
-                    alt="Gift closed"></a>
-
-            <div>
-                <ol>
-                    <li>{% trans into locale %}Click the{% endtrans %} <img
-                            class="text-center"
-                            src="{{ email.image('@images/gift-box.png') }}"
-                            alt="Gift icon"> {% trans into locale %}gift icon and enter this code{% endtrans %}
-                    </li>
-                    <h2 class="code text-center">{{ invite.token }}</h2>
-                    <li>{% trans into locale %}Enjoy your gift ! And don't forget to say thank you to %creator_name%{% endtrans %}</li>
-                </ol>
-            </div>
+            <ol>
+                <li>{% trans into locale %}Create an account with this email at{% endtrans %} <a
+                        href="https://app.once-upon-a-gift.com/users/login" target="_blank" rel="noopener">app.once-upon-a-gift.com</a>
+                </li>
+                <li>{% trans into locale %}Go to the{% endtrans %} <a
+                        href="https://app.once-upon-a-gift.com/gifts/received" target="_blank"
+                        rel="noopener">{% trans into locale %}receive page{% endtrans %}</a> {% trans into locale %}to claim your gift{% endtrans %}
+                </li>
+                <li>{% trans into locale %}Click the{% endtrans %} <img
+                        class="text-center"
+                        src="{{ email.image('@images/gift-box.png') }}"
+                        alt="Gift icon"> {% trans into locale %}gift icon and enter this code{% endtrans %}
+                </li>
+                <h2 class="code text-center">{{ invite.token }}</h2>
+                <li>{% trans into locale %}Enjoy your gift ! And don't forget to say thank you to{% endtrans %}
+                    <strong>{{ creator_name }}</strong></li>
+            </ol>
         </div>
         <div>
             <h2>{% trans into locale %}Feedback / Bug{% endtrans %}</h2>
