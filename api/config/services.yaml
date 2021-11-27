@@ -57,10 +57,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
-    App\Services\VerifyEmail\VerifyEmailHelper:
+    'symfonycasts.verify_email.helper':
+        class: App\Services\VerifyEmail\VerifyEmailHelper
         arguments:
             - '@router.default'
             - '@symfonycasts.verify_email.uri_signer'
             - '@symfonycasts.verify_email.query_utility'
             - '@symfonycasts.verify_email.token_generator'
-    SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface: '@App\Services\VerifyEmail\VerifyEmailHelper'
+            - 3600

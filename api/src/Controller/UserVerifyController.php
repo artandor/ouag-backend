@@ -40,7 +40,6 @@ final class UserVerifyController
             if ($request->get('expires') < time()) {
                 $this->userMailer->sendValidationEmail($user);
             }
-            dump($e);
             throw new UnprocessableEntityHttpException();
         }
         $user->setActive(true);

@@ -1,0 +1,5 @@
+# Since we had to override the VerifyEmailHelper Service, i did not manage to hook this config into the service. 
+# To configure this package, report to its service.yaml definition
+
+#symfonycasts_verify_email:
+#    lifetime: 3600

@@ -25,14 +25,8 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
  */
 final class VerifyEmailHelper implements VerifyEmailHelperInterface
 {
-    /**
-     * @var int The length of time in seconds that a signed URI is valid for after it is created
-     */
-    private int $lifetime;
-
-    public function __construct(private UrlGeneratorInterface $router, private UriSigner $uriSigner, private VerifyEmailQueryUtility $queryUtility, private VerifyEmailTokenGenerator $tokenGenerator, int $lifetime = 3600)
+    public function __construct(private UrlGeneratorInterface $router, private UriSigner $uriSigner, private VerifyEmailQueryUtility $queryUtility, private VerifyEmailTokenGenerator $tokenGenerator, private int $lifetime)
     {
-        $this->lifetime = $lifetime;
     }
 
     /**
