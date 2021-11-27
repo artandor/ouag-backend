@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -149,7 +148,6 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", options={"default": TRUE})
      */
     #[Groups(['user_read', 'user_edit'])]
-    #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     private ?bool $active;
 
     /**
