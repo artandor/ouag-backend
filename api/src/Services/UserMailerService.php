@@ -28,6 +28,10 @@ class UserMailerService
             ['id' => $user->getId()],
         );
 
+        $parsedUrl = parse_url($signatureComponents->getSignedUrl());
+
+        $verifyUrl = $_ENV['FRONT_DOMAIN'] . $parsedUrl['path'] . '?' . $parsedUrl['query'];
+
         $email = (new TemplatedEmail())
             ->from(Address::create('Once Upon A Gift <postmaster@once-upon-a-gift.com>'))
             ->to($user->getEmail())
@@ -36,7 +40,7 @@ class UserMailerService
             ->context([
                 'locale' => $user->getPreferredLanguage(),
                 'username' => $user->getDisplayName(),
-                'signedUrl' => $signatureComponents->getSignedUrl(),
+                'signedUrl' => $verifyUrl,
             ]);
         $email->setHeaders($email->getHeaders()
             ->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply'));
