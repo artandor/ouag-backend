@@ -1,5 +1,6 @@
 import jwtDecode from "jwt-decode";
 import {ENTRYPOINT} from "../config/entrypoint";
+import authProvider from "./authProvider";
 
 export default {
     login: ({username, password}) => {
@@ -41,7 +42,9 @@ export default {
             })
             .then(({token}) => {
                 localStorage.setItem("token", token);
-            });
+                return token;
+            })
+            .catch((err) => console.log('An error occured while refreshing token' + err))
     },
     logout: () => {
         localStorage.clear();
@@ -50,8 +53,12 @@ export default {
     checkAuth: () => {
         try {
             // @ts-ignore
-            if (!localStorage.getItem("token") || new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
+            if (!localStorage.getItem("token")) {
                 return Promise.reject();
+            }
+
+            if (new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
+                authProvider.refreshToken();
             }
             return Promise.resolve();
         } catch (e) {
