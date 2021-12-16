@@ -33,6 +33,7 @@ export default {
                 headers: new Headers({"Content-Type": "application/json"}),
             }
         )
+        localStorage.removeItem('token');
         return fetch(request)
             .then(async (response) => {
                 if (response.status < 200 || response.status >= 300) {
