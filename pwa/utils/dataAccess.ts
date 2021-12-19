@@ -4,7 +4,7 @@ import mapValues from "lodash/mapValues";
 import isomorphicFetch from "isomorphic-unfetch";
 import {ENTRYPOINT} from "../config/entrypoint";
 import routerService from 'next/router'
-import authProvider from "./authProvider";
+import AuthProvider from "./authProvider";
 
 const MIME_TYPE = "application/ld+json";
 
@@ -35,7 +35,7 @@ export const fetch = async (id: string, init: RequestInit = {}, router = routerS
     if (resp.status === 401) {
         await resp.json().then(async ({message}) => {
             if (message == 'Expired JWT Token') {
-                await authProvider.refreshToken()
+                await AuthProvider.refreshToken()
                     .then(async () => {
                         init.headers["Authorization"] = `Bearer ${localStorage.getItem('token')}`;
                         resp = await isomorphicFetch(ENTRYPOINT + id, init)

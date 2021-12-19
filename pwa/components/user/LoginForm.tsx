@@ -2,10 +2,10 @@ import {useState} from "react";
 import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {User} from "../../types/User";
-import authProvider from "../../utils/authProvider";
 import useTranslation from "next-translate/useTranslation";
 import {fetch} from "../../utils/dataAccess";
 import {useCookies} from 'react-cookie';
+import AuthProvider from "../../utils/authProvider";
 
 export default function LoginForm() {
     const [cookies, setCookie] = useCookies(['NEXT_LOCALE']);
@@ -25,7 +25,7 @@ export default function LoginForm() {
                 }}
                 onSubmit={async (values, {setSubmitting, setStatus, setErrors}) => {
                     try {
-                        authProvider.login({username: values['email'], password: values['plainPassword']})
+                        AuthProvider.login({username: values['email'], password: values['plainPassword']})
                             .then(() => {
                                 setStatus({
                                     isValid: true,

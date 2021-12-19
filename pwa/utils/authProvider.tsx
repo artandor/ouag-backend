@@ -1,9 +1,8 @@
 import jwtDecode from "jwt-decode";
 import {ENTRYPOINT} from "../config/entrypoint";
-import authProvider from "./authProvider";
 
-export default {
-    login: ({username, password}) => {
+export default class AuthProvider {
+    static login({username, password}) {
         const request = new Request(
             `${ENTRYPOINT}/authentication_token`,
             {
@@ -23,8 +22,9 @@ export default {
                 localStorage.setItem("token", token);
                 localStorage.setItem("refreshToken", refresh_token);
             });
-    },
-    refreshToken: () => {
+    }
+
+    static refreshToken() {
         const request = new Request(
             `${ENTRYPOINT}/authentication_token/refresh`,
             {
@@ -33,7 +33,6 @@ export default {
                 headers: new Headers({"Content-Type": "application/json"}),
             }
         )
-        localStorage.removeItem('token');
         return fetch(request)
             .then(async (response) => {
                 if (response.status < 200 || response.status >= 300) {
@@ -46,12 +45,14 @@ export default {
                 return token;
             })
             .catch((err) => console.log('An error occured while refreshing token : ' + err))
-    },
-    logout: () => {
+    }
+
+    static logout() {
         localStorage.clear();
         return Promise.resolve();
-    },
-    checkAuth: () => {
+    }
+
+    static checkAuth() {
         try {
             // @ts-ignore
             if (!localStorage.getItem("token")) {
@@ -59,20 +60,24 @@ export default {
             }
 
             if (new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
-                authProvider.refreshToken();
+                return this.refreshToken();
             }
             return Promise.resolve();
         } catch (e) {
             // override possible jwtDecode error
             return Promise.reject();
         }
-    },
-    checkError: (err) => {
+    }
+
+    static checkError(err) {
         if ([401].includes(err?.status || err?.response?.status)) {
             localStorage.removeItem("token");
             return Promise.reject();
         }
         return Promise.resolve();
-    },
-    getPermissions: () => Promise.resolve(),
+    }
+
+    static getPermissions() {
+        return Promise.resolve()
+    }
 };

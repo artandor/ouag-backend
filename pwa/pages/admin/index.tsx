@@ -7,7 +7,7 @@ import {
     useIntrospection
 } from "@api-platform/admin";
 import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation";
-import authProvider from "../../utils/authProvider";
+import AuthProvider from "../../utils/authProvider";
 import {ENTRYPOINT} from "../../config/entrypoint";
 import Login from "../../components/admin/Login";
 
@@ -54,7 +54,7 @@ const dataProvider = baseHydraDataProvider(ENTRYPOINT, fetchHydra, apiDocumentat
 const AdminLoader = () => {
     if (typeof window !== "undefined") {
         const {HydraAdmin} = require("@api-platform/admin");
-        return <HydraAdmin dataProvider={dataProvider} authProvider={authProvider} entrypoint={window.origin}
+        return <HydraAdmin dataProvider={dataProvider} authProvider={AuthProvider} entrypoint={window.origin}
                            loginPage={Login}/>;
     }
 

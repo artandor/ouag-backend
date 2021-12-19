@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal'
 import GiftClaimForm from "../../../components/gift/GiftClaimForm";
 import {Gift} from "../../../types/Gift";
 import NotificationsSubscriber from "../../../components/common/NotificationSubscriber";
+import AuthProvider from "../../../utils/authProvider";
 
 export default function ReceivedGiftPage() {
     const {t} = useTranslation('gifts');
@@ -18,11 +19,18 @@ export default function ReceivedGiftPage() {
 
 
     useEffect(() => {
-        fetch(`/gifts?receivers[]=${getUserIdFromJwt()}&state=published&order[startAt]`)
-            .then((collectionData) => {
-                setCollection(collectionData)
-            })
-            .catch(() => null);
+        AuthProvider.checkAuth()
+            .then(() => {
+                try {
+                    fetch(`/gifts?receivers[]=${getUserIdFromJwt()}&state=published&order[startAt]`)
+                        .then((collectionData) => {
+                            setCollection(collectionData)
+                        })
+                        .catch(() => null);
+                } catch (e) {
+                    console.log(e)
+                }
+            });
     }, [])
 
     function addGiftToCollection(gift: Gift) {

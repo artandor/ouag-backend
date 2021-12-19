@@ -2,8 +2,8 @@ import {FunctionComponent, useState} from "react";
 import {useRouter} from "next/router";
 import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
-import authProvider from "../../utils/authProvider";
 import useTranslation from "next-translate/useTranslation";
+import AuthProvider from "../../utils/authProvider";
 
 interface Props {
     user: User;
@@ -64,7 +64,7 @@ export const Show: FunctionComponent<Props> = ({user, setEditMode}) => {
                     </a>
                 </button>
                 <button className="btn btn-primary" onClick={(event) => {
-                    authProvider.logout().then(value => router.push('/users/login'));
+                    AuthProvider.logout().then(value => router.push('/users/login'));
                 }}>
                     <a>
                         {t('shared:logoutButton')}

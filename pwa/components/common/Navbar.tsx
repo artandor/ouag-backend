@@ -1,9 +1,9 @@
-import authProvider from "../../utils/authProvider";
 import {useEffect, useState} from "react";
 import useTranslation from "next-translate/useTranslation";
 import Link from 'next/link'
 import Image from 'next/image'
 import {useRouter} from "next/router";
+import AuthProvider from "../../utils/authProvider";
 
 export default function Navbar() {
     const {t} = useTranslation('shared');
@@ -11,10 +11,11 @@ export default function Navbar() {
     let [isConnected, setConnected] = useState(false);
 
     useEffect(() => {
-        authProvider.checkAuth().then(() => {
-                setConnected(true)
-            }
-        ).catch(() => {
+        AuthProvider.checkAuth()
+            .then(() => {
+                    setConnected(true)
+                }
+            ).catch(() => {
             setConnected(false)
         })
     }, [])
@@ -61,7 +62,7 @@ export default function Navbar() {
                                         className="dropdown-item">{t('profileLink')}</a></Link></li>
                                     <li>
                                         <a className={'dropdown-item'} href="#"
-                                           onClick={() => authProvider.logout().then(value => router.push('/users/login'))}>{t('logoutButton')}</a>
+                                           onClick={() => AuthProvider.logout().then(value => router.push('/users/login'))}>{t('logoutButton')}</a>
                                     </li>
                                 </ul>
                             </div>

@@ -7,6 +7,7 @@ import PlanningList from "../../../components/planning/PlanningList";
 import {Planning} from "../../../types/Planning";
 import {GiftShow} from "../../../components/gift/GiftShow";
 import useTranslation from "next-translate/useTranslation";
+import AuthProvider from "../../../utils/authProvider";
 
 export default function GiftShowPage() {
     const [gift, setGift] = useState({})
@@ -15,20 +16,23 @@ export default function GiftShowPage() {
     const {t} = useTranslation('gifts')
 
     useEffect(() => {
-        fetch(router.asPath)
-            .then((giftData) => {
-                setGift(giftData)
-            })
-            .catch((err) => console.error(err));
-        fetch(router.asPath + '/plannings')
-            .then((planningData) => {
-                planningData['hydra:member'] = planningData['hydra:member'].map((planning: Planning) => {
-                    planning['ref'] = createRef()
-                    return planning
-                });
-                setPlannings(planningData)
-            })
-            .catch((err) => console.error(err));
+        AuthProvider.checkAuth()
+            .then(() => {
+                fetch(router.asPath)
+                    .then((giftData) => {
+                        setGift(giftData)
+                    })
+                    .catch((err) => console.error(err));
+                fetch(router.asPath + '/plannings')
+                    .then((planningData) => {
+                        planningData['hydra:member'] = planningData['hydra:member'].map((planning: Planning) => {
+                            planning['ref'] = createRef()
+                            return planning
+                        });
+                        setPlannings(planningData)
+                    })
+                    .catch((err) => console.error(err));
+            });
     }, [router])
 
 

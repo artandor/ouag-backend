@@ -7,6 +7,7 @@ import useTranslation from "next-translate/useTranslation";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import {getUserIdFromJwt} from "../../utils/common";
 import {useRouter} from "next/router";
+import AuthProvider from "../../utils/authProvider";
 
 export default function GiftListPage() {
     const {t} = useTranslation('gifts');
@@ -15,14 +16,17 @@ export default function GiftListPage() {
 
     useEffect(() => {
         try {
-            fetch(`/gifts?owner=${getUserIdFromJwt()}&order[updatedAt]&order[startAt]`)
-                .then((collectionData) => {
-                    setCollection(collectionData)
+            AuthProvider.checkAuth()
+                .then(() => {
+                    fetch(`/gifts?owner=${getUserIdFromJwt()}&order[updatedAt]&order[startAt]`)
+                        .then((collectionData) => {
+                            setCollection(collectionData)
+                        })
+                        .catch((e) => {
+                            console.error(e);
+                            router.push('/users/login')
+                        });
                 })
-                .catch((e) => {
-                    console.error(e);
-                    router.push('/users/login')
-                });
         } catch (e) {
             console.error(e);
             router.push('/users/login')
