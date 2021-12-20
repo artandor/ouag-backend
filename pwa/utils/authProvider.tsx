@@ -1,5 +1,5 @@
-import jwtDecode from "jwt-decode";
 import {ENTRYPOINT} from "../config/entrypoint";
+import {parseJwt} from "./common";
 
 export default class AuthProvider {
     static login({username, password}) {
@@ -60,7 +60,7 @@ export default class AuthProvider {
                 return Promise.reject();
             }
 
-            const decodedToken = jwtDecode(token);
+            const decodedToken = parseJwt(token);
 
             if (decodedToken && new Date().getTime() / 1000 > decodedToken?.exp) {
                 return this.refreshToken();
