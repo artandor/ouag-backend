@@ -62,7 +62,7 @@ export default class AuthProvider {
 
             const decodedToken = parseJwt(token);
 
-            if (decodedToken && new Date().getTime() / 1000 > decodedToken?.exp) {
+            if (decodedToken && new Date().getTime() / 1000 > decodedToken['exp']) {
                 return this.refreshToken();
             }
             return Promise.resolve();
