@@ -60,7 +60,9 @@ export default class AuthProvider {
                 return Promise.reject();
             }
 
-            if (new Date().getTime() / 1000 > jwtDecode(token)?.exp) {
+            const decodedToken = jwtDecode(token);
+
+            if (decodedToken && new Date().getTime() / 1000 > decodedToken?.exp) {
                 return this.refreshToken();
             }
             return Promise.resolve();
