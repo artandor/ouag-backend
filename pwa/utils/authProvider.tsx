@@ -1,5 +1,5 @@
-import jwtDecode from "jwt-decode";
 import {ENTRYPOINT} from "../config/entrypoint";
+import {parseJwt} from "./common";
 
 export default class AuthProvider {
     static login({username, password}) {
@@ -54,12 +54,15 @@ export default class AuthProvider {
 
     static checkAuth() {
         try {
+            const token = localStorage.getItem("token")
             // @ts-ignore
-            if (!localStorage.getItem("token")) {
+            if (!token) {
                 return Promise.reject();
             }
 
-            if (new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
+            const decodedToken = parseJwt(token);
+
+            if (decodedToken && new Date().getTime() / 1000 > decodedToken?.exp) {
                 return this.refreshToken();
             }
             return Promise.resolve();
