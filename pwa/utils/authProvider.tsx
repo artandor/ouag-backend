@@ -54,12 +54,13 @@ export default class AuthProvider {
 
     static checkAuth() {
         try {
+            const token = localStorage.getItem("token")
             // @ts-ignore
-            if (!localStorage.getItem("token")) {
+            if (!token) {
                 return Promise.reject();
             }
 
-            if (new Date().getTime() / 1000 > jwtDecode(localStorage.getItem("token"))?.exp) {
+            if (new Date().getTime() / 1000 > jwtDecode(token)?.exp) {
                 return this.refreshToken();
             }
             return Promise.resolve();
