@@ -3,7 +3,7 @@ import {useRouter} from "next/router";
 import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
 import useTranslation from "next-translate/useTranslation";
-import AuthProvider from "../../utils/authProvider";
+import AuthProvider from "../../utils/AuthProvider";
 
 interface Props {
     user: User;

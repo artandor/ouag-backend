@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import Link from 'next/link'
 import Image from 'next/image'
 import {useRouter} from "next/router";
-import AuthProvider from "../../utils/authProvider";
+import AuthProvider from "../../utils/AuthProvider";
 
 export default function Navbar() {
     const {t} = useTranslation('shared');

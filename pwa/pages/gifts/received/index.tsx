@@ -10,7 +10,7 @@ import Modal from 'react-bootstrap/Modal'
 import GiftClaimForm from "../../../components/gift/GiftClaimForm";
 import {Gift} from "../../../types/Gift";
 import NotificationsSubscriber from "../../../components/common/NotificationSubscriber";
-import AuthProvider from "../../../utils/authProvider";
+import AuthProvider from "../../../utils/AuthProvider";
 
 export default function ReceivedGiftPage() {
     const {t} = useTranslation('gifts');

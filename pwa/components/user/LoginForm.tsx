@@ -5,7 +5,7 @@ import {User} from "../../types/User";
 import useTranslation from "next-translate/useTranslation";
 import {fetch} from "../../utils/dataAccess";
 import {useCookies} from 'react-cookie';
-import AuthProvider from "../../utils/authProvider";
+import AuthProvider from "../../utils/AuthProvider";
 
 export default function LoginForm() {
     const [cookies, setCookie] = useCookies(['NEXT_LOCALE']);

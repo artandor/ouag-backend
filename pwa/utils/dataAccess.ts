@@ -4,7 +4,7 @@ import mapValues from "lodash/mapValues";
 import isomorphicFetch from "isomorphic-unfetch";
 import {ENTRYPOINT} from "../config/entrypoint";
 import routerService from 'next/router'
-import AuthProvider from "./authProvider";
+import AuthProvider from "./AuthProvider";
 
 const MIME_TYPE = "application/ld+json";
 

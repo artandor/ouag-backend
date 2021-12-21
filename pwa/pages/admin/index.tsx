@@ -7,9 +7,9 @@ import {
     useIntrospection
 } from "@api-platform/admin";
 import parseHydraDocumentation from "@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation";
-import AuthProvider from "../../utils/authProvider";
 import {ENTRYPOINT} from "../../config/entrypoint";
 import Login from "../../components/admin/Login";
+import reactAdminAuthProvider from "../../utils/reactAdminAuthProvider";
 
 // todo Waiting for https://github.com/api-platform/admin/issues/372
 const getHeaders = () => localStorage.getItem("token") ? {
@@ -54,7 +54,7 @@ const dataProvider = baseHydraDataProvider(ENTRYPOINT, fetchHydra, apiDocumentat
 const AdminLoader = () => {
     if (typeof window !== "undefined") {
         const {HydraAdmin} = require("@api-platform/admin");
-        return <HydraAdmin dataProvider={dataProvider} authProvider={AuthProvider} entrypoint={window.origin}
+        return <HydraAdmin dataProvider={dataProvider} authProvider={reactAdminAuthProvider} entrypoint={window.origin}
                            loginPage={Login}/>;
     }
 

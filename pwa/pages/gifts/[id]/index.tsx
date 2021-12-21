@@ -7,7 +7,7 @@ import PlanningList from "../../../components/planning/PlanningList";
 import {Planning} from "../../../types/Planning";
 import {GiftShow} from "../../../components/gift/GiftShow";
 import useTranslation from "next-translate/useTranslation";
-import AuthProvider from "../../../utils/authProvider";
+import AuthProvider from "../../../utils/AuthProvider";
 
 export default function GiftShowPage() {
     const [gift, setGift] = useState({})

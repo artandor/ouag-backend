@@ -7,7 +7,7 @@ import useTranslation from "next-translate/useTranslation";
 import ContainerLayout from "../../layouts/ContainerLayout";
 import {getUserIdFromJwt} from "../../utils/common";
 import {useRouter} from "next/router";
-import AuthProvider from "../../utils/authProvider";
+import AuthProvider from "../../utils/AuthProvider";
 
 export default function GiftListPage() {
     const {t} = useTranslation('gifts');
