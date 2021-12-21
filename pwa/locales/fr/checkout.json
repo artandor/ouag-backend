@@ -1,11 +1,11 @@
 {
   "success": {
-    "title": "Your order was handled successfully.",
-    "confirmationEmail": "You'll receive a confirmation e-mail shortly, and your recipients will receive their invitations.",
-    "footer": "If you need any help, please contact"
+    "title": "Votre commande a été traitée avec succès.",
+    "confirmationEmail": "Vous recevrez sous peu un e-mail de confirmation et vos destinataires recevront leurs invitations.",
+    "footer": "Si vous avez besoin d'aide, veuillez contacter"
   },
   "failure": {
-    "title": "Your order encountered an issue. Please retry later.",
-    "footer": "If you need any help, please contact"
+    "title": "Votre commande a rencontré un problème. Veuillez réessayer ultérieurement.",
+    "footer": "Si vous avez besoin d'aide, veuillez contacter"
   }
 }

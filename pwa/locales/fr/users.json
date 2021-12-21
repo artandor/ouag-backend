@@ -1,24 +1,30 @@
 {
   "loginPage": {
-    "title": "Login"
+    "title": "Connexion",
+    "callToAction": "Cliquez ici pour vous connecter"
   },
   "profilePage": {
-    "title": "My Account"
+    "title": "Mon Compte"
   },
   "registerPage": {
-    "title": "Create an account"
+    "title": "Créer un compte"
+  },
+  "verifyPage": {
+    "success": "Félicitations pour la vérification de votre compte.",
+    "fail": "Échec de la vérification de votre compte.",
+    "contact": "Besoin d'aide ? Nous contacter"
   },
   "forms": {
-    "update": "Update your profile",
-    "newAccount": "New Account",
-    "validateAccount": "You need to validate your account, please check your email",
-    "updatedAccount": "Account updated.",
-    "deleteNotice": "At the moment, if you need to delete your account, please contact",
+    "update": "Mettre à jour votre profil",
+    "newAccount": "Nouveau Compte",
+    "validateAccount": "Vous devez valider votre compte, veuillez vérifier votre email",
+    "updatedAccount": "Compte mis à jour",
+    "deleteNotice": "Pour le moment, si vous devez supprimer votre compte, veuillez contacter",
     "fields": {
       "email": "Email",
-      "displayName": "Display name",
-      "password": "Password",
-      "preferredLanguage": "Preferred language"
+      "displayName": "Nom d'affichage",
+      "password": "Mot de passe",
+      "preferredLanguage": "Langue favorite"
     }
   }
 }

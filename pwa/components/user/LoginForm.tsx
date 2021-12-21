@@ -33,9 +33,8 @@ export default function LoginForm() {
                                 });
                                 fetch("/users/me")
                                     .then((res) => {
-                                        console.log(res);
-                                        setCookie('NEXT_LOCALE', res["preferredLanguage"], {path: '/'})
-                                        router.push("/gifts/received", "/gifts/received", {locale: res["preferredLanguage"]});
+                                        setCookie('NEXT_LOCALE', res["preferredLanguage"] ?? "en", {path: '/'})
+                                        router.push("/gifts/received", "/gifts/received", {locale: res["preferredLanguage"] ?? "en"});
                                     })
                             })
                             .catch((error) => {

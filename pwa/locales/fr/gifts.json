@@ -1,84 +1,135 @@
 {
-  "listTitle": "Gifts you created",
-  "giftCreation": "Create a Gift",
-  "starting": "Start",
-  "distributionPercentage": "Distributed",
-  "fillPercentage": "Media filled",
-  "fields": {},
+  "createdTitle": "Cadeaux créés",
+  "receivedTitle": "Cadeaux reçus",
+  "giftCreation": "Créer un Cadeau",
+  "planningsTitle": "Planification",
+  "invitesTitle": "Invitations",
+  "starting": "A partir du",
+  "distributionPercentage": "Distribué",
+  "fillPercentage": "Souvenirs remplis",
+  "emptyList": "Vous n'avez pas encore de cadeau ! Si vous avez reçu un code par email, cliquez sur le bouton ci-dessus.",
+  "claimGiftButton": "Récupérer un cadeau",
+  "fields": {
+    "name": "Nom",
+    "plannedFor": "Prévu le",
+    "emptyMedia": "Pas de média prévu pour ce jour"
+  },
   "recapAttention": {
-    "one": "An attention every day",
-    "other": "An attention every {{count}} days"
+    "one": "Une attention par jour",
+    "other": "Une attention tous les {{count}} jours"
   },
   "recapMediaAmount": {
-    "one": "for {{count}} day",
-    "other": "for {{count}} days"
+    "one": "pendant {{count}} jour",
+    "other": "pendant {{count}} jours"
   },
   "state": {
-    "draft": "draft",
-    "ordered": "ordered",
-    "published": "published"
+    "draft": "brouillon",
+    "ordered": "commandé",
+    "published": "publié"
   },
   "help": {
-    "text1": "Sur cette page, vous pourrez créer ou personnaliser vos cadeaux.",
-    "text2": "Chaque cadeau est facturé en fonction du nombre de médias et du nombre de receveurs.",
-    "text3": "Lorsque vous enverrez votre cadeau, ses destinataires recevront un mail les invitant à venir le réclamer sur l'application.",
+    "text1": "Sur cette page, vous pourrez créer et personnaliser vos cadeaux.",
+    "text2": "Le prix de chaque cadeau est calculé en fonction du nombre de souvenirs et de destinataires.",
+    "text3": "Lorsque vous envoyez un cadeau, ses destinataires reçoivent un e-mail avec un code pour le récupérer.",
     "unitPriceLabel": "par souvenir",
-    "destPriceLabel": "Prix augmenté de {{count}}% par receveur",
-    "text4": "Vous recevrez quant à vous une confirmation lorsqu'ils auront bien obtenu le cadeau dans l'application."
+    "destPriceLabel": "Prix augmenté de {{count}}% par destinataire",
+    "text4": "Vous recevrez un e-mail de confirmation lorsqu'ils réclameront le cadeau sur le site."
   },
   "receiver": {
-    "noMediaToday": "Oops, il semblerait qu'il n'y ait pas de cadeau pour vous aujourd'hui !",
-    "mediaObject": {}
+    "noMediaToday": "Oups, il semble qu'il n'y ait pas de cadeau pour vous aujourd'hui !",
+    "mediaObject": {
+      "title": "Titre",
+      "comment": "Commentaire",
+      "nsfwNotice": "Ce média ne semble pas sûr pour le travail. Confirmez que vous voulez le voir maintenant ?",
+      "from": "De"
+    }
   },
   "invite": {
-    "addButton": "Ajouter un destinataire"
+    "pageTitle": "Invitations pour :",
+    "addButton": "Ajouter un destinataire",
+    "yourNickname": "Votre pseudo"
   },
-  "recap": {},
+  "recap": {
+    "pageTitle": "Récapitulatif de votre commande",
+    "item": "Article",
+    "quantity": "Quantité",
+    "unitPrice": "€ / unité",
+    "total": "Total",
+    "totalHT": "Total Hors Taxes",
+    "reduction": "Promotion",
+    "newTotal": "Total après réduction",
+    "promotionnalCodeLabel": "Code promotionnel",
+    "nonApplicableVat": "TVA non applicable selon l'article 293-B du CGI",
+    "memories": "Souvenirs",
+    "recipient": "Destinataires",
+    "recipientPriceLabel1": "+ 100% pour chaque",
+    "recipientPriceLabel2": "destinataire après le premier"
+  },
   "form": {
     "name": {
-      "label": "I want to create a gift named",
-      "placeholder": "Happy birthday !"
+      "label": "Je veux créer un cadeau nommé",
+      "placeholder": "Bon anniversaire !"
     },
     "mediaAmount": {
-      "label": "A memory is sent every",
-      "labelEnd": "day(s)"
+      "label": "Un souvenir est envoyé chaque",
+      "labelEnd": "jour(s)"
     },
     "startAt": {
-      "label": "from"
+      "label": "De"
     },
     "fillingMethod": {
-      "label": "I want to plan the distribution",
+      "label": "Je veux planifier la distribution",
       "options": {
-        "manual": "Manually",
-        "automatic": "Automatically"
+        "manual": "Manuellement",
+        "automatic": "Automatiquement"
       },
       "help": {
-        "title": "Help",
-        "manual": "In <0>manual mode</0>, for each day of your gift you'll have to associate a media.",
-        "automatic": "In <0>automatic mode</0>, we will use your current libraries to plan your image, then you can modify them. If you have no libraries it will do nothing."
+        "title": "Aide",
+        "manual": "En <0>mode manuel</0>, pour chaque jour de votre cadeau vous devrez associer un média.",
+        "automatic": "En <0>mode automatique</0>, nous utiliserons vos bibliothèques actuelles pour planifier votre image, vous pourrez ensuite les modifier. Si vous n'avez pas de bibliothèques, cela ne fera rien."
       }
     },
     "token": {
       "label": "Code",
-      "placeholder": "The code you received by email",
-      "error": "Code must be a 6 digit number."
+      "placeholder": "Le code que vous avez reçu par email",
+      "error": "Le code doit être un nombre à 6 chiffres.",
+      "errorNotFound": "Vous avez entré un mauvais code ou votre email est différent de celui qui a reçu le code."
     },
     "invite": {
       "email": {
-        "label": "Email of the receiver",
+        "label": "E-mail du destinataire",
         "placeholder": "john.smith@gmail.com"
       },
       "creatorNickname": {
-        "label": "Your nickname (it will help your receiver understanding who sent the gift)",
+        "label": "Votre pseudo (il aidera votre destinataire à vous reconnaître)",
         "placeholder": "Don John"
       },
       "receiverNickname": {
-        "label": "The nickname of the receiver",
+        "label": "Le surnom du receveur",
         "placeholder": "Laura Dynamo"
       },
       "comment": {
         "label": "Note",
-        "placeholder": "Some kind words, a joke, anything you want to say before the person receives your awesome gift."
+        "placeholder": "Quelques mots gentils, une blague, tout ce que vous voulez dire avant que la personne ne reçoive votre cadeau génial."
+      }
+    },
+    "mediaObject": {
+      "modalTitleText": "Ajouter un texte",
+      "modalTitleMedia": "Ajouter un souvenir",
+      "title": {
+        "label": "Titre",
+        "placeholder": "Plage Août 2020"
+      },
+      "file": {
+        "label": "Ajouter un fichier"
+      },
+      "contentText": {
+        "label": "Votre souvenir (texte ou lien)",
+        "placeholder": "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT?si=1bc480a43a9841d3"
+      },
+      "comment": {
+        "label": "Commentaire",
+        "placeholder": "C'était vraiment mes meilleures vacances !"
       }
     }
   }

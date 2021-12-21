@@ -41,9 +41,9 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                         });
                         if (!isCreation) {
                             setUser(await response)
-                            setCookie('NEXT_LOCALE', response["preferredLanguage"], {path: '/'});
+                            setCookie('NEXT_LOCALE', response["preferredLanguage"] ?? "en", {path: '/'});
                             setEditMode(false)
-                            router.push(router.pathname, router.pathname, {locale: response["preferredLanguage"]});
+                            router.push(router.pathname, router.pathname, {locale: response["preferredLanguage"] ?? "en"});
                         }
                     } catch (error) {
                         setStatus({
