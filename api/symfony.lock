@@ -22,6 +22,9 @@
     "async-aws/s3": {
         "version": "1.9.1"
     },
+    "aws/aws-crt-php": {
+        "version": "v1.0.2"
+    },
     "aws/aws-sdk-php": {
         "version": "3.179.1"
     },
@@ -33,6 +36,9 @@
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
+    },
+    "composer/pcre": {
+        "version": "1.0.0"
     },
     "composer/semver": {
         "version": "3.2.4"
@@ -584,6 +590,9 @@
     },
     "symfony/options-resolver": {
         "version": "v5.2.4"
+    },
+    "symfony/password-hasher": {
+        "version": "v5.3.8"
     },
     "symfony/phpunit-bridge": {
         "version": "5.1",

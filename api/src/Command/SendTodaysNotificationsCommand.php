@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\PushSubscription;
 use App\Repository\PlanningRepository;
 use App\Repository\PushSubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SendTodaysNotificationsCommand extends Command
 {
     protected static $defaultName = 'app:send-todays-notifications';
-    protected static string $defaultDescription = 'Retrieve medias that became available today and send push notifications to concerned devices.';
+    protected static $defaultDescription = 'Retrieve medias that became available today and send push notifications to concerned devices.';
 
     public function __construct(private PlanningRepository $planningRepository, private PushSubscriptionRepository $pushSubscriptionRepository,
                                 private EntityManagerInterface $em, private TranslatorInterface $translator)
