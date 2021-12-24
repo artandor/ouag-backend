@@ -37,7 +37,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                         });
                         setStatus({
                             isValid: true,
-                            msg: isCreation ? t('userForm.validateAccount') : t('userForm.updatedAccount'),
+                            msg: isCreation ? t('forms.validateAccount') : t('forms.updatedAccount'),
                         });
                         if (!isCreation) {
                             setUser(await response)

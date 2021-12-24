@@ -17,7 +17,7 @@
   "forms": {
     "update": "Mettre à jour votre profil",
     "newAccount": "Nouveau Compte",
-    "validateAccount": "Vous devez valider votre compte, veuillez vérifier votre email",
+    "validateAccount": "Vous devez valider votre compte, veuillez vérifier votre email.",
     "updatedAccount": "Compte mis à jour",
     "deleteNotice": "Pour le moment, si vous devez supprimer votre compte, veuillez contacter",
     "fields": {

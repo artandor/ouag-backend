@@ -15,7 +15,7 @@ export default function LoginForm() {
 
     return (
         <div>
-            <h1 className="text-center">Login</h1>
+            <h1 className="text-center">{t('loginPage.title')}</h1>
             <Formik
                 initialValues={new User()}
                 validate={(values) => {

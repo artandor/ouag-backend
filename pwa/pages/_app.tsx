@@ -11,8 +11,17 @@ function MyApp({Component, pageProps}: AppProps) {
                 <meta name='viewport'
                       content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'/>
 
-
                 <title>Once Upon A Gift</title>
+
+                <meta property="og:title" key="og:title" content="Once Upon A Gift"/>
+                <meta property="og:type" key="og:type" content="website"/>
+                <meta property="og:description" key="og:description"
+                      content="Un moyen simple de faire un cadeau sur la durée pour remémorer vos plus beaux souvenirs à vos proches."/>
+                <meta property="og:locale" key="og:locale" content="fr_FR"/>
+                <meta property="og:url" key="og:url" content="https://app.once-upon-a-gift.com/"/>
+                <meta property="og:image" key="og:image"
+                      content="https://once-upon-a-gift.com/images/logo.png"/>
+
                 <script async defer data-domain="app.once-upon-a-gift.com"
                         src="https://analytics.nicolasmylle.fr/js/plausible.outbound-links.js"/>
             </Head>
