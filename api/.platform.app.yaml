@@ -55,24 +55,25 @@ workers:
             memory_ratio: 128
         commands:
             # Don't forget to update your receiver name(s)
-            start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume async
-
+            start: sleep 3
+#            start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume async
+#
 mounts:
     "/var": { source: local, source_path: var }
     "/config/jwt": { source: local, source_path: config/jwt }
 
 timezone: Europe/Paris
 
-crons:
-    send_notifications:
-        # every day at 9h00 AM
-        spec: 0 9 * * *
-        cmd: |
-            # only run for the master branch, aka production
-            if [ "$SYMFONY_BRANCH" = "master" ]; then
-                croncape bin/console app:send-todays-notifications
-            fi
-
+#crons:
+#    send_notifications:
+#        # every day at 9h00 AM
+#        spec: 0 9 * * *
+#        cmd: |
+#            # only run for the master branch, aka production
+#            if [ "$SYMFONY_BRANCH" = "master" ]; then
+#                croncape bin/console app:send-todays-notifications
+#            fi
+#
 hooks:
     build: |
         set -x -e
@@ -85,3 +86,5 @@ hooks:
         set -x -e
 
         (>&2 symfony-deploy)
+
+
