@@ -25,6 +25,9 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                 initialValues={user ? {...user} : new User()}
                 validate={(values) => {
                     const errors = {};
+                    if (values.acceptTos && !values.acceptTos.includes("acceptedTos")) {
+                        errors.acceptedTos = t('forms.fields.errorAcceptTos')
+                    }
                     // add your validation logic here
                     return errors;
                 }}
@@ -168,6 +171,30 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                             className="text-danger"
                             component="div"
                             name="preferredLanguage"
+                        />
+
+                        <div className="form-check">
+                            <input
+                                name="acceptTos"
+                                id="_acceptTos"
+                                type="checkbox"
+                                value="acceptedTos"
+                                className={`form-check-input${
+                                    errors.acceptedTos && touched.acceptedTos ? " is-invalid" : ""
+                                }`}
+                                aria-invalid={errors.acceptedTos && touched.acceptedTos}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                required={true}
+                            />
+                            <label className="form-check-label" htmlFor="_acceptTos">
+                                {t('forms.fields.acceptTos')}
+                            </label>
+                        </div>
+                        <ErrorMessage
+                            className="text-danger"
+                            component="div"
+                            name="acceptedTos"
                         />
 
                         {status && status.msg && (

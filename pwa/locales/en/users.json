@@ -22,9 +22,11 @@
     "deleteNotice": "At the moment, if you need to delete your account, please contact",
     "fields": {
       "email": "Email",
-      "displayName": "Display name",
+      "displayName": "Nickname",
       "password": "Password",
-      "preferredLanguage": "Preferred language"
+      "preferredLanguage": "Preferred language",
+      "acceptTos": "I agree with the Terms Of Service",
+      "errorAcceptTos": "You need to accept Terms of service."
     }
   }
 }

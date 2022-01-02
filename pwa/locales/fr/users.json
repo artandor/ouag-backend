@@ -22,9 +22,11 @@
     "deleteNotice": "Pour le moment, si vous devez supprimer votre compte, veuillez contacter",
     "fields": {
       "email": "Email",
-      "displayName": "Nom d'affichage",
+      "displayName": "Pseudo",
       "password": "Mot de passe",
-      "preferredLanguage": "Langue favorite"
+      "preferredLanguage": "Langue favorite",
+      "acceptTos": "J'accepte les Conditions Générales d’Utilisation",
+      "errorAcceptTos": "Vous devez accepter les Conditions Générales d'Utilisation."
     }
   }
 }

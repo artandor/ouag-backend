@@ -36,3 +36,10 @@ App\Entity\User:
         plainPassword: seCrEt
         active: true
         preferredLanguage: en
+    user_banned:
+        displayName: <userName()>
+        email: banneduser@example.com
+        plainPassword: seCrEt
+        active: true
+        banned: true
+        preferredLanguage: en

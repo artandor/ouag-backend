@@ -118,4 +118,19 @@ class AuthenticationTest extends CustomApiTestCase
         $this->assertQueuedEmailCount(1);
         $this->assertResponseStatusCodeSame(401);
     }
+
+    public function testUserConnectWithBannedAccount(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/authentication_token', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'banneduser@example.com',
+                'password' => 'seCrEt',
+            ],
+        ]);
+
+        $this->assertQueuedEmailCount(0);
+        $this->assertResponseStatusCodeSame(401);
+    }
 }

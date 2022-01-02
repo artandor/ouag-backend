@@ -7,7 +7,9 @@ export class User {
         public displayName?: string,
         public plainPassword?: string,
         public preferredLanguage?: string,
+        acceptedTosAt?: Date
     ) {
         this["@id"] = _id;
+        this["acceptedTos"] = acceptedTosAt !== undefined
     }
 }
