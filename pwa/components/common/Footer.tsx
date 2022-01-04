@@ -14,37 +14,39 @@ function Footer() {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-4 text-center text-lg-left">
-                            <p><Image src={ouagLogo} width="30" height="24" className="img-fluid logo" alt="logo"
-                                      itemProp="logo"/>
-                                <span itemProp="name" className="ms-2">Once Upon A
-                            Gift</span>
+                            <div>
+                                <Image src={ouagLogo} width="30" height="24" className="img-fluid logo" alt="logo"
+                                       itemProp="logo"/>
+                                <span itemProp="name" className="ms-2">Once Upon A Gift</span>
                                 <meta itemProp="url" content="https://app.once-upon-a-gift.com/"/>
-                            </p>
-                            <p className="mb-2 d-none" itemProp="address" itemScope
-                               itemType="https://schema.org/PostalAddress">
-                                <i className="bi bi-pin-map"></i><span itemProp="postalCode">59000</span>
+                            </div>
+                            <div className="mb-2 d-none" itemProp="address" itemScope
+                                 itemType="https://schema.org/PostalAddress">
+                                <i className="bi bi-pin-map"/><span itemProp="postalCode">59000</span>
                                 <span itemProp="addressLocality" className="ms-2">Lille, FRANCE</span>
-                            </p>
+                            </div>
                             <div className=" d-block d-sm-inline-block">
                                 <p className="mb-2" itemType="https://schema.org/ContactPoint">
-                                    <i className="bi bi-envelope"></i>
+                                    <i className="bi bi-envelope"/>
                                     <a className="ms-2"
                                        href="mailto:support@once-upon-a-gift.com"
                                        itemProp="email">support@once-upon-a-gift.com</a>
                                 </p>
                             </div>
-
                         </div>
                         <div className="col-lg-4 text-center">
                             <h4>Partenaires</h4>
-                            <p><a href="https://hemisf4ire.com/" target="_blank" rel="noopener">Hémisf4ire</a></p>
+                            <p><a href="https://hemisf4ire.com/" target="_blank"
+                                  rel="noopener noreferrer">Hémisf4ire</a></p>
                         </div>
                         <div className="col-lg-4 text-center text-lg-end">
                             <div className={styles.socialIcons}>
-                                <a href="https://www.facebook.com/OUAGOfficial" target="_blank" rel="noopener">
+                                <a href="https://www.facebook.com/OUAGOfficial" target="_blank"
+                                   rel="noopener noreferrer">
                                     <i className="bi bi-facebook"></i>
                                 </a>
-                                <a href="https://www.instagram.com/ouagofficial/" target="_blank" rel="noopener">
+                                <a href="https://www.instagram.com/ouagofficial/" target="_blank"
+                                   rel="noopener noreferrer">
                                     <i className="bi bi-instagram"></i>
                                 </a>
                             </div>

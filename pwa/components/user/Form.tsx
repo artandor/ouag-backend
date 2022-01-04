@@ -26,8 +26,8 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                 initialValues={user ? {...user} : new User()}
                 validate={(values) => {
                     const errors = {};
-                    if (values.acceptTos && !values.acceptTos.includes("acceptedTos")) {
-                        errors.acceptedTos = t('forms.fields.errorAccept') + ' ' + t('forms.fields.tos')
+                    if (!values['acceptedTos']) {
+                        errors['acceptedTos'] = t('forms.fields.errorAccept') + ' ' + t('forms.fields.tos') + '.';
                     }
                     // add your validation logic here
                     return errors;
@@ -176,14 +176,14 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
 
                         <div className="form-check">
                             <input
-                                name="acceptTos"
-                                id="_acceptTos"
+                                name="acceptedTos"
+                                id="_acceptedTos"
                                 type="checkbox"
                                 value="acceptedTos"
                                 className={`form-check-input${
-                                    errors.acceptedTos && touched.acceptedTos ? " is-invalid" : ""
+                                    errors['acceptedTos'] && touched['acceptedTos'] ? " is-invalid" : ""
                                 }`}
-                                aria-invalid={errors.acceptedTos && touched.acceptedTos}
+                                aria-invalid={errors['acceptedTos'] && touched['acceptedTos']}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 required={true}
