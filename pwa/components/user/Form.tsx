@@ -5,6 +5,7 @@ import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
 import useTranslation from 'next-translate/useTranslation'
 import {useCookies} from 'react-cookie';
+import Link from 'next/link'
 
 interface Props {
     user?: User;
@@ -26,7 +27,7 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                 validate={(values) => {
                     const errors = {};
                     if (values.acceptTos && !values.acceptTos.includes("acceptedTos")) {
-                        errors.acceptedTos = t('forms.fields.errorAcceptTos')
+                        errors.acceptedTos = t('forms.fields.errorAccept') + ' ' + t('forms.fields.tos')
                     }
                     // add your validation logic here
                     return errors;
@@ -188,7 +189,10 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                                 required={true}
                             />
                             <label className="form-check-label" htmlFor="_acceptTos">
-                                {t('forms.fields.acceptTos')}
+                                {t('forms.fields.accept')} <Link href="/cgu"><a target="_blank"
+                                                                                rel="noopener noreferrer">{t('forms.fields.tos')}</a></Link>
+                                {" "}& <Link href="/privacy"><a target="_blank"
+                                                                rel="noopener noreferrer">{t('forms.fields.privacy')}</a></Link>
                             </label>
                         </div>
                         <ErrorMessage

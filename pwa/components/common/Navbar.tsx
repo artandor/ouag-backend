@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {useRouter} from "next/router";
 import AuthProvider from "../../utils/AuthProvider";
+import ouagLogo from '../../public/img/big-logo.png'
 
 export default function Navbar() {
     const {t} = useTranslation('shared');
@@ -25,7 +26,7 @@ export default function Navbar() {
             <div className="container-fluid">
                 <Link href="/">
                     <a className="navbar-brand" href="#">
-                        <Image src="/img/big-logo.png" alt="" width="30" height="24"
+                        <Image src={ouagLogo} alt="" width="30" height="24"
                                className="d-inline-block align-text-top"/>
                         Once Upon A Gift
                     </a>

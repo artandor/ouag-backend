@@ -1,7 +1,7 @@
 import ContainerLayout from "../layouts/ContainerLayout";
 import Link from 'next/link'
 
-function CguPage() {
+function TosPage() {
     return (
         <ContainerLayout>
             <div>
@@ -920,4 +920,4 @@ function CguPage() {
     )
 }
 
-export default CguPage;
+export default TosPage;

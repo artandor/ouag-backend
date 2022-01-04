@@ -18,5 +18,7 @@
   "backButton": "Back",
   "customizeButton": "Customize",
   "notificationSubscribe": "Subscribe",
-  "notificationNotSubscribedText": "You are not subscribed to notifications with this navigator. Click here to be notified when you receive a gift."
+  "notificationNotSubscribedText": "You are not subscribed to notifications with this navigator. Click here to be notified when you receive a gift.",
+  "tos": "TERMS OF SERVICE",
+  "privacy": "PRIVACY POLICY"
 }

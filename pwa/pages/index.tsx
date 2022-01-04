@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Navbar from "../components/common/Navbar";
+import ContainerLayout from "../layouts/ContainerLayout";
 
 export default function HomePage() {
     return (
@@ -7,7 +7,9 @@ export default function HomePage() {
             <Head>
                 <title>Once Upon A Gift</title>
             </Head>
-            <Navbar/>
+            <ContainerLayout>
+
+            </ContainerLayout>
         </div>
     )
 }

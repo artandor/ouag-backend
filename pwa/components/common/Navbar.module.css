@@ -1,0 +1,17 @@
+.footer {
+    background-color: #7f7f7f;
+}
+
+.socialIcons a {
+    background-color: var(--bs-primary);
+    color: var(--bs-light);
+    box-shadow: 0 0 21px 0 rgb(0 0 0 / 5%);
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    margin: 0 0.3rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}

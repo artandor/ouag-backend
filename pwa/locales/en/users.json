@@ -25,8 +25,10 @@
       "displayName": "Nickname",
       "password": "Password",
       "preferredLanguage": "Preferred language",
-      "acceptTos": "I agree with the Terms Of Service",
-      "errorAcceptTos": "You need to accept Terms of service."
+      "accept": "I agree with the",
+      "errorAccept": "You need to accept Terms of service.",
+      "tos": "Terms Of Service",
+      "privacy": "Privacy Policy"
     }
   }
 }

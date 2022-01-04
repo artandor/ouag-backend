@@ -25,8 +25,10 @@
       "displayName": "Pseudo",
       "password": "Mot de passe",
       "preferredLanguage": "Langue favorite",
-      "acceptTos": "J'accepte les Conditions Générales d’Utilisation",
-      "errorAcceptTos": "Vous devez accepter les Conditions Générales d'Utilisation."
+      "accept": "J'accepte les",
+      "errorAccept": "Vous devez accepter les",
+      "tos": "Conditions Générales d'Utilisation (CGU)",
+      "privacy": "Politique de Protection des Données"
     }
   }
 }
