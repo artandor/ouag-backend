@@ -5,6 +5,7 @@ import {fetch} from "../../utils/dataAccess";
 import {User} from "../../types/User";
 import useTranslation from 'next-translate/useTranslation'
 import {useCookies} from 'react-cookie';
+import Link from 'next/link'
 
 interface Props {
     user?: User;
@@ -25,6 +26,9 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                 initialValues={user ? {...user} : new User()}
                 validate={(values) => {
                     const errors = {};
+                    if (!values['acceptedTos']) {
+                        errors['acceptedTos'] = t('forms.fields.errorAccept') + ' ' + t('forms.fields.tos') + '.';
+                    }
                     // add your validation logic here
                     return errors;
                 }}
@@ -168,6 +172,33 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                             className="text-danger"
                             component="div"
                             name="preferredLanguage"
+                        />
+
+                        <div className="form-check">
+                            <input
+                                name="acceptedTos"
+                                id="_acceptedTos"
+                                type="checkbox"
+                                value="acceptedTos"
+                                className={`form-check-input${
+                                    errors['acceptedTos'] && touched['acceptedTos'] ? " is-invalid" : ""
+                                }`}
+                                aria-invalid={errors['acceptedTos'] && touched['acceptedTos']}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                required={true}
+                            />
+                            <label className="form-check-label" htmlFor="_acceptTos">
+                                {t('forms.fields.accept')} <Link href="/cgu"><a target="_blank"
+                                                                                rel="noopener noreferrer">{t('forms.fields.tos')}</a></Link>
+                                {" "}& <Link href="/privacy"><a target="_blank"
+                                                                rel="noopener noreferrer">{t('forms.fields.privacy')}</a></Link>
+                            </label>
+                        </div>
+                        <ErrorMessage
+                            className="text-danger"
+                            component="div"
+                            name="acceptedTos"
                         />
 
                         {status && status.msg && (

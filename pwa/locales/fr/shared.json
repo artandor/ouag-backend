@@ -18,5 +18,7 @@
   "backButton": "Retour",
   "customizeButton": "Personnaliser",
   "notificationSubscribe": "Activer les notifications",
-  "notificationNotSubscribedText": "Vous n'êtes pas abonné aux notifications avec ce navigateur. Cliquez ici pour être averti lorsque vous recevez un cadeau."
+  "notificationNotSubscribedText": "Vous n'êtes pas abonné aux notifications avec ce navigateur. Cliquez ici pour être averti lorsque vous recevez un cadeau.",
+  "tos": "CONDITIONS GENERALES D'UTILISATION",
+  "privacy": "POLITIQUE DE PROTECTION DES DONNEES"
 }

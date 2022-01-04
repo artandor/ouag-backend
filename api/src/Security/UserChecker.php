@@ -26,6 +26,11 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
+        if ($user->isBanned()) {
+            // the message passed to this exception is meant to be displayed to the user
+            throw new UnauthorizedHttpException('', 'Your account is banned.');
+        }
+
         if (!$user->isActive()) {
             $this->userMailer->sendValidationEmail($user);
             // the message passed to this exception is meant to be displayed to the user

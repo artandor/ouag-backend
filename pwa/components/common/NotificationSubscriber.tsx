@@ -22,6 +22,10 @@ export default function NotificationsSubscriber() {
 
     useEffect(() => {
         if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+            if (!('Notification' in window)) {
+                console.log('This browser does not support desktop notification')
+                return;
+            }
             // run only in browser
             navigator.serviceWorker.ready.then(reg => {
                 reg.pushManager.getSubscription().then(sub => {

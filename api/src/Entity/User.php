@@ -10,6 +10,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\GetCurrentUserController;
 use App\Controller\UserVerifyController;
 use App\Repository\UserRepository;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,30 +44,30 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             'path' => '/users/me',
             'security' => "is_granted('ROLE_USER')",
             'controller' => GetCurrentUserController::class,
-        'pagination_enabled' => false,
-        'openapi_context' => [
-            'summary' => 'Obtain data of the currently logged in user.',
-            'description' => 'Retrieve the currently logged in user.',
-            'parameters' => [],
-            'responses' => [
-                '200' => [
-                    'content' => [
-                        'application/json' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/User-user_read',
+            'pagination_enabled' => false,
+            'openapi_context' => [
+                'summary' => 'Obtain data of the currently logged in user.',
+                'description' => 'Retrieve the currently logged in user.',
+                'parameters' => [],
+                'responses' => [
+                    '200' => [
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/User-user_read',
+                                ],
                             ],
-                        ],
-                        'application/json+ld' => [
-                            'schema' => [
-                                '$ref' => '#/components/schemas/User.jsonld-user_read',
+                            'application/json+ld' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/User.jsonld-user_read',
+                                ],
                             ],
-                        ],
+                        ]
                     ]
                 ]
             ]
-        ]
+        ],
     ],
-],
     itemOperations: [
         'get' => ['security' => "is_granted('ROLE_ADMIN')"],
         'put' => [
@@ -149,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="boolean", options={"default": TRUE})
      */
     #[Groups(['user_read', 'user_edit'])]
-    private ?bool $active;
+    private bool $active;
 
     /**
      * @ORM\OneToMany(targetEntity=MediaObject::class, mappedBy="owner", orphanRemoval=true)
@@ -166,12 +167,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private Collection $pushSubscriptions;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    #[Groups(['user_read'])]
+    private ?DateTimeInterface $acceptedTosAt;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": FALSE})
+     */
+    #[Groups(['user_read', 'user_edit'])]
+    private bool $banned = false;
+
     public function __construct()
     {
-        $this->setActive(false);
+        $this->active = false;
         $this->mediaObjects = new ArrayCollection();
         $this->libraries = new ArrayCollection();
         $this->pushSubscriptions = new ArrayCollection();
+        $this->acceptedTosAt = new DateTime();
     }
 
 
@@ -427,6 +441,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $pushSubscription->setSubscribedUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAcceptedTosAt(): ?\DateTimeInterface
+    {
+        return $this->acceptedTosAt;
+    }
+
+    public function setAcceptedTosAt(?\DateTimeInterface $acceptedTosAt): self
+    {
+        $this->acceptedTosAt = $acceptedTosAt;
+
+        return $this;
+    }
+
+    public function isBanned(): ?bool
+    {
+        return $this->banned;
+    }
+
+    public function ban(): self
+    {
+        $this->banned = true;
+
+        return $this;
+    }
+
+    public function unBan(): self
+    {
+        $this->banned = false;
+
+        return $this;
+    }
+
+    public function setBanned(bool $banned): self
+    {
+        $this->banned = $banned;
 
         return $this;
     }
