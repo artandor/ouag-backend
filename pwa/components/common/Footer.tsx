@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import useTranslation from "next-translate/useTranslation";
 import ouagLogo from '../../public/img/big-logo.png'
-import styles from './Navbar.module.css'
+import styles from './Footer.module.css'
 import Link from 'next/link'
 
 function Footer() {
