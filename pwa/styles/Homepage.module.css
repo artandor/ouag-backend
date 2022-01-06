@@ -1,0 +1,48 @@
+.sectionTitle {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.sectionTitle small {
+    color: #998a9b;
+}
+
+.sectionTitle h3 {
+    color: var(--main-title-color);
+    font-size: 33px;
+    font-weight: 500;
+}
+
+.tabGroup h2 {
+    font-size: 45px;
+    font-weight: 300;
+    color: var(--main-title-color);
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+}
+
+.tabGroup .nav-item {
+    padding: 1rem 1rem;
+    border-color: #faf6fb #faf6fb #FFF;
+    font-size: 19px;
+    color: #c8a4a4;
+    background: #f7efef;
+}
+
+.tab {
+    padding: 1rem 1rem;
+    border-color: #faf6fb #faf6fb #FFF;
+    font-size: 19px;
+    color: #c8a4a4;
+    background: #f7efef;
+}
+
+.tab .active {
+    font-size: 40px !important;
+    background: #FFF;
+    border-top-width: 3px;
+    border-color: var(--main-btn-gradient-color) #faf6fb #FFF;
+    color: var(--main-title-color);
+}
+
+

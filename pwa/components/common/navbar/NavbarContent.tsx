@@ -3,10 +3,10 @@ import useTranslation from "next-translate/useTranslation";
 import Link from 'next/link'
 import Image from 'next/image'
 import {useRouter} from "next/router";
-import AuthProvider from "../../utils/AuthProvider";
-import ouagLogo from '../../public/img/big-logo.png'
+import AuthProvider from "../../../utils/AuthProvider";
+import ouagLogo from '../../../public/img/big-logo.png'
 
-export default function Navbar() {
+export default function NavbarContent() {
     const {t} = useTranslation('shared');
     const router = useRouter()
     let [isConnected, setConnected] = useState(false);
@@ -22,12 +22,12 @@ export default function Navbar() {
     }, [])
 
     return (
-        <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-primary mb-2">
+        <>
             <div className="container-fluid">
                 <Link href="/">
                     <a className="navbar-brand" href="#">
                         <Image src={ouagLogo} alt="" width="30" height="24"
-                               className="d-inline-block align-text-top"/>
+                               className="d-inline-block align-text-top"/>{" "}
                         Once Upon A Gift
                     </a>
                 </Link>
@@ -54,7 +54,7 @@ export default function Navbar() {
                             <div className="dropdown navbar-nav">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i className="bi bi-person-circle"></i>{" "}
+                                    <i className="bi bi-person-circle"/>{" "}
                                     {t('accountLink')}
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -75,6 +75,6 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-        </nav>
+        </>
     )
 }

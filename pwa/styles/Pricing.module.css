@@ -1,45 +1,4 @@
-:root {
-    --main-bg-color: #983275;
-    --secondary-bg-color: #ff6f01;
-    --main-title-color: #cc14149c;
-    --main-link-color: #cc7614d5;
-    --main-focus-color: #ff6f01;
-    --main-btn-gradient-color: #ff6f01;
-    --secondary-btn-gradient-color: #fd2f24;
-}
-
-.text-ellipsis {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    height: 2rem;
-}
-
-.form-control-inline {
-    display: inline;
-    margin: 0 10px;
-    border-top: 0;
-    border-right: 0;
-    border-left: 0;
-    border-radius: 0;
-    width: initial;
-    max-width: 100%;
-    font-weight: 900;
-    text-align: center;
-}
-
-.blur {
-    filter: blur(30px);
-    margin: 30px;
-}
-
-.horizontal-scroll {
-    overflow-x: auto;
-}
-
-.card-group.horizontal-scroll {
-    display: flex;
-    flex-wrap: nowrap;
+.pricing {
 }
 
 @media (max-width: 992px) {
@@ -53,11 +12,11 @@
     }
 }
 
-.card.pricing {
+.pricing.card {
     border: 1px solid #f1eef1;
 }
 
-.card.pricing.popular {
+.pricing.popular.card {
     border-top-width: 3px;
     border-color: #ce75b4 #faf6fb #FFF;
     box-shadow: 0px 12px 59px 0px rgba(36, 7, 31, 0.11);

@@ -1,10 +1,10 @@
-import Navbar from "../components/common/Navbar";
-import Footer from "../components/common/Footer";
+import Footer from "../components/common/footer/Footer";
+import NavbarDefault from "../components/common/navbar/NavbarDefault";
 
 export default function ContainerLayout({children}) {
     return (
         <div className="d-flex flex-column min-vh-100">
-            <Navbar/>
+            <NavbarDefault/>
             <div className="flex-shrink-0">
                 <div className={"container"}>
                     {children}
