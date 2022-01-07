@@ -4,7 +4,7 @@ import Link from 'next/link'
 export default function Pricing() {
     return (
 
-        <div className="section" id="pricing" tabIndex="-1">
+        <div className="section" id="pricing" tabIndex={-1}>
             <div className="container">
                 <div className={styleHomePage.sectionTitle}>
                     <h3>Un prix adapté et prévisible</h3>
@@ -17,7 +17,7 @@ export default function Pricing() {
                     <div className="col card pricing mx-3">
                         <div className="card-head">
                             <small className="text-primary">UN CALENDRIER DE L'AVANT</small>
-                            <span className="price">8 €<sub></sub></span>
+                            <span className="price">8 €<sub/></span>
                         </div>
                         <ul className="list-group list-group-flush">
                             <div className="list-group-item">24 Souvenirs</div>

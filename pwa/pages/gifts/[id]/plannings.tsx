@@ -87,7 +87,7 @@ export default function GiftShowPage() {
                 })
                 .catch((e) => console.error(e))
         }
-    }, [selectedPlanning, selectedMedia])
+    }, [selectedPlanning, selectedMedia, plannings])
 
 
     return (

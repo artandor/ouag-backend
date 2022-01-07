@@ -134,7 +134,7 @@ export default function HomePage() {
                                         des cadeaux !</p>
                                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSfH9IhBLFeevz9J3RxcLqv0po6ytC2uGkYGOJNww8IxjXSARQ/viewform?usp=sf_link"
                                        title="Feedback"
-                                       target="_blank" rel="noopener" className="btn btn-primary">
+                                       target="_blank" rel="noopener noreferrer" className="btn btn-primary">
                                         Faire un retour
                                     </a>
                                 </div>
