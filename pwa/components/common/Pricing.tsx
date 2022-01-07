@@ -9,12 +9,12 @@ export default function Pricing() {
                 <div className={styleHomePage.sectionTitle}>
                     <h3>Un prix adapté et prévisible</h3>
                     <p className="lead text-center">Payez en fonction du nombre de souvenirs et du nombre de
-                        destinataire.</p>
+                        destinataires.</p>
                 </div>
 
                 <h4 className="text-center">Exemple</h4>
                 <div className="row flex-wrap">
-                    <div className="col card pricing mx-3">
+                    <div className="col card pricing mx-md-3 my-3">
                         <div className="card-head">
                             <small className="text-primary">UN CALENDRIER DE L'AVANT</small>
                             <span className="price">8 €<sub/></span>
@@ -24,7 +24,7 @@ export default function Pricing() {
                             <div className="list-group-item">1 Destinataire</div>
                         </ul>
                     </div>
-                    <div className="col card pricing popular mx-3">
+                    <div className="col-md-4 card pricing popular mx-md-3 my-3">
                         <div className="card-head">
                             <small className="text-primary">UN SOUVENIR / JOUR PENDANT 3 MOIS</small>
                             <span className="price">30 €<sub/></span>
@@ -34,7 +34,7 @@ export default function Pricing() {
                             <div className="list-group-item">1 Destinataire</div>
                         </ul>
                     </div>
-                    <div className="col card pricing mx-3">
+                    <div className="col card pricing mx-md-3 my-3">
                         <div className="card-head">
                             <small className="text-primary">UN SOUVENIR PAR SEMAINE PENDANT 1 AN
                                 <br/>POUR TOUTE LA FAMILLE</small>

@@ -35,7 +35,7 @@ function Footer() {
                             </div>
                         </div>
                         <div className="col-lg-4 text-center">
-                            <h4>Partenaires</h4>
+                            <h4>Partenaire</h4>
                             <p><a href="https://hemisf4ire.com/" target="_blank"
                                   rel="noopener noreferrer">Hémisf4ire</a></p>
                         </div>
