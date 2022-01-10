@@ -19,8 +19,8 @@ variables:
         # uncomment on PHP 7.4+
         opcache.preload: /app/config/preload.php
 
-    relationships:
-        database: "api-database:postgresql"
+relationships:
+    database: "api-database:postgresql"
 
 runtime:
     extensions:
@@ -85,7 +85,3 @@ hooks:
         set -x -e
 
         (>&2 symfony-deploy)
-
-
-
-
