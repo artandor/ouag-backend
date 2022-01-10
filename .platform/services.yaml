@@ -1,4 +1,4 @@
-api-database:
+apidatabase:
     # supported versions: 9.6, 10, 11, 12, 13
     # 9.3 is also available but not maintained upstream
     type: postgresql:13

@@ -20,7 +20,7 @@ variables:
         opcache.preload: /app/config/preload.php
 
 relationships:
-    database: "api-database:postgresql"
+    database: "apidatabase:postgresql"
 
 runtime:
     extensions:
