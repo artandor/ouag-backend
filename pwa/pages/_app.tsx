@@ -20,7 +20,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 <meta property="og:locale" key="og:locale" content="fr_FR"/>
                 <meta property="og:url" key="og:url" content="https://app.once-upon-a-gift.com/"/>
                 <meta property="og:image" key="og:image"
-                      content="/img/big-logo.png"/>
+                      content="https://app.once-upon-a-gift.com/img/big-logo.png"/>
 
                 <script async defer data-domain="app.once-upon-a-gift.com"
                         src="https://analytics.nicolasmylle.fr/js/plausible.outbound-links.js"/>
