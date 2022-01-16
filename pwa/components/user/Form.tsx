@@ -16,6 +16,7 @@ interface Props {
 export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => {
     const [cookies, setCookie] = useCookies(['NEXT_LOCALE']);
     const {t} = useTranslation('users');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
 
@@ -120,21 +121,27 @@ export const Form: FunctionComponent<Props> = ({user, setEditMode, setUser}) => 
                             <label className="form-control-label" htmlFor="_plainPassword">
                                 {t('forms.fields.password')}
                             </label>
-                            <input
-                                name="plainPassword"
-                                id="_plainPassword"
-                                value={values.plainPassword ?? ""}
-                                type="password"
-                                placeholder=""
-                                className={`form-control${
-                                    errors.plainPassword && touched.plainPassword
-                                        ? " is-invalid"
-                                        : ""
-                                }`}
-                                aria-invalid={errors.plainPassword && touched.plainPassword}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
+                            <div className="input-group">
+                                <input
+                                    name="plainPassword"
+                                    id="_plainPassword"
+                                    value={values.plainPassword ?? ""}
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder=""
+                                    className={`form-control${
+                                        errors.plainPassword && touched.plainPassword
+                                            ? " is-invalid"
+                                            : ""
+                                    }`}
+                                    aria-invalid={errors.plainPassword && touched.plainPassword}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <button className="btn btn-outline-secondary" type="button"
+                                        onClick={() => setShowPassword(!showPassword)}>
+                                    {showPassword ? <i className="bi bi-eye-slash"/> : <i className="bi bi-eye"/>}
+                                </button>
+                            </div>
                         </div>
                         <ErrorMessage
                             className="text-danger"

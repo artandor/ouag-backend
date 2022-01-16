@@ -52,10 +52,10 @@ export const GiftList: FunctionComponent<Props> = ({gifts, creatorMode = false})
                                             </h4>}
                                         </div>
                                         <div className="d-flex justify-content-between">
-                                            <p className="card-text">{t('recapAttention', {count: gift.recurrence})} {t('recapMediaAmount', {count: gift.mediaAmount})}</p>
+                                            <p className="card-text">{t('recapAttention', {count: gift.recurrence})} {t('recapMediaAmount', {count: gift.mediaAmount * gift.recurrence})}</p>
                                             {creatorMode &&
                                             <p className="badge rounded-pill bg-primary" style={{maxHeight: "1.4rem"}}>
-                                                <i className="bi bi-people-fill"></i> {gift.invites.length}
+                                                <i className="bi bi-people-fill"/> {gift.invites.length}
                                             </p>
                                             }
                                         </div>

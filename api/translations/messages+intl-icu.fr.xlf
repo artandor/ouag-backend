@@ -116,10 +116,6 @@
         <source>Enjoy your gift ! And don't forget to say thank you to</source>
         <target>Profitez de votre cadeau ! Et n'oubliez pas de remercier</target>
       </trans-unit>
-      <trans-unit id="E0NUExF" resname="Please activate your account by clicking the following link :">
-        <source>Please activate your account by clicking the following link :</source>
-        <target>Merci d'activer votre compte en cliquant sur le lien suivant :</target>
-      </trans-unit>
       <trans-unit id="f7Eo6HL" resname="Click Here">
         <source>Click Here</source>
         <target>Cliquez ici</target>
@@ -127,6 +123,10 @@
       <trans-unit id="6HhdJ14" resname="Create an account with this email at">
         <source>Create an account with this email at</source>
         <target>Créez un compte avec cet email sur</target>
+      </trans-unit>
+      <trans-unit id="4edqgJw" resname="Please activate your account by clicking here :">
+        <source>Please activate your account by clicking here :</source>
+        <target>Merci d'activer votre compte en cliquant ici :</target>
       </trans-unit>
     </body>
   </file>

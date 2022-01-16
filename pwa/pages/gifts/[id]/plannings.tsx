@@ -111,6 +111,7 @@ export default function GiftShowPage() {
                               selectPlanning={setSelectedPlanning}/>}
                 <div className="my-4 row">
                     <div className={'col-9'}>
+                        <h3></h3>
                         {libraries && libraries['hydra:member'] &&
                         <LibraryInlineList libraries={libraries['hydra:member']}
                                            selectedLibrary={selectedLibrary}
