@@ -49,7 +49,7 @@ export default function NavbarContent() {
                             </Link>
                         </li> : null}
                     </ul>
-                    <div className="navbar-nav">
+                    <div className="navbar-nav text-center">
                         {isConnected ?
                             <div className="dropdown navbar-nav">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
