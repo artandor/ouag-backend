@@ -69,7 +69,7 @@ crons:
         spec: 0 9 * * *
         cmd: |
             # only run for the master branch, aka production
-            if [ "$SYMFONY_BRANCH" = "master" ]; then
+            if [ "$PLATFORM_BRANCH" = "master" ]; then
                 croncape bin/console app:send-todays-notifications
             fi
 
