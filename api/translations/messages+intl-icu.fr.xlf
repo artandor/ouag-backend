@@ -46,9 +46,9 @@
         <source>Note : This is an automatic email, please do not answer it. You can delete it if you want.</source>
         <target>Note : Ceci est un email automatique, veuillez ne pas y répondre. Vous pouvez le supprimer si vous voulez.</target>
       </trans-unit>
-      <trans-unit id="7walBT5" resname="gift_sender sent you a gift !!">
-        <source>gift_sender sent you a gift !!</source>
-        <target>{ invite.creatorNickname ?: gift.owner.displayName } vous a envoyé un cadeau !!</target>
+      <trans-unit id="AQ4ZYm7" resname="sent you a gift !!">
+        <source> sent you a gift !!</source>
+        <target> vous a envoyé un cadeau !!</target>
       </trans-unit>
       <trans-unit id="CPgcDvs" resname="Hey there">
         <source>Hey there</source>
@@ -84,9 +84,9 @@
         <target><![CDATA[Si vous rencontrez un soucis ou voulez nous faire un retour, veuillez le faire à cette <a
                     href="https://forms.gle/Wq78YawyCinQhsbE8">adresse</a>]]></target>
       </trans-unit>
-      <trans-unit id="hgCg1b3" resname="%creator_name% has a present for you">
-        <source>%creator_name% has a present for you</source>
-        <target>{ creator_name } a un cadeau pour vous</target>
+      <trans-unit id="Bx5R9Fu" resname="has a present for you">
+        <source>has a present for you</source>
+        <target>a un cadeau pour vous</target>
       </trans-unit>
       <trans-unit id="yJhkzFQ" resname="New gift available for you">
         <source>New gift available for you</source>

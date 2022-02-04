@@ -20,7 +20,7 @@
     </style>
     <div>
         <h1 class="text-center">{% trans into locale %}Hey there{% endtrans %} {{ invite.receiverNickname }} !</h1>
-        <p class="text-center">{% trans into locale %}%creator_name% has a present for you{% endtrans %} !
+        <p class="text-center">{{ creator_name }} {% trans into locale %}has a present for you{% endtrans %} !
         </p>
         {% if invite.comment %}
             <h3>{% trans into locale %}He even left you a message{% endtrans %} :</h3>
