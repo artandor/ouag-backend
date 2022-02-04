@@ -76,7 +76,7 @@ class UserMailerService
         $email = (new TemplatedEmail())
             ->from(new Address('postmaster@once-upon-a-gift.com', 'Once Upon A Gift'))
             ->to(new Address($invite->getEmail()))
-            ->subject($senderName . $this->translator->trans('sent you a gift !!', null, 'messages', $sender->getPreferredLanguage()))
+            ->subject($senderName . $this->translator->trans('sent you a gift !!', [], 'messages', $sender->getPreferredLanguage()))
             ->htmlTemplate('emails/gift_invitation.html.twig')
             ->context([
                 'gift' => $gift,
