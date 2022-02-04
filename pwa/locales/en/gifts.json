@@ -62,6 +62,7 @@
     "nonApplicableVat": "Non applicable VAT according to article 293-B of CGI",
     "memories": "Memories",
     "recipient": "Recipients",
+    "totalPerDest": "Total / recipient",
     "recipientPriceLabel1": "+ 100% for each",
     "recipientPriceLabel2": "recipient after the first"
   },

@@ -14,11 +14,12 @@ use Stripe\StripeClient;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 final class GiftWorkflowOrder
 {
-    public function __construct(private WorkflowInterface $giftPublishingStateMachine, private LoggerInterface $logger)
+    public function __construct(private WorkflowInterface $giftPublishingStateMachine, private LoggerInterface $logger, private Security $security)
     {
     }
 
@@ -66,6 +67,8 @@ final class GiftWorkflowOrder
 
         Stripe::setApiKey($_ENV['STRIPE_API_KEY']);
 
+        $userLanguageUrlPrefix = $this->security->getUser()->getPreferredLanguage() ? '/' . $this->security->getUser()->getPreferredLanguage() : null;
+
         try {
             $sessionConfig = [
                 'customer_email' => $data->getOwner()->getEmail(),
@@ -84,8 +87,8 @@ final class GiftWorkflowOrder
                     ]
                 ],
                 'mode' => 'payment',
-                'success_url' => $_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_SUCCESS_URL,
-                'cancel_url' => $_ENV['FRONT_DOMAIN'] . Gift::CHECKOUT_FAILURE_URL,
+                'success_url' => $_ENV['FRONT_DOMAIN'] . $userLanguageUrlPrefix . Gift::CHECKOUT_SUCCESS_URL,
+                'cancel_url' => $_ENV['FRONT_DOMAIN'] . $userLanguageUrlPrefix . Gift::CHECKOUT_FAILURE_URL,
                 'metadata' => [
                     'gift_id' => $data->getId(),
                 ],

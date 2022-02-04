@@ -62,6 +62,7 @@
     "nonApplicableVat": "TVA non applicable selon l'article 293-B du CGI",
     "memories": "Souvenirs",
     "recipient": "Destinataires",
+    "totalPerDest": "Total / destinataire",
     "recipientPriceLabel1": "+ 100% pour chaque",
     "recipientPriceLabel2": "destinataire après le premier"
   },
