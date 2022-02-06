@@ -30,5 +30,6 @@
       "tos": "Conditions Générales d'Utilisation (CGU)",
       "privacy": "Politique de Protection des Données"
     }
-  }
+  },
+  "forgotPassword": "Mot de passe oublié ?"
 }

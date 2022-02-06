@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Entity\GiftInvite;
+use App\Entity\PasswordToken;
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -15,8 +16,11 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 class UserMailerService
 {
 
+    private Address $address;
+
     public function __construct(private VerifyEmailHelperInterface $helper, private MailerInterface $mailer, private TranslatorInterface $translator)
     {
+        $this->address = new Address('postmaster@once-upon-a-gift.com', 'Once Upon A Gift');
     }
 
     public function sendValidationEmail(User $user): void
@@ -33,7 +37,7 @@ class UserMailerService
         $verifyUrl = $_ENV['FRONT_DOMAIN'] . $parsedUrl['path'] . '?' . $parsedUrl['query'];
 
         $email = (new TemplatedEmail())
-            ->from(Address::create('Once Upon A Gift <postmaster@once-upon-a-gift.com>'))
+            ->from($this->address)
             ->to($user->getEmail())
             ->subject($this->translator->trans('Confirm your account', array(), null, $user->getPreferredLanguage()))
             ->htmlTemplate('emails/signup.html.twig')
@@ -53,7 +57,7 @@ class UserMailerService
         $gift = $invite->getGift();
         $sender = $gift->getOwner();
         $email = (new TemplatedEmail())
-            ->from(Address::create('Once Upon A Gift <postmaster@once-upon-a-gift.com>'))
+            ->from($this->address)
             ->to($sender->getEmail())
             ->subject($this->translator->trans('gift_receiver received your gift gift_name !', ['gift_name' => $gift->getName(), 'gift_receiver' => $invite->getEmail()], null, $sender->getPreferredLanguage()))
             ->htmlTemplate('emails/claimed_gift.html.twig')
@@ -74,7 +78,7 @@ class UserMailerService
         $sender = $gift->getOwner();
         $senderName = $invite->getCreatorNickname() ?? $gift->getOwner()->getDisplayName();
         $email = (new TemplatedEmail())
-            ->from(new Address('postmaster@once-upon-a-gift.com', 'Once Upon A Gift'))
+            ->from($this->address)
             ->to(new Address($invite->getEmail()))
             ->subject($senderName . $this->translator->trans('sent you a gift !!', [], 'messages', $sender->getPreferredLanguage()))
             ->htmlTemplate('emails/gift_invitation.html.twig')
@@ -87,5 +91,19 @@ class UserMailerService
         $email->setHeaders($email->getHeaders()
             ->addTextHeader('X-Auto-Response-Suppress', 'OOF, DR, RN, NRN, AutoReply'));
         $this->mailer->send($email);
+    }
+
+    public function sendPasswordReset(User $user, PasswordToken $passwordToken): void
+    {
+        $message = (new TemplatedEmail())
+            ->from($this->address)
+            ->to($user->getEmail())
+            ->subject($this->translator->trans('Reset your password', [], 'messages', $user->getPreferredLanguage()))
+            ->htmlTemplate('emails/reset_password.html.twig')
+            ->context([
+                'reset_password_url' => $_ENV['FRONT_DOMAIN'] . '/users/forgot_password?token=' . $passwordToken->getToken(),
+                'locale' => $user->getPreferredLanguage(),
+            ]);
+        $this->mailer->send($message);
     }
 }

@@ -246,4 +246,57 @@ class UserTest extends CustomApiTestCase
         $this->assertEmailHtmlBodyContains($email, 'Once your account is activated, you\'ll be able to enjoy the features OUAG has to offer.');
 
     }
+
+    public function testUserCanAskPasswordResetAndReceiveEmail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/forgot_password/', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'user@example.com'
+            ],
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertQueuedEmailCount(1);
+    }
+    /*
+        public function testSendNewPasswordWithCorrectTokenAndChangePassword(): void
+        {
+            $client = self::createClient();
+            $client->request('POST', '/forgot_password/123456', [
+                'headers' => ['Content-Type' => 'application/json'],
+                'json' => [
+                    'plainPassword' => 'changedSecret'
+                ],
+            ]);
+
+            $this->assertResponseIsSuccessful();
+
+            $response = $client->request('POST', '/authentication_token', [
+                'headers' => ['Content-Type' => 'application/json'],
+                'json' => [
+                    'email' => 'user@example.com',
+                    'password' => 'seCrEt',
+                ],
+            ]);
+
+            $json = $response->toArray();
+            $this->assertResponseIsSuccessful();
+            $this->assertArrayHasKey('token', $json);
+            $this->assertArrayHasKey('refresh_token', $json);
+        }
+
+        public function testSendNewPasswordWithWrongTokenAndFail(): void
+        {
+            $client = self::createClient();
+            $client->request('POST', '/forgot_password/111111', [
+                'headers' => ['Content-Type' => 'application/json'],
+                'json' => [
+                    'plainPassword' => 'changedSecret'
+                ],
+            ]);
+
+            $this->assertResponseStatusCodeSame(403);
+        }*/
 }
