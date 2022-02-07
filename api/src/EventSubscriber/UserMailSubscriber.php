@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class UserMailSubscriber implements EventSubscriberInterface
 {
-
     public function __construct(private UserMailerService $userMailer)
     {
     }

@@ -101,7 +101,7 @@ class UserMailerService
             ->subject($this->translator->trans('Reset your password', [], 'messages', $user->getPreferredLanguage()))
             ->htmlTemplate('emails/reset_password.html.twig')
             ->context([
-                'reset_password_url' => $_ENV['FRONT_DOMAIN'] . '/users/forgot_password?token=' . $passwordToken->getToken(),
+                'reset_password_url' => $_ENV['FRONT_DOMAIN'] . '/users/forgot_password/' . $passwordToken->getToken(),
                 'locale' => $user->getPreferredLanguage(),
             ]);
         $this->mailer->send($message);
