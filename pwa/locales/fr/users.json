@@ -20,6 +20,8 @@
     "validateAccount": "Vous devez valider votre compte, veuillez vérifier votre email.",
     "updatedAccount": "Compte mis à jour",
     "deleteNotice": "Pour le moment, si vous devez supprimer votre compte, veuillez contacter",
+    "resetPasswordEmailSent": "Si ce compte existe, vous recevrez un email dans quelques instants.",
+    "resetPasswordExpired": "Votre tentative de réinitialisation a expiré, veuillez réessayer.",
     "fields": {
       "email": "Email",
       "displayName": "Pseudo",
@@ -30,5 +32,7 @@
       "tos": "Conditions Générales d'Utilisation (CGU)",
       "privacy": "Politique de Protection des Données"
     }
-  }
+  },
+  "forgotPassword": "Mot de passe oublié ?",
+  "resetPassword": "Réinitialiser votre mot de passe"
 }

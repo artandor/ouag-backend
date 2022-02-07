@@ -20,7 +20,7 @@ abstract class CustomApiTestCase extends ApiTestCase
     }
 
     /**
-     * Use other credentials if needed.
+     * Allow to get a token for a default user or another user.
      */
     protected function getToken($body = []): string
     {

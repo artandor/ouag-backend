@@ -10,6 +10,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Controller\GetCurrentUserController;
 use App\Controller\UserVerifyController;
 use App\Repository\UserRepository;
+use CoopTilleuls\ForgotPasswordBundle\Controller\ResetPassword;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;

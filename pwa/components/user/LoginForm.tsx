@@ -6,6 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import {fetch} from "../../utils/dataAccess";
 import {useCookies} from 'react-cookie';
 import AuthProvider from "../../utils/AuthProvider";
+import Link from "next/link"
 
 export default function LoginForm() {
     const [cookies, setCookie] = useCookies(['NEXT_LOCALE']);
@@ -120,6 +121,8 @@ export default function LoginForm() {
                                 {status.msg}
                             </div>
                         )}
+
+                        <Link href="/users/forgot_password">{t('forgotPassword')}</Link>
 
                         <button
                             type="submit"

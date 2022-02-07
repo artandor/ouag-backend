@@ -20,6 +20,8 @@
     "validateAccount": "You need to validate your account, please check your email.",
     "updatedAccount": "Account updated.",
     "deleteNotice": "At the moment, if you need to delete your account, please contact",
+    "resetPasswordEmailSent": "If this account exists, you'll receive an email shortly.",
+    "resetPasswordExpired": "Your password reset expired, please retry.",
     "fields": {
       "email": "Email",
       "displayName": "Nickname",
@@ -30,5 +32,7 @@
       "tos": "Terms Of Service",
       "privacy": "Privacy Policy"
     }
-  }
+  },
+  "forgotPassword": "Forgot your password ?",
+  "resetPassword": "Reset your password"
 }

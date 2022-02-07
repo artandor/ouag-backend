@@ -33,6 +33,10 @@ services:
     App\OpenApi\JwtDecorator:
         decorates: 'api_platform.openapi.factory'
         autoconfigure: false
+        
+    CoopTilleuls\ForgotPasswordBundle\Bridge\ApiPlatform\OpenApi\OpenApiFactory:
+        decorates: 'api_platform.openapi.factory'
+        autoconfigure: false
 
     App\EventSubscriber\HashPasswordSubscriber:
         tags:

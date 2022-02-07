@@ -47,7 +47,7 @@
         <target>Note : Ceci est un email automatique, veuillez ne pas y répondre. Vous pouvez le supprimer si vous voulez.</target>
       </trans-unit>
       <trans-unit id="AQ4ZYm7" resname="sent you a gift !!">
-        <source> sent you a gift !!</source>
+        <source>sent you a gift !!</source>
         <target> vous a envoyé un cadeau !!</target>
       </trans-unit>
       <trans-unit id="CPgcDvs" resname="Hey there">
@@ -127,6 +127,14 @@
       <trans-unit id="4edqgJw" resname="Please activate your account by clicking here :">
         <source>Please activate your account by clicking here :</source>
         <target>Merci d'activer votre compte en cliquant ici :</target>
+      </trans-unit>
+      <trans-unit id="WfpDeb4" resname="Reset your password">
+        <source>Reset your password</source>
+        <target>Réinitialiser votre mot de passe</target>
+      </trans-unit>
+      <trans-unit id="Dk2jT92" resname="If you did not ask to reset your password, please report to">
+        <source>If you did not ask to reset your password, please report to</source>
+        <target>Si vous n'avez pas demandé de réinitialisation, merci de contacter</target>
       </trans-unit>
     </body>
   </file>
