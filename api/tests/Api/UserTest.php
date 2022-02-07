@@ -251,7 +251,9 @@ class UserTest extends CustomApiTestCase
     {
         $client = self::createClient();
         $client->request('POST', '/forgot_password/', [
-            'headers' => ['Content-Type' => 'application/json'],
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
             'json' => [
                 'email' => 'user@example.com'
             ],
@@ -260,43 +262,44 @@ class UserTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertQueuedEmailCount(1);
     }
-    /*
-        public function testSendNewPasswordWithCorrectTokenAndChangePassword(): void
-        {
-            $client = self::createClient();
-            $client->request('POST', '/forgot_password/123456', [
-                'headers' => ['Content-Type' => 'application/json'],
-                'json' => [
-                    'plainPassword' => 'changedSecret'
-                ],
-            ]);
 
-            $this->assertResponseIsSuccessful();
+    public function testSendNewPasswordWithCorrectTokenAndChangePassword(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/forgot_password/123456', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'password' => 'changedSecret'
+            ],
+        ]);
 
-            $response = $client->request('POST', '/authentication_token', [
-                'headers' => ['Content-Type' => 'application/json'],
-                'json' => [
-                    'email' => 'user@example.com',
-                    'password' => 'seCrEt',
-                ],
-            ]);
+        $this->assertResponseIsSuccessful();
 
-            $json = $response->toArray();
-            $this->assertResponseIsSuccessful();
-            $this->assertArrayHasKey('token', $json);
-            $this->assertArrayHasKey('refresh_token', $json);
-        }
+        $response = $client->request('POST', '/authentication_token', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'email' => 'user@example.com',
+                'password' => 'changedSecret',
+            ],
+        ]);
 
-        public function testSendNewPasswordWithWrongTokenAndFail(): void
-        {
-            $client = self::createClient();
-            $client->request('POST', '/forgot_password/111111', [
-                'headers' => ['Content-Type' => 'application/json'],
-                'json' => [
-                    'plainPassword' => 'changedSecret'
-                ],
-            ]);
+        $json = $response->toArray();
+        $this->assertResponseIsSuccessful();
+        $this->assertArrayHasKey('token', $json);
+        $this->assertArrayHasKey('refresh_token', $json);
+    }
 
-            $this->assertResponseStatusCodeSame(403);
-        }*/
+
+    public function testSendNewPasswordWithWrongTokenAndFail(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/forgot_password/111111', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => [
+                'password' => 'changedSecret'
+            ],
+        ]);
+
+        $this->assertResponseStatusCodeSame(404);
+    }
 }
