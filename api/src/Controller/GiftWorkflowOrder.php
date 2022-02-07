@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Gift;
+use App\Entity\User;
 use Psr\Log\LoggerInterface;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
@@ -67,7 +68,9 @@ final class GiftWorkflowOrder
 
         Stripe::setApiKey($_ENV['STRIPE_API_KEY']);
 
-        $userLanguageUrlPrefix = $this->security->getUser()->getPreferredLanguage() ? '/' . $this->security->getUser()->getPreferredLanguage() : null;
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $userLanguageUrlPrefix = $user->getPreferredLanguage() ? '/' . $user->getPreferredLanguage() : null;
 
         try {
             $sessionConfig = [

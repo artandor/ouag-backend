@@ -1,13 +1,11 @@
-import {FunctionComponent, Props, useState} from "react";
+import {useState} from "react";
 import {useRouter} from "next/router";
 import {ErrorMessage, Formik} from "formik";
 import {User} from "../../types/User";
 import useTranslation from 'next-translate/useTranslation'
-import {useCookies} from 'react-cookie';
-import Link from 'next/link'
 import {ENTRYPOINT} from "../../config/entrypoint";
 
-export const AskPasswordResetForm: FunctionComponent<Props> = ({}) => {
+function AskPasswordResetForm() {
     const {t} = useTranslation('users');
     const [error, setError] = useState(null);
     const router = useRouter();
@@ -120,4 +118,6 @@ export const AskPasswordResetForm: FunctionComponent<Props> = ({}) => {
             </Formik>
         </div>
     );
-};
+}
+
+export default AskPasswordResetForm;
