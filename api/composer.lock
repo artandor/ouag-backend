@@ -9840,16 +9840,16 @@
         },
         {
             "name": "tilleuls/forgot-password-bundle",
-            "version": "v1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle.git",
-                "reference": "8320b46413718f24bf3ac20882b90017607fec5e"
+                "reference": "b889a5b2d209e8e149d4cb62c0e3ebe5adc264da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/coopTilleuls/CoopTilleulsForgotPasswordBundle/zipball/8320b46413718f24bf3ac20882b90017607fec5e",
-                "reference": "8320b46413718f24bf3ac20882b90017607fec5e",
+                "url": "https://api.github.com/repos/coopTilleuls/CoopTilleulsForgotPasswordBundle/zipball/b889a5b2d209e8e149d4cb62c0e3ebe5adc264da",
+                "reference": "b889a5b2d209e8e149d4cb62c0e3ebe5adc264da",
                 "shasum": ""
             },
             "require": {
@@ -9926,9 +9926,9 @@
             ],
             "support": {
                 "issues": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle/issues",
-                "source": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle/tree/v1.4.0"
+                "source": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle/tree/v1.4.1"
             },
-            "time": "2022-01-28T12:13:31+00:00"
+            "time": "2022-02-08T07:58:26+00:00"
         },
         {
             "name": "twig/twig",
